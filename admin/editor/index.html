@@ -1,0 +1,221 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin • Editor</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <div class="brand"><img src="../../assets/images/logo.png" alt="logo"/><span>EDITOR</span></div>
+      <a class="tag" href="../">← Admin</a>
+    </nav>
+
+    <div class="notice small">Tip: Import your previous <code>config.json</code> and <code>theme.json</code> below if needed, then export a ZIP.</div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="content">Content</div>
+      <div class="tab" data-tab="colors">Colors</div>
+      <div class="tab" data-tab="images">Images</div>
+      <div class="tab" data-tab="export">Export</div>
+    </div>
+
+    <div id="content" class="editor-grid">
+      <div class="card">
+        <label class="small">Brand</label><br/><input id="brand" style="width:100%;margin:6px 0"/>
+        <label class="small">Hero Title (HTML allowed)</label><br/><textarea id="hero_title" style="width:100%;height:80px;margin:6px 0"></textarea>
+        <label class="small">Hero Subtitle</label><br/><textarea id="hero_subtitle" style="width:100%;height:80px;margin:6px 0"></textarea>
+        <label class="small">Phone</label><br/><input id="phone" style="width:100%;margin:6px 0"/>
+        <label class="small">Email</label><br/><input id="email" style="width:100%;margin:6px 0"/>
+        <label class="small">Service Area</label><br/><input id="service_area" style="width:100%;margin:6px 0"/>
+        <label class="small">Services (one per line)</label><br/><textarea id="services" style="width:100%;height:100px;margin:6px 0"></textarea>
+
+        <div style="margin-top:8px">
+          <label class="small">Import config.json</label><br/>
+          <input type="file" id="import_config" accept=".json"/>
+        </div>
+      </div>
+      <div class="preview-box">
+        <div class="small">Live Preview</div>
+        <hr style="border-color:#222227"/>
+        <h2 id="p_title">Preview Title</h2>
+        <p id="p_sub" class="small">Preview subtitle</p>
+        <div id="p_services"></div>
+      </div>
+    </div>
+
+    <div id="colors" class="editor-grid" style="display:none">
+      <div class="card">
+        <label class="small">Accent</label><br/><input id="c_accent" type="color" value="#c62828"/><br/>
+        <label class="small">Background</label><br/><input id="c_bg" type="color" value="#0e0e10"/><br/>
+        <label class="small">Text</label><br/><input id="c_text" type="color" value="#eaeaea"/><br/>
+        <label class="small">Muted</label><br/><input id="c_muted" type="color" value="#a7a7a7"/><br/>
+        <label class="small">Card</label><br/><input id="c_card" type="color" value="#16161a"/><br/>
+        <div style="margin-top:8px">
+          <label class="small">Import theme.json</label><br/>
+          <input type="file" id="import_theme" accept=".json"/>
+        </div>
+      </div>
+      <div class="preview-box">
+        <div class="small">Colors Preview</div>
+        <hr style="border-color:#222227"/>
+        <button class="btn">Button</button>
+        <div class="card" style="margin-top:10px">Card sample</div>
+      </div>
+    </div>
+
+    <div id="images" class="editor-grid" style="display:none">
+      <div class="card">
+        <label class="small">Logo</label><br/><input id="logo" type="file" accept=".png,.svg"/><br/><br/>
+        <label class="small">Before photo</label><br/><input id="before" type="file" accept=".png,.jpg,.jpeg,.webp"/><br/><br/>
+        <label class="small">After photo</label><br/><input id="after" type="file" accept=".png,.jpg,.jpeg,.webp"/>
+      </div>
+      <div class="preview-box">
+        <div class="small">Image Previews</div>
+        <hr style="border-color:#222227"/>
+        <img id="prev_logo" src="../../assets/images/logo.png" alt="logo preview" style="max-width:100%;border-radius:8px"/>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <img id="prev_before" src="../../assets/images/before.png" style="width:100%;border-radius:8px"/>
+          <img id="prev_after" src="../../assets/images/after.png" style="width:100%;border-radius:8px"/>
+        </div>
+      </div>
+    </div>
+
+    <div id="export" class="card" style="display:none">
+      <button class="btn" id="download">Download customized ZIP</button>
+    </div>
+  </div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    ['content','colors','images','export'].forEach(id=>{
+      document.getElementById(id).style.display = (id===t.dataset.tab)?(id==='content'?'grid':'block'):'none';
+      if(id==='colors' || id==='images') document.getElementById(id).style.display = (id===t.dataset.tab)?'grid':'none';
+    });
+  });
+});
+
+let cfg = {}; let theme = {};
+async function loadDefaults(){
+  const [c, th] = await Promise.all([fetch('../../config.json').then(r=>r.json()), fetch('../../theme.json').then(r=>r.json())]);
+  cfg = c; theme = th;
+  brand.value = cfg.brand || '';
+  hero_title.value = cfg.hero_title || '';
+  hero_subtitle.value = cfg.hero_subtitle || '';
+  phone.value = cfg.phone || '';
+  email.value = cfg.email || '';
+  service_area.value = cfg.service_area || '';
+  services.value = (cfg.services||[]).join('\n');
+  p_title.innerHTML = hero_title.value;
+  p_sub.textContent = hero_subtitle.value;
+  p_services.innerHTML = (cfg.services||[]).map(s=>`<div>• ${s}</div>`).join('');
+
+  c_accent.value = (theme['--accent']||'#c62828');
+  c_bg.value = (theme['--bg']||'#0e0e10');
+  c_text.value = (theme['--text']||'#eaeaea');
+  c_muted.value = (theme['--muted']||'#a7a7a7');
+  c_card.value = (theme['--card']||'#16161a');
+}
+loadDefaults();
+
+[hero_title, hero_subtitle, services].forEach(el=>{
+  el.addEventListener('input', ()=>{
+    p_title.innerHTML = hero_title.value;
+    p_sub.textContent = hero_subtitle.value;
+    p_services.innerHTML = services.value.split('\n').filter(Boolean).map(s=>`<div>• ${s}</div>`).join('');
+  });
+});
+
+import_config.addEventListener('change', async ()=>{
+  const f = import_config.files[0]; if(!f) return;
+  const j = JSON.parse(await f.text());
+  cfg = Object.assign({}, cfg, j);
+  await loadDefaults();
+});
+import_theme.addEventListener('change', async ()=>{
+  const f = import_theme.files[0]; if(!f) return;
+  const j = JSON.parse(await f.text());
+  theme = Object.assign({}, theme, j);
+  await loadDefaults();
+});
+
+function preview(input, imgEl){
+  input.addEventListener('change', ()=>{
+    const f = input.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = e => imgEl.src = e.target.result;
+    r.readAsDataURL(f);
+  });
+}
+preview(document.getElementById('logo'), document.getElementById('prev_logo'));
+preview(document.getElementById('before'), document.getElementById('prev_before'));
+preview(document.getElementById('after'), document.getElementById('prev_after'));
+
+document.getElementById('download').addEventListener('click', async ()=>{
+  const outCfg = {
+    brand: brand.value,
+    hero_title: hero_title.value,
+    hero_subtitle: hero_subtitle.value,
+    phone: phone.value,
+    email: email.value,
+    service_area: service_area.value,
+    services: services.value.split('\n').filter(Boolean)
+  };
+  const outTheme = {
+    "--accent": c_accent.value,
+    "--bg": c_bg.value,
+    "--text": c_text.value,
+    "--muted": c_muted.value,
+    "--card": c_card.value,
+    "--ring": "rgba(198, 40, 40, .35)"
+  };
+
+  const zip = new JSZip();
+  async function add(path, asPath){
+    const res = await fetch(path);
+    const blob = await res.blob();
+    zip.file(asPath||path.replace('../../',''), blob);
+  }
+  await add('../../index.html','index.html');
+  await add('../../assets/css/styles.css','assets/css/styles.css');
+  await add('../../assets/js/main.js','assets/js/main.js');
+  await add('../version.js','admin/version.js');
+  await add('../index.html','admin/index.html');
+  await add('index.html','admin/editor/index.html');
+
+  async function addImageInput(inputId, defaultPath, outPath){
+    const inp = document.getElementById(inputId);
+    if (inp.files && inp.files[0]){
+      const f = inp.files[0];
+      const buf = await f.arrayBuffer();
+      zip.file(outPath, buf);
+    } else {
+      await add(defaultPath, outPath);
+    }
+  }
+  await addImageInput('logo','../../assets/images/logo.png','assets/images/logo.png');
+  await addImageInput('before','../../assets/images/before.png','assets/images/before.png');
+  await addImageInput('after','../../assets/images/after.png','assets/images/after.png');
+
+  zip.file('config.json', JSON.stringify(outCfg, null, 2));
+  zip.file('theme.json', JSON.stringify(outTheme, null, 2));
+  zip.file('version.json', JSON.stringify({version:'custom', date: new Date().toISOString().slice(0,10)}, null, 2));
+  zip.file('_redirects','/admin  /admin/  301!\n');
+  zip.file('admin.html','<!doctype html><meta http-equiv="refresh" content="0; url=/admin/"><title>Redirecting…</title><script>location.replace("/admin/");</script>');
+
+  const blob = await zip.generateAsync({type:'blob'});
+  saveAs(blob, 'ironwood-custom.zip');
+});
+
+if(localStorage.getItem('ironwood_admin_ok') !== 'yes'){ location.href = '../'; }
+</script>
+</body>
+</html>

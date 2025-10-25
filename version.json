@@ -1,0 +1,11 @@
+{
+  "version": "1.0.6",
+  "date": "2025-10-25",
+  "imported_from": {
+    "config_path": "config.json",
+    "theme_path": null,
+    "logo_path": null,
+    "before_path": null,
+    "after_path": null
+  }
+}

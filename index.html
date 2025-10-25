@@ -1,154 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Land Clearing & Demolition | Ironwood Land Development – Oak Grove, LA</title>
-  <meta name="description" content="Fast, professional land clearing, grading, light demolition, and dumpster rentals. Free on‑site estimates. Licensed & insured." />
-  <style>
-    :root{ --bg:#0b0e11; --surface:#12161a; --muted:#8c98a4; --text:#eef2f6; --brand:#dc2626; --brand-2:#f87171; --accent:#fca5a5; --radius:18px; --shadow:0 4px 30px rgba(0,0,0,.25);}
-    * { box-sizing: border-box; } html, body { margin:0; padding:0; color:var(--text); background:var(--bg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
-    a { color: inherit; text-decoration: none; } img { max-width:100%; display:block; border-radius:12px; }
-    .container { width:min(1200px, 92vw); margin-inline:auto; } .btn { display:inline-flex; align-items:center; gap:.6rem; background:var(--brand); color:#fff; padding:.9rem 1.2rem; border-radius:999px; font-weight:700; border:2px solid transparent; box-shadow:var(--shadow);}
-    .btn.secondary { background:transparent; border-color:#2b333b; color:var(--text);}
-    header.topbar { position:sticky; top:0; backdrop-filter:saturate(1.3) blur(8px); background: rgba(11,14,17,.7); z-index:50; border-bottom:1px solid #1a2128; }
-    header .wrap { display:flex; align-items:center; justify-content:space-between; padding:.9rem 0; gap:1rem; }
-    .brand { display:flex; align-items:center; gap:.7rem; font-weight:900; }
-    .brand img { height:44px; width:auto; display:block; }
-    nav a { opacity:.9; padding:.5rem .8rem; border-radius:10px; } nav a:hover { background:#1a2128; }
-    .hero { position:relative; overflow:hidden; } .hero::before { content:""; position:absolute; inset:0; background:url('assets/work-2.jpg') center/cover no-repeat; filter: grayscale(.2) brightness(.55); }
-    .hero .inner { position:relative; padding: clamp(72px, 10vw, 140px) 0; } .eyebrow { color: var(--accent); font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:.88rem; }
-    h1 { font-size: clamp(2rem, 3.8vw, 3.4rem); line-height:1.05; margin:.6rem 0 1rem; } .sub { color:var(--muted); max-width:58ch; }
-    .cta { display:flex; gap:.9rem; flex-wrap:wrap; margin-top:1.2rem; } .badges { display:flex; gap:.8rem; flex-wrap:wrap; margin-top:1rem; }
-    .badge { background:#0f1419; border:1px solid #1c232b; color:#b9c5d1; padding:.4rem .7rem; border-radius:999px; font-size:.88rem; }
-    section { padding: clamp(56px, 6vw, 88px) 0; } .section-title { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin:0 0 .8rem; } .muted { color:var(--muted); }
-    .grid { display:grid; gap:1.2rem; } .services { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1.2rem; }
-    .card { background:var(--surface); border:1px solid #1a2128; border-radius: 18px; padding:1.2rem; box-shadow: var(--shadow); }
-    .split { display:grid; grid-template-columns: 1.05fr .95fr; gap:1.4rem; align-items:center; } @media (max-width: 900px) { .split { grid-template-columns:1fr; } }
-    .gallery { grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:1.2rem; } .label { position:absolute; top:10px; left:10px; background:#0f1419cc; border:1px solid #1b2129; padding:.25rem .5rem; border-radius:8px; font-size:.8rem; } .pair { position:relative; }
-    footer { background:#0a0d10; border-top:1px solid #182028; padding: 36px 0 80px; } .footgrid { display:grid; gap:1.2rem; grid-template-columns:1.2fr .8fr .8fr; } @media (max-width:900px){ .footgrid{ grid-template-columns:1fr; } }
-
-  /* --- Mobile header fix: prevent overlap, wrap nav to new line --- */
-  @media (max-width: 640px){
-    header .wrap{ flex-wrap: wrap; gap:.6rem; }
-    .brand{ flex:1 1 100%; min-width:0; }
-    .brand img{ height:40px; }
-    nav{ width:100%; display:flex; flex-wrap:wrap; align-items:center; gap:.4rem; }
-    nav a{ padding:.45rem .6rem; }
-    nav .btn{ margin-left:auto; padding:.6rem .9rem; font-size:.95rem; }
-  }
-
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Ironwood Land Clearing</title>
+  <link rel="stylesheet" href="assets/css/styles.css"/>
+  <meta name="description" content="Ironwood Land Clearing — professional land clearing, brush removal, mulching, and site prep across Northeast Louisiana."/>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container wrap">
-      <a class="brand" href="#top" aria-label="Ironwood Land Development home">
-        <img src="assets/logo-ld-original.png" alt="Ironwood Land Development logo">
-        <span>Ironwood Land Development</span>
-      </a>
-      <nav>
-        <a href="#services">Services</a>
-        <a href="#process">Process</a>
-        <a href="#gallery">Projects</a>
-        <a href="#faq">FAQ</a>
-        <a href="dumpsters.html">Dumpsters</a>
-        <a class="btn" href="tel:+13189142351">📞 Call (318) 914‑2351</a>
-      </nav>
-    </div>
-  </header>
+  <div class="container">
+    <nav class="nav">
+      <div class="brand">
+        <img src="assets/images/logo.png" alt="Ironwood logo"/>
+        <span id="brand">IRONWOOD LAND CLEARING</span>
+      </div>
+      <div><span class="tag">Northeast Louisiana</span></div>
+    </nav>
 
-  <main id="top">
     <section class="hero">
-      <div class="container inner">
-        <div class="eyebrow">Residential • Commercial • Timber • Structures</div>
-        <h1>Land Clearing & Demolition—Done Right.</h1>
-        <p class="sub">We clear lots big and small using professional heavy equipment. Brush, trees, stumps, concrete, or buildings—we handle it end‑to‑end with safety, speed, and clean results. Fully licensed & insured.</p>
-        <div class="cta">
-          <a class="btn" href="tel:+13189142351">Call Now: (318) 914‑2351</a>
-          <a class="btn secondary" href="#quote">Get a Free Quote</a>
+      <div class="card">
+        <h1 id="hero-title">Clear it clean. <span style="color:var(--accent)">On time</span> &amp; on budget.</h1>
+        <p id="hero-sub" class="small">Brush, saplings, and undergrowth gone — leaving your property neat, build-ready, and safer. Local, insured, and dialed for Louisiana terrain.</p>
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button class="btn" data-call>Call for a free quote</button>
+          <button class="btn" data-email>Email photos for estimate</button>
+        </div>
+        <div id="services" class="section grid-3" style="margin-top:14px">
+          <div class="kv"><span class="k">•</span><span class="v">Forestry mulching</span></div>
+          <div class="kv"><span class="k">•</span><span class="v">Right-of-way & fence lines</span></div>
+          <div class="kv"><span class="k">•</span><span class="v">House-pad/site prep</span></div>
         </div>
       </div>
-    </section>
-
-    <section id="services" class="container">
-      <h2 class="section-title">Services</h2>
-      <p class="muted">Traditional land clearing—no mulching. If it’s in your way, we’ll clear it safely and efficiently.</p>
-      <div class="grid services" style="margin-top:1rem;">
-        <article class="card"><h3>Tree & Stump Removal</h3><p>Felling, grubbing, root raking, and complete stump removal for a build‑ready pad.</p></article>
-        <article class="card"><h3>Traditional Land Clearing</h3><p>Excavators & dozers for large trees, root raking, stump removal, and site prep for new builds.</p></article>
-        <article class="card"><h3>Demolition & Haul‑Off</h3><p>Mobile homes, sheds, barns, small structures, old fences & concrete pads—torn down and hauled away.</p></article>
-        <article class="card"><h3>Grading & Driveways</h3><p>Rough & finish grading, drainage correction, culverts, and new/repair gravel driveways.</p></article>
-        <article class="card"><h3>Right‑of‑Way & Fencelines</h3><p>Pastures, hunting lanes, utility access, and fenceline reclaiming.</p></article>
-        <article class="card"><h3>Ponds, Ditches & Cleanup</h3><p>Small pond digs, ditch re‑cuts, storm cleanup, and seasonal maintenance.</p></article>
+      <div class="card">
+        <div class="slider" aria-label="Before and after">
+          <img class="before" src="assets/images/after.png" alt="After image"/>
+          <img class="after" src="assets/images/before.png" alt="Before image" style="position:absolute;inset:0"/>
+          <div class="handle"></div>
+          <div class="scrim"></div>
+          <div class="label left">AFTER</div>
+          <div class="label right">BEFORE</div>
+        </div>
+        <p class="small" style="margin-top:8px">Drag the bar to see the difference.</p>
       </div>
     </section>
 
-    <section id="gallery" class="container">
-      <h2 class="section-title">Recent Projects</h2>
-      <p class="muted">Before/after and in‑progress shots from Oak Grove.</p>
-      <div class="grid gallery" style="margin-top:1rem;">
-        <div class="pair"><span class="label">Before</span><img src="assets/project-1a.jpg" alt="Before: front view of structure prior to demolition" /></div>
-        <div class="pair"><span class="label">Before</span><img src="assets/project-1b.jpg" alt="Before: wide view of property to be cleared" /></div>
-        <div class="pair"><span class="label">In Progress</span><img src="assets/project-1c.jpg" alt="In progress: excavator on site" /></div>
-        <div class="pair"><span class="label">In Progress</span><img src="assets/project-1d.jpg" alt="In progress: unstable shed and vegetation to remove" /></div>
-        <div class="pair"><span class="label">After</span><img src="assets/project-1-after-a.jpg" alt="After: lot cleared and rough graded" /></div>
-        <div class="pair"><span class="label">After</span><img src="assets/project-1-after-b.jpg" alt="After: clean open space" /></div>
-      </div>
-    </section>
-
-    <section id="work-photos" class="container">
-      <h2 class="section-title">Work Photos</h2>
-      <p class="muted">Live uploads from the field. This gallery auto‑populates when you add photos.</p>
-      <div id="workGrid" class="grid gallery" style="margin-top:1rem;"></div>
-    </section>
-
-    <section id="quote" class="container split">
-      <div>
-        <h2 class="section-title">Get a Free Quote</h2>
-        <p class="muted">Fastest way: call or text us details and photos.</p>
-        <div class="card">
-          <div class="cta" style="margin-top:.2rem;">
-            <a class="btn" href="tel:+13189142351">📞 Call (318) 914‑2351</a>
-            <a class="btn secondary" href="sms:+13189142351?&body=Hi%2C%20I%E2%80%99d%20like%20a%20land%20clearing%20quote.%20Address%3A%20__%20(or%20pin)%20%7C%20Acreage%3A%20__%20%7C%20What%20to%20clear%3A%20__">💬 Text Photos</a>
-          </div>
+    <section class="section grid-2">
+      <div class="card">
+        <h3 style="margin-top:0">Get a quote</h3>
+        <p class="small">Text or email photos, a pin, and approximate acreage. We’ll respond quickly with a ballpark and next steps.</p>
+        <div style="display:flex;gap:10px;margin-top:8px">
+          <button class="btn" data-call>Call/Text</button>
+          <button class="btn" data-email>Email</button>
         </div>
       </div>
-      <div><img src="assets/project-1-after-a.jpg" alt="After: lot cleared and rough graded" /></div>
+      <div class="card">
+        <h3 style="margin-top:0">Service area</h3>
+        <p class="small" id="service-area">Oak Grove • Kilbourne • Lake Providence • and surrounding parishes</p>
+      </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="container footgrid">
-      <div>
-        <div class="brand"><img src="assets/logo-ld-original.png" alt="Ironwood Land Development logo"><span>Ironwood Land Development</span></div>
-        <p class="muted">Professional land development: clearing, grading, demolition, and dumpsters.</p>
-        <p><a href="tel:+13189142351" class="btn" style="margin-top:.3rem;">📞 Call (318) 914‑2351</a></p>
-      </div>
-      <div>
-        <h3>Contact</h3>
-        <p><strong>Phone:</strong> <a href="tel:+13189142351">(318) 914‑2351</a><br>
-           <strong>Hours:</strong> Mon–Sat 7a–6p</p>
-      </div>
-      <div>
-        <h3>Company</h3>
-        <p>209 Philley Lane<br>Oak Grove, LA 71263<br>Licensed & Insured • <span id="year"></span> © Ironwood Land Development</p>
-        <p style="margin-top:.6rem;"><small><a href="#" id="adminLink" class="muted" style="text-decoration:underline;">Site admin</a></small></p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    (function(){
-      var link = document.getElementById('adminLink');
-      if(link) link.addEventListener('click', function(e){
-        e.preventDefault();
-        var code = prompt('Enter passcode');
-        if(code === '0102') window.location.href = 'admin.html';
-        else if(code !== null) alert('Incorrect passcode');
-      });
-    })();
-  </script>
+    <footer class="footer">
+      <div>© <span id="y"></span> <span id="brand-foot">Ironwood Land Clearing</span> • All rights reserved</div>
+      <div class="small">Admin: visit <code>/admin/</code> → <code>/admin/editor/</code> to customize and export your ZIP.</div>
+    </footer>
+  </div>
+<script src="assets/js/main.js"></script>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>
