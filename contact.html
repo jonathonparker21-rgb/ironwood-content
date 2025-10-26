@@ -1,4 +1,4 @@
-<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Dumpster Rentals (Weekly) | Ironwood Trucking LLC – Oak Grove, LA</title>
+<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Contact Us | Ironwood Land Development</title>
 <style>:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5;--shadow:0 4px 30px rgba(0,0,0,.25)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
@@ -28,26 +28,33 @@ nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;pa
   </nav>
 </div></header>
 
-<main>
-  <section class="container" style="padding:clamp(48px,6vw,80px) 0">
-    <img id="dumpLogoHero" src="assets/logo-dumpsters-original.png" alt="Ironwood Dumpster Rentals" style="height:84px;margin-bottom:12px">
-    <p class="muted" style="letter-spacing:.12em;text-transform:uppercase;">Weekly Roll-Off Rentals • <span id="dumpCo">Ironwood Trucking LLC</span></p>
-    <h1>Dumpsters—Delivered Fast. Picked Up On Time.</h1>
-    <p class="muted">Weekly pricing includes the <strong>dump fee</strong>. Area: <span id="area">Northeast Louisiana</span>.</p>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem"><a class="btn" data-call href="tel:+13189142351">Book by Phone</a><a id="smsDump" class="btn secondary" href="#">Text to Reserve</a></div>
-  </section>
-  <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-    <h2>Sizes & Weekly Rates</h2>
-    <div class="grid cards" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1rem">
-      <article class="card" style="background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1.2rem"><h3>Small (≈12–15 yd)</h3><p><strong>Weekly:</strong> $<span id="rateSmall">350</span></p></article>
-      <article class="card" style="background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1.2rem"><h3>Large (≈30 yd)</h3><p><strong>Weekly:</strong> $<span id="rateLarge">450</span></p></article>
+<main class="container" style="padding:clamp(36px,5vw,64px) 0">
+  <p class="muted">Reach out or stop by our office — we’re here to help with any job, big or small.</p>
+  <div class="grid cols" style="display:grid;gap:16px;grid-template-columns:1.1fr .9fr">
+    <div class="card" style="background:#12161a;border:1px solid #1a2128;border-radius:16px;padding:16px">
+      <form id="contactForm">
+        <div class="grid" style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
+          <label>Name<input id="c_name" required></label>
+          <label>Email<input id="c_email" type="email" placeholder="you@example.com"></label>
+        </div>
+        <div class="grid" style="display:grid;gap:10px;grid-template-columns:1fr 1fr;margin-top:10px">
+          <label>Phone<input id="c_phone" type="tel" placeholder="(318) 555-1234" required></label>
+          <label>Service Needed<input id="c_service" placeholder="Land clearing, demolition, dumpster…"></label>
+        </div>
+        <label style="display:block;margin-top:10px">Message<textarea id="c_msg" rows="5" placeholder="Tell us about your project…" required></textarea></label>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:12px">
+          <button type="submit" class="btn">Send</button><small class="muted" id="sendHint">Set your contact email in Admin → Site Settings.</small>
+        </div>
+      </form>
     </div>
-  </section>
-  <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-    <h2>Dumpster Photos</h2>
-    <p class="muted">Uploaded in Admin → Dumpster Photos.</p>
-    <div id="dumpGrid" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:1rem"></div>
-  </section>
+    <div class="card" style="background:#12161a;border:1px solid #1a2128;border-radius:16px;padding:16px">
+      <h3>Office</h3>
+      <p><strong id="addr">805 E. Main St, Oak Grove, LA 71263</strong><br>
+      <span class="muted">Mon–Sat 7 AM – 6 PM</span><br>
+      Phone: <a id="phoneLink" href="tel:+13189142351">(318) 914-2351</a></p>
+      <iframe id="map" style="width:100%;height:360px;border:0;border-radius:12px" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
 </main>
 
 <script>
@@ -88,20 +95,29 @@ nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;pa
 </script>
 
 <script>
+function setMap(address){
+  const q=encodeURIComponent(address); document.getElementById('map').src="https://www.google.com/maps?q="+q+"&output=embed";
+}
 (async function(){
   const c=await _ironwoodLoaders.config();
   if(c){
+    if(c.logos&&c.logos.site) document.getElementById('siteLogo').src=c.logos.site;
+    document.getElementById('brandName').textContent=c.business?.name||'Ironwood Land Development';
+    const addr=c.business?.address_text||'805 E. Main St, Oak Grove, LA 71263';
     const phone=c.business?.phone_raw||'+13189142351'; const phoneDisp=c.business?.phone||'(318) 914-2351';
-    document.querySelectorAll('[data-call]').forEach(a=>{ a.href='tel:'+phone; if(a.textContent.includes('Call')||a.textContent.includes('Book')) a.textContent='📞 Call '+phoneDisp; });
-    document.getElementById('rateSmall').textContent=(c.dumpsters?.weekly_small??350);
-    document.getElementById('rateLarge').textContent=(c.dumpsters?.weekly_large??450);
-    document.getElementById('area').textContent=c.dumpsters?.area||'Northeast Louisiana';
-    const sms='sms:'+phone+'?&body=I%20need%20a%20dumpster.%20Address%3A%20__%20Size%3A%20Small%20or%20Large%20%7C%20Start%20date%3A%20__'; document.getElementById('smsDump').href=sms;
-    document.getElementById('dumpCo').textContent=c.dumpsters?.company||'Ironwood Trucking LLC';
-    if(c.logos&&c.logos.dumpsters) document.getElementById('dumpLogoHero').src=c.logos.dumpsters;
-  }
-  const dumps=await _ironwoodLoaders.dumpPhotos();
-  document.getElementById('dumpGrid').innerHTML = dumps.length ? dumps.map(u=>'<img src="'+u+'" alt="Dumpster">').join('') : '<p class="muted">No dumpster photos yet.</p>';
+    document.getElementById('addr').textContent = addr;
+    document.getElementById('phoneLink').href='tel:'+phone; document.getElementById('phoneLink').textContent=phoneDisp;
+    setMap(addr);
+    const email=c.contact_email||'';
+    if(email){ document.getElementById('sendHint').textContent='Sending to: '+email; }
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name=c_name.value.trim(), em=c_email.value.trim(), ph=c_phone.value.trim(), svc=c_service.value.trim(), msg=c_msg.value.trim();
+      const body = encodeURIComponent("Name: "+name+"%0AEmail: "+em+"%0APhone: "+ph+"%0AService: "+svc+"%0A%0A"+msg);
+      if(!email) return alert('No contact email set yet. Open Admin → Site Settings and add your email.');
+      location.href="mailto:"+email+"?subject="+encodeURIComponent('New Website Inquiry')+"&body="+body;
+    });
+  } else { setMap('805 E. Main St, Oak Grove, LA 71263'); }
 })();
 </script>
 

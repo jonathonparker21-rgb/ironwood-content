@@ -1,70 +1,166 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Ironwood Land Clearing</title>
-  <link rel="stylesheet" href="assets/css/styles.css"/>
-  <meta name="description" content="Ironwood Land Clearing — professional land clearing, brush removal, mulching, and site prep across Northeast Louisiana."/>
-</head>
-<body>
-  <div class="container">
-    <nav class="nav">
-      <div class="brand">
-        <img src="assets/images/logo.png" alt="Ironwood logo"/>
-        <span id="brand">IRONWOOD LAND CLEARING</span>
-      </div>
-      <div><span class="tag">Northeast Louisiana</span></div>
-    </nav>
+<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Ironwood Land Development — Land Clearing & Demolition</title>
+<style>:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5;--shadow:0 4px 30px rgba(0,0,0,.25)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
+.container{width:min(1200px,92vw);margin-inline:auto}
+.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.8rem 1.1rem;border-radius:999px;font-weight:700;border:2px solid transparent;box-shadow:var(--shadow)}
+.btn.secondary{background:transparent;border-color:#2b333b}
+header.topbar{position:sticky;top:0;backdrop-filter:saturate(1.3) blur(8px);background:rgba(11,14,17,.75);z-index:50;border-bottom:1px solid #1a2128}
+header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;gap:.6rem;flex-wrap:wrap}
+.brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:44px}
+nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;padding:.5rem .8rem;border-radius:10px}nav a:hover{background:#1a2128}
+/* mobile overlap fix */
+@media (max-width:640px){
+  header .wrap{flex-direction:column;align-items:flex-start}
+  .brand img{height:38px}
+  nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+  nav .btn{grid-column:1/-1;justify-content:center; padding:.6rem .9rem;font-size:.95rem}
+}
+</style>
+<header class="topbar"><div class="container wrap">
+  <a class="brand" href="index.html"><img id="siteLogo" src="assets/logo-ld-original.png" alt="Ironwood Land Development logo"><span id="brandName">Ironwood Land Development</span></a>
+  <nav>
+    <a href="index.html#services">Services</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="dumpsters.html">Dumpsters</a>
+    <a href="contact.html">Contact</a>
+    <a class="btn" data-call href="tel:+13189142351">📞 Call</a>
+  </nav>
+</div></header>
 
-    <section class="hero">
-      <div class="card">
-        <h1 id="hero-title">Clear it clean. <span style="color:var(--accent)">On time</span> &amp; on budget.</h1>
-        <p id="hero-sub" class="small">Brush, saplings, and undergrowth gone — leaving your property neat, build-ready, and safer. Local, insured, and dialed for Louisiana terrain.</p>
-        <div style="display:flex;gap:10px;margin-top:12px">
-          <button class="btn" data-call>Call for a free quote</button>
-          <button class="btn" data-email>Email photos for estimate</button>
-        </div>
-        <div id="services" class="section grid-3" style="margin-top:14px">
-          <div class="kv"><span class="k">•</span><span class="v">Forestry mulching</span></div>
-          <div class="kv"><span class="k">•</span><span class="v">Right-of-way & fence lines</span></div>
-          <div class="kv"><span class="k">•</span><span class="v">House-pad/site prep</span></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="slider" aria-label="Before and after">
-          <img class="before" src="assets/images/after.png" alt="After image"/>
-          <img class="after" src="assets/images/before.png" alt="Before image" style="position:absolute;inset:0"/>
-          <div class="handle"></div>
-          <div class="scrim"></div>
-          <div class="label left">AFTER</div>
-          <div class="label right">BEFORE</div>
-        </div>
-        <p class="small" style="margin-top:8px">Drag the bar to see the difference.</p>
-      </div>
-    </section>
+<main>
+  <section class="hero" style="position:relative;overflow:hidden">
+    <style>.hero::before{content:'';position:absolute;inset:0;background:url('assets/work-hero.jpg') center/cover no-repeat;filter:grayscale(.15) brightness(.58)}
+    .hero .inner{position:relative;padding:clamp(72px,10vw,140px) 0}
+    .eyebrow{color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.88rem}
+    h1{font-size:clamp(2rem,3.8vw,3.4rem);line-height:1.05;margin:.6rem 0 1rem}.sub{color:#b6c2ce;max-width:58ch}
+    .cta{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.2rem}</style>
+    <div class="container inner">
+      <div id="eyebrow" class="eyebrow">Residential • Commercial • Timber • Structures</div>
+      <h1 id="headline">Land Clearing & Demolition—Done Right.</h1>
+      <p id="sub" class="sub">Traditional land clearing (no mulching). Heavy equipment, safe crews, clean finishes.</p>
+      <div class="cta"><a class="btn" data-call href="tel:+13189142351">Call Now</a><a class="btn secondary" href="contact.html">Contact Us</a></div>
+    </div>
+  </section>
 
-    <section class="section grid-2">
-      <div class="card">
-        <h3 style="margin-top:0">Get a quote</h3>
-        <p class="small">Text or email photos, a pin, and approximate acreage. We’ll respond quickly with a ballpark and next steps.</p>
-        <div style="display:flex;gap:10px;margin-top:8px">
-          <button class="btn" data-call>Call/Text</button>
-          <button class="btn" data-email>Email</button>
-        </div>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">Service area</h3>
-        <p class="small" id="service-area">Oak Grove • Kilbourne • Lake Providence • and surrounding parishes</p>
-      </div>
-    </section>
+  <section id="services" class="container" style="padding:clamp(56px,6vw,88px) 0">
+    <h2 class="section-title">Services</h2><p class="muted">If it’s in your way, we’ll clear it safely and efficiently.</p>
+    <div id="servicesGrid" class="grid services" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1rem"></div>
+  </section>
 
-    <footer class="footer">
-      <div>© <span id="y"></span> <span id="brand-foot">Ironwood Land Clearing</span> • All rights reserved</div>
-      <div class="small">Admin: visit <code>/admin/</code> → <code>/admin/editor/</code> to customize and export your ZIP.</div>
-    </footer>
+  <section id="jobs" class="container" style="padding:clamp(56px,6vw,88px) 0">
+    <h2 class="section-title">Recent Jobs</h2><p class="muted">Before/After carousel on each job. Click “View” for full details.</p>
+    <div id="jobsGrid" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:1rem"></div>
+    <p style="margin-top:12px"><a href="jobs.html" class="btn secondary">View All Jobs</a></p>
+  </section>
+</main>
+
+<footer style="background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px">
+  <div class="container" style="display:grid;gap:1.2rem;grid-template-columns:1.2fr .8fr .8fr">
+    <div><div class="brand"><img id="siteLogoFoot" src="assets/logo-ld-original.png" alt="" style="height:34px"><span id="footName">Ironwood Land Development</span></div>
+      <p class="muted">Professional land development: clearing, grading, demolition, and dumpsters.</p>
+      <p><a data-call href="tel:+13189142351" class="btn" style="margin-top:.3rem;">📞 Call</a></p></div>
+    <div><h3>Contact</h3><p><strong>Phone:</strong> <a id="footPhone" href="tel:+13189142351">(318) 914-2351</a><br><strong>Hours:</strong> <span id="footHours">Mon–Sat 7a–6p</span></p></div>
+    <div><h3>Company</h3><p id="footAddress">805 E. Main St<br>Oak Grove, LA 71263</p><p style="margin-top:.6rem;"><small><a href="#" id="adminLink" class="muted" style="text-decoration:underline;">Site admin</a></small></p></div>
   </div>
-<script src="assets/js/main.js"></script>
-<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-</body>
-</html>
+</footer>
+
+<script>
+(function(){
+  const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
+  const owner = GHLS.owner, repo = GHLS.repo, branch = GHLS.branch || 'main';
+  const RAW = (owner && repo) ? ("https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch) : null;
+  async function tryJson(url){
+    try{ const r=await fetch(url,{cache:'no-store'}); if(r.ok) return await r.json(); }catch(e){} return null;
+  }
+  window._ironwoodLoaders = {
+    config: async function(){
+      let c = await tryJson('config.json?_=' + Date.now());
+      if(c) return c;
+      if(RAW){ c = await tryJson(RAW + '/config.json?_=' + Date.now()); if(c) return c; }
+      return null;
+    },
+    jobsIndex: async function(){
+      let j = await tryJson('jobs/index.json?_=' + Date.now());
+      if(Array.isArray(j)) return j;
+      if(RAW){ j = await tryJson(RAW + '/jobs/index.json?_=' + Date.now()); if(Array.isArray(j)) return j; }
+      return [];
+    },
+    jobMeta: async function(id){
+      let m = await tryJson('jobs/' + id + '/meta.json?_=' + Date.now());
+      if(m) return m;
+      if(RAW){ m = await tryJson(RAW + '/jobs/' + id + '/meta.json?_=' + Date.now()); if(m) return m; }
+      return null;
+    },
+    dumpPhotos: async function(){
+      let d = await tryJson('dumpsters/photos/index.json?_=' + Date.now());
+      if(Array.isArray(d)) return d;
+      if(RAW){ d = await tryJson(RAW + '/dumpsters/photos/index.json?_=' + Date.now()); if(Array.isArray(d)) return d; }
+      return [];
+    }
+  };
+})();
+</script>
+
+<script>
+function makeCarousel(id, imgs){
+  const slides = imgs.map((src,i)=>'<img class="car-slide '+(i===0?'active':'')+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:'+(i===0?1:0)+';transition:opacity .35s;" src="'+src+'" alt="">').join('');
+  const dots = imgs.map((_,i)=>'<button data-i="'+i+'" class="'+(i===0?'active':'')+'" aria-label="Go to slide '+(i+1)+'" style="width:8px;height:8px;border-radius:99px;border:none;background:#475569;opacity:'+(i===0?1:.8)+'"></button>').join('');
+  return '<div class="car" data-id="'+id+'" style="position:relative;background:#0b0e11"><div class="car-viewport" style="position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:12px;border:1px solid #1a2128">'+slides+'<button class="car-btn prev" aria-label="Prev" style="position:absolute;top:50%;left:8px;transform:translateY(-50%);border:none;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;font-size:22px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer">‹</button><button class="car-btn next" aria-label="Next" style="position:absolute;top:50%;right:8px;transform:translateY(-50%);border:none;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;font-size:22px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer">›</button><div class="car-dots" style="position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center">'+dots+'</div></div></div>';
+}
+function attachCarouselBehavior(root){
+  const car=root.querySelector('.car'); if(!car) return;
+  const slides=[...car.querySelectorAll('.car-slide')]; const dots=[...car.querySelectorAll('.car-dots button')];
+  let i=0; function go(n){ i=(n+slides.length)%slides.length; slides.forEach((s,idx)=>s.style.opacity=(idx===i?1:0)); dots.forEach((d,idx)=>d.classList.toggle('active',idx===i)); }
+  car.querySelector('.prev').addEventListener('click',e=>{e.preventDefault();go(i-1);});
+  car.querySelector('.next').addEventListener('click',e=>{e.preventDefault();go(i+1);});
+  dots.forEach(d=>d.addEventListener('click', ()=>go(Number(d.dataset.i)||0)));
+}
+function jobCardHTML(j, imgs){
+  const when=j.date?new Date(j.date).toLocaleDateString():''; const loc=j.location||'';
+  const car = imgs && imgs.length ? makeCarousel(j.id, imgs) : '';
+  return '<div class="job" style="background:#12161a;border:1px solid #1a2128;border-radius:18px;overflow:hidden;display:flex;flex-direction:column">'+car+'<div class="pad" style="padding:12px"><h3>'+ (j.title||'Job') +'</h3><small style="color:#8c98a4">'+ [when,loc].filter(Boolean).join(' • ') +'</small><p class="muted">'+ (j.summary||'') +'</p><p><a class="btn secondary" href="jobs.html?id='+encodeURIComponent(j.id)+'">View</a></p></div></div>';
+}
+(async function(){
+  const c=await _ironwoodLoaders.config();
+  if(c){
+    document.getElementById('eyebrow').textContent=c.hero?.eyebrow||document.getElementById('eyebrow').textContent;
+    document.getElementById('headline').textContent=c.hero?.headline||document.getElementById('headline').textContent;
+    document.getElementById('sub').textContent=c.hero?.sub||document.getElementById('sub').textContent;
+    const S=c.services&&c.services.length?c.services:['Traditional Land Clearing','Demolition & Haul-Off','Tree & Stump Removal','Grading & Driveways','Right-of-Way & Fencelines','Ponds, Ditches & Cleanup'];
+    document.getElementById('servicesGrid').innerHTML=S.map(s=>'<article class="card"><h3>'+s+'</h3></article>').join('');
+  }
+  const jobs=await _ironwoodLoaders.jobsIndex();
+  if(Array.isArray(jobs)&&jobs.length){
+    const metas = await Promise.all(jobs.slice(0,9).map(j=>_ironwoodLoaders.jobMeta(j.id)));
+    const html = jobs.slice(0,9).map((j,idx)=>{
+      const m=metas[idx]||{}; const imgs=[...(m.after||[]), ...(m.before||[])];
+      return jobCardHTML(j, imgs);
+    }).join('');
+    document.getElementById('jobsGrid').innerHTML = html;
+    document.querySelectorAll('.job').forEach(attachCarouselBehavior);
+  } else {
+    document.getElementById('jobsGrid').innerHTML = '<p class="muted">No jobs yet.</p>';
+  }
+})();
+</script>
+
+<script>
+(async function(){
+  const c = await _ironwoodLoaders.config();
+  if(c){
+    const mapVars = {brand:'--brand',accent:'--accent',bg:'--bg',surface:'--surface',text:'--text',muted:'--muted'};
+    if(c.theme){ for(const k in mapVars){ if(c.theme[k]) document.documentElement.style.setProperty(mapVars[k], c.theme[k]); } }
+    if(c.logos && c.logos.site){ const s=document.getElementById('siteLogo'); if(s) s.src=c.logos.site; const f=document.getElementById('siteLogoFoot'); if(f) f.src=c.logos.site; }
+    const phone=c.business?.phone_raw||'+13189142351'; const phoneDisp=c.business?.phone||'(318) 914-2351';
+    document.querySelectorAll('[data-call]').forEach(a=>{ a.href='tel:'+phone; if(a.textContent.includes('Call')) a.textContent='📞 Call '+phoneDisp; });
+    const bn=document.getElementById('brandName'); if(bn) bn.textContent=c.business?.name||'Ironwood Land Development';
+    const fn=document.getElementById('footName'); if(fn) fn.textContent=c.business?.name||'Ironwood Land Development';
+    const fp=document.getElementById('footPhone'); if(fp){ fp.href='tel:'+phone; fp.textContent=phoneDisp; }
+    const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
+    const fa=document.getElementById('footAddress'); if(fa) fa.innerHTML=c.business?.address_html||'805 E. Main St<br>Oak Grove, LA 71263';
+  }
+  const admin = document.getElementById('adminLink');
+  if(admin){ admin.addEventListener('click', e=>{ e.preventDefault(); const code=prompt('Enter passcode'); if(code==='0102') location.href='admin.html'; else if(code!==null) alert('Incorrect passcode'); }); }
+})();
+</script>

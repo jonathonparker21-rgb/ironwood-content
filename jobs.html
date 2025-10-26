@@ -1,4 +1,4 @@
-<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Dumpster Rentals (Weekly) | Ironwood Trucking LLC – Oak Grove, LA</title>
+<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Jobs — Ironwood Land Development</title>
 <style>:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5;--shadow:0 4px 30px rgba(0,0,0,.25)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
@@ -28,26 +28,28 @@ nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;pa
   </nav>
 </div></header>
 
-<main>
-  <section class="container" style="padding:clamp(48px,6vw,80px) 0">
-    <img id="dumpLogoHero" src="assets/logo-dumpsters-original.png" alt="Ironwood Dumpster Rentals" style="height:84px;margin-bottom:12px">
-    <p class="muted" style="letter-spacing:.12em;text-transform:uppercase;">Weekly Roll-Off Rentals • <span id="dumpCo">Ironwood Trucking LLC</span></p>
-    <h1>Dumpsters—Delivered Fast. Picked Up On Time.</h1>
-    <p class="muted">Weekly pricing includes the <strong>dump fee</strong>. Area: <span id="area">Northeast Louisiana</span>.</p>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem"><a class="btn" data-call href="tel:+13189142351">Book by Phone</a><a id="smsDump" class="btn secondary" href="#">Text to Reserve</a></div>
-  </section>
-  <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-    <h2>Sizes & Weekly Rates</h2>
-    <div class="grid cards" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1rem">
-      <article class="card" style="background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1.2rem"><h3>Small (≈12–15 yd)</h3><p><strong>Weekly:</strong> $<span id="rateSmall">350</span></p></article>
-      <article class="card" style="background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1.2rem"><h3>Large (≈30 yd)</h3><p><strong>Weekly:</strong> $<span id="rateLarge">450</span></p></article>
+<main class="container" style="padding:28px 0 60px">
+  <div id="detail" style="display:none">
+    <h1 id="jobTitle">Job</h1>
+    <p class="muted" id="jobMeta"></p>
+    <p id="jobDesc" class="muted"></p>
+    <div id="compareWrap" class="card" style="display:none;background:#12161a;border:1px solid #1a2128;border-radius:16px;padding:1rem">
+      <h3>Before / After</h3>
+      <div class="compare" id="compareBox" style="position:relative;overflow:hidden;border-radius:12px;border:1px solid #1a2128">
+        <img id="beforeImg" alt="Before" style="display:block;width:100%;height:auto">
+        <div class="after" style="position:absolute;inset:0;overflow:hidden"><img id="afterImg" alt="After" style="display:block;width:100%;height:auto"></div>
+        <div class="handle" id="handle" style="position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:.9;left:50%;transform:translateX(-1px)"></div>
+        <input id="slider" type="range" min="0" max="100" value="50" aria-label="Slide to compare before and after" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:ew-resize">
+      </div>
     </div>
-  </section>
-  <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-    <h2>Dumpster Photos</h2>
-    <p class="muted">Uploaded in Admin → Dumpster Photos.</p>
-    <div id="dumpGrid" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:1rem"></div>
-  </section>
+    <h3 style="margin-top:1rem">Gallery</h3>
+    <div id="jobGallery" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"></div>
+  </div>
+
+  <div id="list">
+    <h1>All Jobs</h1>
+    <div id="jobsGrid" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:1rem"></div>
+  </div>
 </main>
 
 <script>
@@ -88,20 +90,54 @@ nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;pa
 </script>
 
 <script>
-(async function(){
-  const c=await _ironwoodLoaders.config();
-  if(c){
-    const phone=c.business?.phone_raw||'+13189142351'; const phoneDisp=c.business?.phone||'(318) 914-2351';
-    document.querySelectorAll('[data-call]').forEach(a=>{ a.href='tel:'+phone; if(a.textContent.includes('Call')||a.textContent.includes('Book')) a.textContent='📞 Call '+phoneDisp; });
-    document.getElementById('rateSmall').textContent=(c.dumpsters?.weekly_small??350);
-    document.getElementById('rateLarge').textContent=(c.dumpsters?.weekly_large??450);
-    document.getElementById('area').textContent=c.dumpsters?.area||'Northeast Louisiana';
-    const sms='sms:'+phone+'?&body=I%20need%20a%20dumpster.%20Address%3A%20__%20Size%3A%20Small%20or%20Large%20%7C%20Start%20date%3A%20__'; document.getElementById('smsDump').href=sms;
-    document.getElementById('dumpCo').textContent=c.dumpsters?.company||'Ironwood Trucking LLC';
-    if(c.logos&&c.logos.dumpsters) document.getElementById('dumpLogoHero').src=c.logos.dumpsters;
+function card(j){
+  const cover=j.cover_after||j.cover||'';
+  const when=j.date?new Date(j.date).toLocaleDateString():'';
+  const loc=j.location||'';
+  return '<a class="job" href="jobs.html?id='+encodeURIComponent(j.id)+'" style="background:#12161a;border:1px solid #1a2128;border-radius:16px;overflow:hidden;display:block">'+(cover?'<img src="'+cover+'" alt="" style="width:100%;border-radius:0">':'')+'<div class="pad" style="padding:12px"><h3>'+(j.title||'Job')+'</h3><p class="muted">'+[when,loc].filter(Boolean).join(' • ')+'</p></div></a>';
+}
+function initCompare(beforeUrl, afterUrl){
+  const wrap=document.getElementById('compareWrap');
+  const box=document.getElementById('compareBox');
+  const before=document.getElementById('beforeImg');
+  const after=document.getElementById('afterImg');
+  const slider=document.getElementById('slider');
+  const handle=document.getElementById('handle');
+  before.src=beforeUrl; after.src=afterUrl; wrap.style.display='block';
+  function setClip(val){
+    const pct=Math.max(0,Math.min(100,val));
+    const px=box.clientWidth*pct/100;
+    box.querySelector('.after').style.clipPath='inset(0 '+(box.clientWidth-px)+'px 0 0)';
+    handle.style.left=pct+'%';
   }
-  const dumps=await _ironwoodLoaders.dumpPhotos();
-  document.getElementById('dumpGrid').innerHTML = dumps.length ? dumps.map(u=>'<img src="'+u+'" alt="Dumpster">').join('') : '<p class="muted">No dumpster photos yet.</p>';
+  setClip(50);
+  slider.addEventListener('input', e=>setClip(e.target.value));
+  window.addEventListener('resize', ()=>setClip(slider.value));
+}
+(async function(){
+  const params=new URLSearchParams(location.search);
+  const id=params.get('id');
+  if(id){
+    list.style.display='none';
+    const meta=await _ironwoodLoaders.jobMeta(id);
+    if(meta){
+      detail.style.display='block';
+      jobTitle.textContent=meta.title||'Job';
+      jobMeta.textContent=[meta.date?new Date(meta.date).toLocaleDateString():'',meta.location||''].filter(Boolean).join(' • ');
+      jobDesc.textContent=meta.description||meta.summary||'';
+      const b=(meta.before||[])[0]; const a=(meta.after||[])[0];
+      if(b&&a) initCompare(b,a);
+      const gallery=[...(meta.before||[]), ...(meta.after||[])];
+      jobGallery.innerHTML=gallery.map(u=>'<img src="'+u+'" alt="">').join('');
+    }else{
+      detail.style.display='block';
+      jobTitle.textContent='Job not found';
+      jobDesc.textContent='Check the link or go back.';
+    }
+    return;
+  }
+  const jobs=await _ironwoodLoaders.jobsIndex();
+  jobsGrid.innerHTML = jobs.length ? jobs.map(card).join('') : '<p class="muted">No jobs yet.</p>';
 })();
 </script>
 
