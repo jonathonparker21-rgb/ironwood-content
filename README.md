@@ -1,12 +1,9 @@
+# Ironwood — Images Integrated (v1.0.7)
 
-# Ironwood — Customizable Bundle (v1.0.6)
+- Config/theme sourced from v1.0.6: cfg=False, theme=False
+- Imported images: {"logo": "assets/logo-ld-original.png", "extras_count": 2}
+- Extras (if any) are in `assets/images/extras/`
 
-Imported settings from: config.json and N/A
-Images pulled: logo=False, before=False, after=False
-
-Edit everything at **/admin/editor/** and export a new ZIP.
-Redirect fix included: /admin → /admin/
-
-Deploy to Cloudflare Pages with:
-- Build command: none
-- Output directory: /
+Admin Editor: /admin/ → /admin/editor/ (passcode: ironwood2025)
+Cloudflare Pages: build=none, output=/
+Redirects: /admin → /admin/

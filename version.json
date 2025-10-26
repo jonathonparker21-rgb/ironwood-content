@@ -1,11 +1,12 @@
 {
-  "version": "1.0.6",
-  "date": "2025-10-25",
-  "imported_from": {
-    "config_path": "config.json",
-    "theme_path": null,
-    "logo_path": null,
-    "before_path": null,
-    "after_path": null
+  "version": "1.0.7",
+  "date": "2025-10-26",
+  "image_import_report": {
+    "from_v106_cfg": false,
+    "from_v106_theme": false,
+    "images": {
+      "logo": "assets/logo-ld-original.png",
+      "extras_count": 2
+    }
   }
 }

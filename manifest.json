@@ -2,8 +2,8 @@
   "files": [
     {
       "path": "config.json",
-      "sha256": "6698dbe108b4562147807349dd859c55e3203b1c49dffc965714a24365c80bb1",
-      "bytes": 1957
+      "sha256": "7284341e42bbfb407d0cc1b24c77dfced424330d927f297f8e8623d8f984dcb4",
+      "bytes": 586
     },
     {
       "path": "theme.json",
@@ -27,8 +27,8 @@
     },
     {
       "path": "version.json",
-      "sha256": "25ae568ea31ba295749d4f28a8b925ed5109cb9f4e49dec6a95d02fa8d3a0e7d",
-      "bytes": 203
+      "sha256": "7dfb5c605d0e3422a015270acbcd76e4ac7b86328d3b7a2298dc4ccbebb3cef0",
+      "bytes": 229
     },
     {
       "path": "assets/css/styles.css",
@@ -42,8 +42,8 @@
     },
     {
       "path": "assets/images/logo.png",
-      "sha256": "8996963a58f22fc0bd73f07773e4066419659887ef54c54947a9471e7e71be55",
-      "bytes": 10309
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
     },
     {
       "path": "assets/images/before.png",
@@ -54,6 +54,16 @@
       "path": "assets/images/after.png",
       "sha256": "fd9dd4fcbd5b9215e5701e76422734dfaf308421c6d8fc9ff8adc953967d31b8",
       "bytes": 9159
+    },
+    {
+      "path": "assets/images/extras/logo-dumpsters-original.png",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "assets/images/extras/work-hero.jpg",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
     },
     {
       "path": "admin/index.html",
@@ -67,8 +77,8 @@
     },
     {
       "path": "admin/editor/index.html",
-      "sha256": "b93e16f15a6074ba62923e4af81502afdcd005b013dc17e3c6f4d9b43f6d94a3",
-      "bytes": 9632
+      "sha256": "7375e346e8606f1e83729950f051f24e7648150f22f5143d8ad4f7f92da1819f",
+      "bytes": 8410
     }
   ]
 }
