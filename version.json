@@ -1,12 +1,7 @@
 {
-  "version": "1.0.7",
-  "date": "2025-10-26",
-  "image_import_report": {
-    "from_v106_cfg": false,
-    "from_v106_theme": false,
-    "images": {
-      "logo": "assets/logo-ld-original.png",
-      "extras_count": 2
-    }
-  }
+  "name": "ironwood-site",
+  "updated_at": "2025-10-27T21:58:18Z",
+  "branch": "main",
+  "last_commit_sha": "1.2.0",
+  "note": "Release 1.2.0 (Full UI + Admin + Carousel)"
 }

@@ -1,29 +1,30 @@
-<!doctype html><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Jobs — Ironwood Land Development</title>
-<style>:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5;--shadow:0 4px 30px rgba(0,0,0,.25)}
+
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jobs — Ironwood Land Development</title>
+
+<style>
+:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
-.container{width:min(1200px,92vw);margin-inline:auto}
-.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.8rem 1.1rem;border-radius:999px;font-weight:700;border:2px solid transparent;box-shadow:var(--shadow)}
+.container{width:min(1200px,92vw);margin-inline:auto}.muted{color:#9aa7b3}
+.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.7rem 1rem;border-radius:999px;font-weight:700;border:2px solid transparent}
 .btn.secondary{background:transparent;border-color:#2b333b}
-header.topbar{position:sticky;top:0;backdrop-filter:saturate(1.3) blur(8px);background:rgba(11,14,17,.75);z-index:50;border-bottom:1px solid #1a2128}
-header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;gap:.6rem;flex-wrap:wrap}
+.card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem}
+header.topbar{position:sticky;top:0;background:rgba(11,14,17,.8);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid #1a2128;z-index:20}
+header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;gap:.6rem;flex-wrap:wrap}
 .brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:44px}
-nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;padding:.5rem .8rem;border-radius:10px}nav a:hover{background:#1a2128}
-/* mobile overlap fix */
-@media (max-width:640px){
-  header .wrap{flex-direction:column;align-items:flex-start}
-  .brand img{height:38px}
-  nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-  nav .btn{grid-column:1/-1;justify-content:center; padding:.6rem .9rem;font-size:.95rem}
-}
+nav{display:flex;gap:.4rem;flex-wrap:wrap}.pill{padding:.45rem .7rem;border-radius:10px}nav a:hover{background:#1a2128}
+@media (max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
+footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
 </style>
+
 <header class="topbar"><div class="container wrap">
-  <a class="brand" href="index.html"><img id="siteLogo" src="assets/logo-ld-original.png" alt="Ironwood Land Development logo"><span id="brandName">Ironwood Land Development</span></a>
+  <a class="brand" href="index.html"><img id="siteLogo" src="assets/logo-ld-original.png" alt=""><span id="brandName">Ironwood Land Development</span></a>
   <nav>
-    <a href="index.html#services">Services</a>
-    <a href="jobs.html">Jobs</a>
-    <a href="dumpsters.html">Dumpsters</a>
-    <a href="contact.html">Contact</a>
+    <a class="pill" href="index.html#services">Services</a>
+    <a class="pill" href="jobs.html">Jobs</a>
+    <a class="pill" href="dumpsters.html">Dumpsters</a>
+    <a class="pill" href="contact.html">Contact</a>
     <a class="btn" data-call href="tel:+13189142351">📞 Call</a>
   </nav>
 </div></header>
@@ -33,19 +34,18 @@ nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;pa
     <h1 id="jobTitle">Job</h1>
     <p class="muted" id="jobMeta"></p>
     <p id="jobDesc" class="muted"></p>
-    <div id="compareWrap" class="card" style="display:none;background:#12161a;border:1px solid #1a2128;border-radius:16px;padding:1rem">
+    <div id="compareWrap" class="card" style="display:none">
       <h3>Before / After</h3>
-      <div class="compare" id="compareBox" style="position:relative;overflow:hidden;border-radius:12px;border:1px solid #1a2128">
-        <img id="beforeImg" alt="Before" style="display:block;width:100%;height:auto">
-        <div class="after" style="position:absolute;inset:0;overflow:hidden"><img id="afterImg" alt="After" style="display:block;width:100%;height:auto"></div>
-        <div class="handle" id="handle" style="position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:.9;left:50%;transform:translateX(-1px)"></div>
-        <input id="slider" type="range" min="0" max="100" value="50" aria-label="Slide to compare before and after" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:ew-resize">
+      <div id="compareBox" style="position:relative;overflow:hidden;border-radius:12px;border:1px solid #1a2128">
+        <img id="beforeImg" alt="Before">
+        <div class="after" style="position:absolute;inset:0;overflow:hidden"><img id="afterImg" alt="After"></div>
+        <div id="handle" style="position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:.9;left:50%;transform:translateX(-1px)"></div>
+        <input id="slider" type="range" min="0" max="100" value="50" aria-label="Slide to compare" style="position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:ew-resize">
       </div>
     </div>
     <h3 style="margin-top:1rem">Gallery</h3>
     <div id="jobGallery" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"></div>
   </div>
-
   <div id="list">
     <h1>All Jobs</h1>
     <div id="jobsGrid" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:1rem"></div>
@@ -55,36 +55,13 @@ nav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}nav a{opacity:.9;pa
 <script>
 (function(){
   const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
-  const owner = GHLS.owner, repo = GHLS.repo, branch = GHLS.branch || 'main';
-  const RAW = (owner && repo) ? ("https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch) : null;
-  async function tryJson(url){
-    try{ const r=await fetch(url,{cache:'no-store'}); if(r.ok) return await r.json(); }catch(e){} return null;
-  }
-  window._ironwoodLoaders = {
-    config: async function(){
-      let c = await tryJson('config.json?_=' + Date.now());
-      if(c) return c;
-      if(RAW){ c = await tryJson(RAW + '/config.json?_=' + Date.now()); if(c) return c; }
-      return null;
-    },
-    jobsIndex: async function(){
-      let j = await tryJson('jobs/index.json?_=' + Date.now());
-      if(Array.isArray(j)) return j;
-      if(RAW){ j = await tryJson(RAW + '/jobs/index.json?_=' + Date.now()); if(Array.isArray(j)) return j; }
-      return [];
-    },
-    jobMeta: async function(id){
-      let m = await tryJson('jobs/' + id + '/meta.json?_=' + Date.now());
-      if(m) return m;
-      if(RAW){ m = await tryJson(RAW + '/jobs/' + id + '/meta.json?_=' + Date.now()); if(m) return m; }
-      return null;
-    },
-    dumpPhotos: async function(){
-      let d = await tryJson('dumpsters/photos/index.json?_=' + Date.now());
-      if(Array.isArray(d)) return d;
-      if(RAW){ d = await tryJson(RAW + '/dumpsters/photos/index.json?_=' + Date.now()); if(Array.isArray(d)) return d; }
-      return [];
-    }
+  const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
+  async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
+  window.Ironwood = {
+    cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
+    jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
+    jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
+    dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || []
   };
 })();
 </script>
@@ -94,69 +71,48 @@ function card(j){
   const cover=j.cover_after||j.cover||'';
   const when=j.date?new Date(j.date).toLocaleDateString():'';
   const loc=j.location||'';
-  return '<a class="job" href="jobs.html?id='+encodeURIComponent(j.id)+'" style="background:#12161a;border:1px solid #1a2128;border-radius:16px;overflow:hidden;display:block">'+(cover?'<img src="'+cover+'" alt="" style="width:100%;border-radius:0">':'')+'<div class="pad" style="padding:12px"><h3>'+(j.title||'Job')+'</h3><p class="muted">'+[when,loc].filter(Boolean).join(' • ')+'</p></div></a>';
+  return "<a class='card' href='jobs.html?id="+encodeURIComponent(j.id)+"'>"+(cover?"<img src='"+cover+"' alt='' style='width:100%;border-radius:10px'>":"")+"<div style='padding:8px 0'><h3>"+(j.title||'Job')+"</h3><p class='muted'>"+[when,loc].filter(Boolean).join(' • ')+"</p></div></a>";
 }
-function initCompare(beforeUrl, afterUrl){
-  const wrap=document.getElementById('compareWrap');
-  const box=document.getElementById('compareBox');
-  const before=document.getElementById('beforeImg');
-  const after=document.getElementById('afterImg');
-  const slider=document.getElementById('slider');
-  const handle=document.getElementById('handle');
-  before.src=beforeUrl; after.src=afterUrl; wrap.style.display='block';
-  function setClip(val){
-    const pct=Math.max(0,Math.min(100,val));
-    const px=box.clientWidth*pct/100;
-    box.querySelector('.after').style.clipPath='inset(0 '+(box.clientWidth-px)+'px 0 0)';
-    handle.style.left=pct+'%';
-  }
-  setClip(50);
-  slider.addEventListener('input', e=>setClip(e.target.value));
-  window.addEventListener('resize', ()=>setClip(slider.value));
+function initCompare(b,a){
+  const wrap=compareWrap,box=compareBox,bf=beforeImg,af=afterImg,sl=slider,hd=handle; bf.src=b; af.src=a; wrap.style.display='block';
+  function setClip(v){ const pct=Math.max(0,Math.min(100,v)); const px=box.clientWidth*pct/100; box.querySelector('.after').style.clipPath='inset(0 '+(box.clientWidth-px)+'px 0 0)'; hd.style.left=pct+'%'; }
+  setClip(50); sl.oninput=e=>setClip(e.target.value); addEventListener('resize',()=>setClip(sl.value));
 }
 (async function(){
-  const params=new URLSearchParams(location.search);
-  const id=params.get('id');
+  const id=new URLSearchParams(location.search).get('id');
   if(id){
-    list.style.display='none';
-    const meta=await _ironwoodLoaders.jobMeta(id);
-    if(meta){
-      detail.style.display='block';
-      jobTitle.textContent=meta.title||'Job';
-      jobMeta.textContent=[meta.date?new Date(meta.date).toLocaleDateString():'',meta.location||''].filter(Boolean).join(' • ');
-      jobDesc.textContent=meta.description||meta.summary||'';
-      const b=(meta.before||[])[0]; const a=(meta.after||[])[0];
-      if(b&&a) initCompare(b,a);
-      const gallery=[...(meta.before||[]), ...(meta.after||[])];
-      jobGallery.innerHTML=gallery.map(u=>'<img src="'+u+'" alt="">').join('');
-    }else{
-      detail.style.display='block';
+    detail.style.display='block'; list.style.display='none';
+    const m=await Ironwood.jobMeta(id);
+    if(m){
+      jobTitle.textContent=m.title||'Job';
+      jobMeta.textContent=[m.date?new Date(m.date).toLocaleDateString():'', m.location||''].filter(Boolean).join(' • ');
+      jobDesc.textContent=m.description||m.summary||'';
+      const b=(m.before||[])[0], a=(m.after||[])[0]; if(b&&a) initCompare(b,a);
+      const gal=[].concat(m.before||[], m.after||[]);
+      jobGallery.innerHTML=gal.map(u=>"<img src='"+u+"' alt=''>").join('');
+    } else {
       jobTitle.textContent='Job not found';
-      jobDesc.textContent='Check the link or go back.';
     }
     return;
   }
-  const jobs=await _ironwoodLoaders.jobsIndex();
-  jobsGrid.innerHTML = jobs.length ? jobs.map(card).join('') : '<p class="muted">No jobs yet.</p>';
+  const all=await Ironwood.jobsIdx();
+  jobsGrid.innerHTML=all.length?all.map(card).join(''):'<p class="muted">No jobs yet.</p>';
 })();
 </script>
 
 <script>
 (async function(){
-  const c = await _ironwoodLoaders.config();
+  const c = await Ironwood.cfg();
   if(c){
-    const mapVars = {brand:'--brand',accent:'--accent',bg:'--bg',surface:'--surface',text:'--text',muted:'--muted'};
-    if(c.theme){ for(const k in mapVars){ if(c.theme[k]) document.documentElement.style.setProperty(mapVars[k], c.theme[k]); } }
-    if(c.logos && c.logos.site){ const s=document.getElementById('siteLogo'); if(s) s.src=c.logos.site; const f=document.getElementById('siteLogoFoot'); if(f) f.src=c.logos.site; }
-    const phone=c.business?.phone_raw||'+13189142351'; const phoneDisp=c.business?.phone||'(318) 914-2351';
-    document.querySelectorAll('[data-call]').forEach(a=>{ a.href='tel:'+phone; if(a.textContent.includes('Call')) a.textContent='📞 Call '+phoneDisp; });
-    const bn=document.getElementById('brandName'); if(bn) bn.textContent=c.business?.name||'Ironwood Land Development';
-    const fn=document.getElementById('footName'); if(fn) fn.textContent=c.business?.name||'Ironwood Land Development';
-    const fp=document.getElementById('footPhone'); if(fp){ fp.href='tel:'+phone; fp.textContent=phoneDisp; }
-    const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
+    const map={brand:'--brand',accent:'--accent',bg:'--bg',surface:'--surface',text:'--text',muted:'--muted'};
+    if(c.theme) for(const k in map){ if(c.theme[k]) document.documentElement.style.setProperty(map[k], c.theme[k]); }
+    if(c.logos?.site){ siteLogo.src=c.logos.site; const f=document.getElementById('siteLogoFoot'); if(f) f.src=c.logos.site; }
+    brandName.textContent=c.business?.name||'Ironwood Land Development';
+    document.querySelectorAll('[data-call]').forEach(a=>{ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; a.href='tel:'+ph; a.textContent='📞 Call '+disp; });
     const fa=document.getElementById('footAddress'); if(fa) fa.innerHTML=c.business?.address_html||'805 E. Main St<br>Oak Grove, LA 71263';
+    const fp=document.getElementById('footPhone'); if(fp){ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; fp.href='tel:'+ph; fp.textContent=disp; }
+    const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
   }
-  const admin = document.getElementById('adminLink');
-  if(admin){ admin.addEventListener('click', e=>{ e.preventDefault(); const code=prompt('Enter passcode'); if(code==='0102') location.href='admin.html'; else if(code!==null) alert('Incorrect passcode'); }); }
+  const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
 })();
 </script>
