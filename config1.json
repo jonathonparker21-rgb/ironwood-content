@@ -1,0 +1,22 @@
+// Minimal starter config.json for your site
+const cfg = {
+  site: {
+    name: "Ironwood Land Development",
+    phone: "3189142351",
+    address: "805 E. Main St. Oak Grove, LA 71263"
+  },
+  branding: { brand: "#dc2626" },           // your red accent
+  dumpsters: {
+    weekly_small: 350,
+    weekly_large: 450,
+    includes_dump_fee: true,
+    service_area: "Northeast Louisiana"
+  },
+  equipment: [],                             // list of equipment names (strings)
+  jobs: [],                                  // jobs data lives here
+  equipment_photos: [],                      // admin will fill after uploads
+  dumpster_photos: []                        // admin will fill after uploads
+};
+
+// writes / updates the file at the repo root
+ghPut("config.json", JSON.stringify(cfg, null, 2), "init config.json").then(()=>console.log("config.json created"));
