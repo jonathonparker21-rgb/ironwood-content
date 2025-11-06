@@ -45,8 +45,10 @@
     "Licensed and insured"
   ],
   "dumpster_photos": [
-    "dumpsters/photos/1762450505557-489986642_2032874100539953_1399334544253472223_n.jpg",
-    "dumpsters/photos/index.json"
+    "dumpsters/photos/1762450505557-489986642_2032874100539953_1399334544253472223_n.jpg"
   ],
-  "equipment_photos": []
+  "equipment_photos": [
+    "equipment/photos/1762449137358-535267809_2142871672873528_5669655767378795489_n.jpg",
+    "equipment/photos/1762469043979-536270161_2145163002644395_771626358070787219_n.jpg"
+  ]
 }
