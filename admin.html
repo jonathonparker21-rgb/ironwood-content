@@ -136,7 +136,7 @@ ul.compact li{margin:.2rem 0}
     
   <div class="card">
     <h2>Equipment Photos</h2>
-    <p class="small muted">Upload images to <code>equipment/photos/</code>. Homepage shows them in an auto‑carousel.</p>
+    <p class="small muted">Upload images to <code>equipment/photos/</code>. Homepage carousel reads these.</p>
     <div class="row">
       <input id="equip_photos" type="file" accept="image/*" multiple>
       <button id="equip_photos_upload" class="btn">Upload Photos</button>
@@ -144,6 +144,18 @@ ul.compact li{margin:.2rem 0}
     <div class="hr"></div>
     <h3 class="small" style="margin:.2rem 0 .6rem">Existing Photos</h3>
     <div id="equip_photos_list" class="small muted">Loading…</div>
+  </div>
+
+  <div class="card">
+    <h2>Dumpsters Photos</h2>
+    <p class="small muted">Upload images to <code>dumpsters/photos/</code>. The Dumpsters page will auto‑carousel them.</p>
+    <div class="row">
+      <input id="dump_photos" type="file" accept="image/*" multiple>
+      <button id="dump_photos_upload" class="btn">Upload Photos</button>
+    </div>
+    <div class="hr"></div>
+    <h3 class="small" style="margin:.2rem 0 .6rem">Existing Photos</h3>
+    <div id="dump_photos_list" class="small muted">Loading…</div>
   </div>
 <h2>Version</h2>
     <div class="row">
@@ -212,7 +224,6 @@ $('equip_save').onclick=async()=>{$('equip_msg').textContent='Saving...';try{con
 /* Version */
 $('ver_write').onclick=async()=>{$('ver_msg').textContent='Writing...';try{const version=$('ver_value').value.trim()||'1.2.1';const payload={name:'ironwood-site',updated_at:new Date().toISOString(),branch:(ghState().branch||'main'),last_commit_sha:version,note:'admin write'};await ghPut('version.json',JSON.stringify(payload,null,2),'admin: write version');$('ver_msg').textContent='version.json updated ✅';toast('version.json written',true);}catch(e){$('ver_msg').textContent='Error';toast('Write failed: '+e.message,false);}};
 
-/* --- Equipment Photos (Admin) --- */
 async function ghPutB64(path, base64, message){
   const g=mustGH();
   const existing = await ghGet(path);
@@ -223,14 +234,18 @@ async function ghPutB64(path, base64, message){
   if(!r.ok){ const t=await r.text(); throw new Error(t || ('HTTP '+r.status)); }
   return r.json();
 }
-async function ensureEquipFolders(){ await ghPut('equipment/.keep','keep','ensure folder'); await ghPut('equipment/photos/.keep','keep','ensure folder'); }
+
+/* --- Equipment Photos (Admin) --- */
 async function listEquipPhotos(){
   try{
     const dir = await ghGet('equipment/photos');
     const wrap = document.getElementById('equip_photos_list');
     if(!wrap){ return []; }
-    if(!Array.isArray(dir) || !dir.length){ wrap.innerHTML = '<p class="muted">No photos yet.</p>'; return []; }
-    const files = dir.filter(it=>it.name && it.name!=='.keep').map(it=>'equipment/photos/'+it.name);
+    if(!Array.isArray(dir) || !dir.length){
+      wrap.innerHTML = '<p class="muted">No photos yet.</p>';
+      return [];
+    }
+    const files = dir.filter(x=>x.name && x.name!=='.keep').map(x=>'equipment/photos/'+x.name);
     wrap.innerHTML = files.map(p => `<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px">
       <img src="${p}" alt="" style="width:72px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #1a2128">
       <code style="flex:1">${p}</code>
@@ -256,9 +271,10 @@ window.deleteEquipPhoto = async function(relPath){
     toast('Photo deleted', true);
   }catch(e){ toast('Delete failed: '+e.message, false); }
 };
+async function ensureEquipFolders(){ await ghPut('equipment/.keep', 'keep', 'ensure folder'); await ghPut('equipment/photos/.keep', 'keep', 'ensure folder'); }
 async function refreshEquipPhotosFromDirToConfig(){
   const dir = await ghGet('equipment/photos');
-  const files = Array.isArray(dir) ? dir.filter(it=>it.name && it.name!=='.keep').map(it=>'equipment/photos/'+it.name) : [];
+  const files = Array.isArray(dir) ? dir.filter(it => it.name && it.name!=='.keep').map(it=>'equipment/photos/'+it.name) : [];
   const current = await readJSON('config.json', {}) || {};
   const cfg = Object.assign({}, current, { equipment_photos: files });
   await ghPut('config.json', JSON.stringify(cfg, null, 2), 'admin: sync equipment photos list');
@@ -282,7 +298,72 @@ document.getElementById('equip_photos_upload')?.addEventListener('click', async 
     toast('Photos uploaded ✅', true);
   }catch(e){ toast('Upload failed: '+e.message, false); }
 });
-// init list on load (safe no-op if card not on page)
 (async()=>{ try{ await listEquipPhotos(); }catch(_){} })();
+
+
+/* --- Dumpsters Photos (Admin) --- */
+async function listDumpPhotos(){
+  try{
+    const dir = await ghGet('dumpsters/photos');
+    const wrap = document.getElementById('dump_photos_list');
+    if(!wrap){ return []; }
+    if(!Array.isArray(dir) || !dir.length){
+      wrap.innerHTML = '<p class="muted">No photos yet.</p>';
+      return [];
+    }
+    const files = dir.filter(x=>x.name && x.name!=='.keep').map(x=>'dumpsters/photos/'+x.name);
+    wrap.innerHTML = files.map(p => `<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px">
+      <img src="${p}" alt="" style="width:72px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #1a2128">
+      <code style="flex:1">${p}</code>
+      <button class="btn ghost" onclick="deleteDumpPhoto('${p}')">Delete</button>
+    </div>`).join('');
+    return files;
+  }catch(e){
+    const wrap = document.getElementById('dump_photos_list');
+    if(wrap) wrap.innerHTML = '<p class="muted">No photos yet.</p>';
+    return [];
+  }
+}
+window.deleteDumpPhoto = async function(relPath){
+  if(!confirm('Delete this photo?')) return;
+  try{
+    await ghDel(relPath);
+    const current = await readJSON('config.json', {}) || {};
+    const arr = Array.isArray(current.dumpster_photos) ? current.dumpster_photos : [];
+    const next = arr.filter(x => x !== relPath);
+    const cfg = Object.assign({}, current, { dumpster_photos: next });
+    await ghPut('config.json', JSON.stringify(cfg,null,2), 'admin: update dumpster photos list');
+    await listDumpPhotos();
+    toast('Photo deleted', true);
+  }catch(e){ toast('Delete failed: '+e.message, false); }
+};
+async function ensureDumpFolders(){ await ghPut('dumpsters/.keep', 'keep', 'ensure folder'); await ghPut('dumpsters/photos/.keep', 'keep', 'ensure folder'); }
+async function refreshDumpPhotosFromDirToConfig(){
+  const dir = await ghGet('dumpsters/photos');
+  const files = Array.isArray(dir) ? dir.filter(it => it.name && it.name!=='.keep').map(it=>'dumpsters/photos/'+it.name) : [];
+  const current = await readJSON('config.json', {}) || {};
+  const cfg = Object.assign({}, current, { dumpster_photos: files });
+  await ghPut('config.json', JSON.stringify(cfg, null, 2), 'admin: sync dumpster photos list');
+  return files;
+}
+document.getElementById('dump_photos_upload')?.addEventListener('click', async ()=>{
+  try{
+    const inp = document.getElementById('dump_photos');
+    const files = Array.from(inp.files || []);
+    if(!files.length) return toast('Pick images to upload', false);
+    await ensureDumpFolders();
+    for(const f of files){
+      const dataUrl = await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
+      const b64 = String(dataUrl).split(',')[1] || '';
+      const safe = (Date.now()+'-'+f.name).replace(/\s+/g,'_');
+      await ghPutB64('dumpsters/photos/'+safe, b64, 'admin: upload dumpster photo');
+    }
+    await refreshDumpPhotosFromDirToConfig();
+    await listDumpPhotos();
+    inp.value='';
+    toast('Dumpsters photos uploaded ✅', true);
+  }catch(e){ toast('Upload failed: '+e.message, false); }
+});
+(async()=>{ try{ await listDumpPhotos(); }catch(_){} })();
 
 </script>

@@ -68,11 +68,7 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
 
   <section id="equipment" class="container">
     <h2>Our Equipment</h2>
-    <div id="equipment-carousel" class="carousel" aria-label="Equipment photos" style="display:none">
-  <div class="carousel-track" id="equipment-track"></div>
-  <div class="carousel-dots" id="equipment-dots"></div>
-</div>
-<div id="equipment-list" class="equipment-grid"></div>
+    <div id="equipment-carousel" class="carousel" aria-label="Equipment photos" style="display:none">\n  <div class="carousel-track" id="equipment-track"></div>\n  <div class="carousel-dots" id="equipment-dots"></div>\n</div>\n<div id="equipment-list" class="equipment-grid"></div>
   </section>
 
 
@@ -195,7 +191,9 @@ function hookCar(el){
     }
     function start(){ timer=setInterval(function(){ go(idx+1); }, 3000); }
     function stop(){ clearInterval(timer); }
-    start(); box.addEventListener('mouseenter', stop); box.addEventListener('mouseleave', start);
+    start();
+    box.addEventListener('mouseenter', stop);
+    box.addEventListener('mouseleave', start);
     window.addEventListener('resize', function(){ go(idx); });
   }
   fetch('config.json',{cache:'no-store'})
