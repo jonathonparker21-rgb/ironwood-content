@@ -55,15 +55,16 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
   </section>
   <section class="container" style="padding:clamp(24px,4vw,48px) 0">
     <h2>Dumpster Photos</h2>
-    <p class="muted">Uploaded in Admin → Dumpster Photos.</p>
     <div id="dumpGrid" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:1rem"></div>
   </section>
 
-    <div id="dumpster-carousel" class="carousel" aria-label="Dumpster photos" style="display:none">
-      <div class="carousel-track" id="dumpster-track"></div>
+    
       <div class="carousel-dots" id="dumpster-dots"></div>
     </div>
     
+
+<div id="dumpster-carousel" class="carousel" aria-label="Dumpster photos" style="display:none">
+      <div class="carousel-track" id="dumpster-track"></div>
 </main>
 
 <script>
@@ -94,7 +95,6 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
     smsDump.href='sms:'+ph+'?&body='+encodeURIComponent('I need a dumpster. Address: __  Size: Small or Large | Start date: __');
   }
   const photos=await Ironwood.dumpPhotos();
-  dumpGrid.innerHTML=photos.length?photos.map(u=>"<img src='"+u+"' alt='Dumpster'>").join(''):'<p class="muted">No dumpster photos yet.</p>';
 })();
 </script>
 
