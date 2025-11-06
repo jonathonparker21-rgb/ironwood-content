@@ -1,22 +1,56 @@
-// Minimal starter config.json for your site
-const cfg = {
-  site: {
-    name: "Ironwood Land Development",
-    phone: "3189142351",
-    address: "805 E. Main St. Oak Grove, LA 71263"
+{
+  "business": {
+    "name": "Ironwood Land Development",
+    "phone": "(318) 914-2351",
+    "phone_raw": "+13189142351",
+    "address_html": "805 E. Main St<br>Oak Grove, LA 71263",
+    "address_text": "805 E. Main St, Oak Grove, LA 71263",
+    "hours": "Mon–Sat 7a–6p"
   },
-  branding: { brand: "#dc2626" },           // your red accent
-  dumpsters: {
-    weekly_small: 350,
-    weekly_large: 450,
-    includes_dump_fee: true,
-    service_area: "Northeast Louisiana"
+  "contact_email": "",
+  "dumpsters": {
+    "company": "Ironwood Trucking LLC",
+    "weekly_small": 350,
+    "weekly_large": 450,
+    "area": "Northeast Louisiana",
+    "includes_dump_fee": true
   },
-  equipment: [],                             // list of equipment names (strings)
-  jobs: [],                                  // jobs data lives here
-  equipment_photos: [],                      // admin will fill after uploads
-  dumpster_photos: []                        // admin will fill after uploads
-};
-
-// writes / updates the file at the repo root
-ghPut("config.json", JSON.stringify(cfg, null, 2), "init config.json").then(()=>console.log("config.json created"));
+  "logos": {
+    "site": "assets/logo-ld-original.png",
+    "dumpsters": "assets/logo-dumpsters-original.png"
+  },
+  "theme": {
+    "brand": "#dc2626",
+    "accent": "#fca5a5",
+    "bg": "#0b0e11",
+    "surface": "#12161a",
+    "text": "#eef2f6",
+    "muted": "#8c98a4"
+  },
+  "hero": {
+    "eyebrow": "Residential • Commercial • Timber • Structures",
+    "headline": "Land Clearing & Demolition—Done Right.",
+    "sub": "Traditional land clearing (no mulching). Heavy equipment, safe crews, clean finishes.",
+    "image": "assets/work-hero.jpg"
+  },
+  "services": [
+    "Land clearing and root raking",
+    "House pad preparation",
+    "Road building and grading",
+    "House demolition and debris removal",
+    "Weekly dumpster rentals (small & large) — dump fee included",
+    "Scrap metal removal — we pay you for the metal",
+    "Complete site cleanup — we do all the work",
+    "Tree removal for homes and businesses",
+    "Licensed and insured"
+  ],
+  "dumpster_photos": [
+    "dumpsters/photos/1762450505557-489986642_2032874100539953_1399334544253472223_n.jpg",
+    "dumpsters/photos/index.json"
+  ],
+  "equipment_photos": [
+    "equipment/photos/1762449137358-535267809_2142871672873528_5669655767378795489_n.jpg",
+    "equipment/photos/1762460590317-536270161_2145163002644395_771626358070787219_n.jpg",
+    "equipment/photos/1762469008350-536279940_2142254586268570_5015120087979946139_n.jpg"
+  ]
+}
