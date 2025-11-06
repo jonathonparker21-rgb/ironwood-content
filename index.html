@@ -22,6 +22,17 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
 .equipment-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; margin-top:12px; }
 .equipment-card { background:#12161a; border:2px solid var(--brand, #dc2626); border-radius:12px; padding:1rem; text-align:center; font-weight:700; }
 
+
+/* Equipment grid + carousel */
+.equipment-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:12px}
+.equipment-card{background:#12161a;border:2px solid var(--brand,#dc2626);border-radius:12px;padding:1rem;text-align:center;font-weight:700}
+#equipment .carousel{position:relative;overflow:hidden;border-radius:14px;border:1px solid #1a2128;margin-bottom:18px;background:#0b0e11}
+#equipment .carousel-track{display:flex;transition:transform .6s ease}
+#equipment .carousel img{display:block;width:100%;height:360px;object-fit:cover}
+#equipment .carousel-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center}
+#equipment .carousel-dots .dot{width:8px;height:8px;border-radius:50%;background:#ffffff44}
+#equipment .carousel-dots .dot.active{background:var(--brand,#dc2626)}
+
 </style>
 
 <header class="topbar"><div class="container wrap">
@@ -57,7 +68,11 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
 
   <section id="equipment" class="container">
     <h2>Our Equipment</h2>
-    <div id="equipment-list" class="equipment-grid"></div>
+    <div id="equipment-carousel" class="carousel" aria-label="Equipment photos" style="display:none">
+  <div class="carousel-track" id="equipment-track"></div>
+  <div class="carousel-dots" id="equipment-dots"></div>
+</div>
+<div id="equipment-list" class="equipment-grid"></div>
   </section>
 
 
@@ -152,5 +167,43 @@ function hookCar(el){
     var list = (cfg && cfg.equipment) ? cfg.equipment : [];
     renderEquipment(list);
   }).catch(function(){ renderEquipment([]); });
+})();
+</script>
+
+<script>
+(function(){
+  function renderEquipmentNames(list){
+    var wrap=document.getElementById('equipment-list'); if(!wrap) return;
+    if(!list||!list.length){ wrap.innerHTML='<p class="muted">No equipment listed yet.</p>'; return; }
+    wrap.innerHTML=list.map(function(n){ return '<div class="equipment-card"><span>'+String(n||'').replace(/</g,'&lt;')+'</span></div>'; }).join('');
+  }
+  function renderCarousel(urls){
+    var box=document.getElementById('equipment-carousel'),
+        track=document.getElementById('equipment-track'),
+        dots=document.getElementById('equipment-dots');
+    if(!box||!track||!dots) return;
+    if(!urls||!urls.length){ box.style.display='none'; return; }
+    box.style.display='block';
+    track.innerHTML=urls.map(function(u){ return '<img src="'+u+'" alt="Equipment photo">'; }).join('');
+    dots.innerHTML=urls.map(function(_,i){ return '<span class="dot'+(i===0?' active':'')+'"></span>'; }).join('');
+    var idx=0,n=urls.length,timer;
+    function go(i){
+      idx=(i+n)%n;
+      var x=-idx*box.clientWidth;
+      track.style.transform='translateX('+x+'px)';
+      dots.querySelectorAll('.dot').forEach(function(d,k){ d.classList.toggle('active', k===idx); });
+    }
+    function start(){ timer=setInterval(function(){ go(idx+1); }, 3000); }
+    function stop(){ clearInterval(timer); }
+    start(); box.addEventListener('mouseenter', stop); box.addEventListener('mouseleave', start);
+    window.addEventListener('resize', function(){ go(idx); });
+  }
+  fetch('config.json',{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():{}; })
+    .then(function(cfg){
+      renderEquipmentNames(cfg.equipment||[]);
+      renderCarousel(Array.isArray(cfg.equipment_photos)?cfg.equipment_photos:[]);
+    })
+    .catch(function(){ renderEquipmentNames([]); });
 })();
 </script>

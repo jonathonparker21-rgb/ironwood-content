@@ -133,7 +133,19 @@ ul.compact li{margin:.2rem 0}
   </div>
 
   <div class="card">
-    <h2>Version</h2>
+    
+  <div class="card">
+    <h2>Equipment Photos</h2>
+    <p class="small muted">Upload images to <code>equipment/photos/</code>. Homepage shows them in an auto‑carousel.</p>
+    <div class="row">
+      <input id="equip_photos" type="file" accept="image/*" multiple>
+      <button id="equip_photos_upload" class="btn">Upload Photos</button>
+    </div>
+    <div class="hr"></div>
+    <h3 class="small" style="margin:.2rem 0 .6rem">Existing Photos</h3>
+    <div id="equip_photos_list" class="small muted">Loading…</div>
+  </div>
+<h2>Version</h2>
     <div class="row">
       <input id="ver_value" placeholder="1.2.1" style="max-width:220px">
       <button id="ver_write" class="btn">Write version.json</button>
@@ -199,4 +211,78 @@ $('equip_save').onclick=async()=>{$('equip_msg').textContent='Saving...';try{con
 
 /* Version */
 $('ver_write').onclick=async()=>{$('ver_msg').textContent='Writing...';try{const version=$('ver_value').value.trim()||'1.2.1';const payload={name:'ironwood-site',updated_at:new Date().toISOString(),branch:(ghState().branch||'main'),last_commit_sha:version,note:'admin write'};await ghPut('version.json',JSON.stringify(payload,null,2),'admin: write version');$('ver_msg').textContent='version.json updated ✅';toast('version.json written',true);}catch(e){$('ver_msg').textContent='Error';toast('Write failed: '+e.message,false);}};
+
+/* --- Equipment Photos (Admin) --- */
+async function ghPutB64(path, base64, message){
+  const g=mustGH();
+  const existing = await ghGet(path);
+  const body = { message: message||('create '+path), content: base64, branch: g.branch };
+  if(existing && existing.sha) body.sha = existing.sha;
+  const url = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}`;
+  const r = await fetch(url, { method:'PUT', headers:{'Authorization':`Bearer ${g.token}`,'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  if(!r.ok){ const t=await r.text(); throw new Error(t || ('HTTP '+r.status)); }
+  return r.json();
+}
+async function ensureEquipFolders(){ await ghPut('equipment/.keep','keep','ensure folder'); await ghPut('equipment/photos/.keep','keep','ensure folder'); }
+async function listEquipPhotos(){
+  try{
+    const dir = await ghGet('equipment/photos');
+    const wrap = document.getElementById('equip_photos_list');
+    if(!wrap){ return []; }
+    if(!Array.isArray(dir) || !dir.length){ wrap.innerHTML = '<p class="muted">No photos yet.</p>'; return []; }
+    const files = dir.filter(it=>it.name && it.name!=='.keep').map(it=>'equipment/photos/'+it.name);
+    wrap.innerHTML = files.map(p => `<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px">
+      <img src="${p}" alt="" style="width:72px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #1a2128">
+      <code style="flex:1">${p}</code>
+      <button class="btn ghost" onclick="deleteEquipPhoto('${p}')">Delete</button>
+    </div>`).join('');
+    return files;
+  }catch(e){
+    const wrap = document.getElementById('equip_photos_list');
+    if(wrap) wrap.innerHTML = '<p class="muted">No photos yet.</p>';
+    return [];
+  }
+}
+window.deleteEquipPhoto = async function(relPath){
+  if(!confirm('Delete this photo?')) return;
+  try{
+    await ghDel(relPath);
+    const current = await readJSON('config.json', {}) || {};
+    const arr = Array.isArray(current.equipment_photos) ? current.equipment_photos : [];
+    const next = arr.filter(x => x !== relPath);
+    const cfg = Object.assign({}, current, { equipment_photos: next });
+    await ghPut('config.json', JSON.stringify(cfg,null,2), 'admin: update equipment photos list');
+    await listEquipPhotos();
+    toast('Photo deleted', true);
+  }catch(e){ toast('Delete failed: '+e.message, false); }
+};
+async function refreshEquipPhotosFromDirToConfig(){
+  const dir = await ghGet('equipment/photos');
+  const files = Array.isArray(dir) ? dir.filter(it=>it.name && it.name!=='.keep').map(it=>'equipment/photos/'+it.name) : [];
+  const current = await readJSON('config.json', {}) || {};
+  const cfg = Object.assign({}, current, { equipment_photos: files });
+  await ghPut('config.json', JSON.stringify(cfg, null, 2), 'admin: sync equipment photos list');
+  return files;
+}
+document.getElementById('equip_photos_upload')?.addEventListener('click', async ()=>{
+  try{
+    const inp = document.getElementById('equip_photos');
+    const files = Array.from(inp.files || []);
+    if(!files.length) return toast('Pick images to upload', false);
+    await ensureEquipFolders();
+    for(const f of files){
+      const dataUrl = await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
+      const b64 = String(dataUrl).split(',')[1] || '';
+      const safe = (Date.now()+'-'+f.name).replace(/\s+/g,'_');
+      await ghPutB64('equipment/photos/'+safe, b64, 'admin: upload equipment photo');
+    }
+    await refreshEquipPhotosFromDirToConfig();
+    await listEquipPhotos();
+    inp.value='';
+    toast('Photos uploaded ✅', true);
+  }catch(e){ toast('Upload failed: '+e.message, false); }
+});
+// init list on load (safe no-op if card not on page)
+(async()=>{ try{ await listEquipPhotos(); }catch(_){} })();
+
 </script>
