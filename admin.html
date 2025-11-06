@@ -2,7 +2,7 @@
 <title>Ironwood Admin</title>
 <style>
 :root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui}
+*{box-sizing:border-box}html,body{margin:0;background:#0b0e11;color:#eef2f6;font-family:system-ui}
 .container{width:min(1100px,92vw);margin-inline:auto}
 .card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem;margin-top:16px}
 h2{margin:.2rem 0 .8rem}
@@ -35,7 +35,6 @@ ul.compact li{margin:.2rem 0}
 
 <div class="container" style="padding:24px 0 80px">
 
-  <!-- GITHUB CONNECT (unchanged behavior) -->
   <div class="card">
     <h2>Connect GitHub</h2>
     <div class="grid">
@@ -52,7 +51,53 @@ ul.compact li{margin:.2rem 0}
     <small class="muted">Stored only in your browser (localStorage). Token used from your browser to api.github.com.</small>
   </div>
 
-  <!-- JOBS MANAGER -->
+  <div class="card">
+    <h2>Site Settings</h2>
+    <div class="grid">
+      <label>Business Name</label><input id="biz_name" placeholder="Ironwood Land Development">
+      <label>Public Phone</label><input id="biz_phone" placeholder="(318) 914-2351">
+      <label>Click-to-call (+1...)</label><input id="biz_phone_raw" placeholder="+13189142351">
+      <label>Hours</label><input id="biz_hours" placeholder="Mon–Sat 7a–6p">
+      <label>Address (HTML)</label><textarea id="biz_address_html" placeholder="805 E. Main St&lt;br&gt;Oak Grove, LA 71263"></textarea>
+      <label>Address (Text)</label><input id="biz_address_text" placeholder="805 E. Main St, Oak Grove, LA 71263">
+      <label>Contact Email</label><input id="contact_email" placeholder="you@example.com">
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button id="settings_save" class="btn">Save Site Settings → config.json</button>
+      <span id="settings_msg" class="muted"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Branding</h2>
+    <div class="row">
+      <input id="logo_site" placeholder="Site logo URL (optional)">
+      <input id="logo_dump" placeholder="Dumpsters logo URL (optional)">
+    </div>
+    <div class="row" style="margin-top:8px">
+      <label style="display:grid;gap:6px"><span class="muted" style="font-size:.9rem">Brand</span><input id="brand_color" type="color" value="#dc2626"></label>
+      <label style="display:grid;gap:6px"><span class="muted" style="font-size:.9rem">Accent</span><input id="accent_color" type="color" value="#fca5a5"></label>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button id="branding_save" class="btn">Save Branding → config.json</button>
+      <span id="branding_msg" class="muted"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Dumpsters</h2>
+    <div class="grid">
+      <label>Company</label><input id="dump_company" placeholder="Ironwood Trucking LLC">
+      <label>Weekly Small ($)</label><input id="dump_small" type="number" placeholder="350">
+      <label>Weekly Large ($)</label><input id="dump_large" type="number" placeholder="450">
+      <label>Area</label><input id="dump_area" placeholder="Northeast Louisiana">
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button id="dump_save" class="btn">Save Dumpsters → config.json</button>
+      <span id="dump_msg" class="muted"></span>
+    </div>
+  </div>
+
   <div class="card">
     <h2>Jobs Manager</h2>
     <div class="grid">
@@ -68,16 +113,14 @@ ul.compact li{margin:.2rem 0}
       <button id="job_save" class="btn">Create / Update Job</button>
       <span id="job_msg" class="muted"></span>
     </div>
-
     <div class="hr"></div>
     <h3 style="margin:.2rem 0 .6rem">Existing Jobs</h3>
     <div id="jobs_list" class="small muted">Loading…</div>
   </div>
 
-  <!-- EQUIPMENT MANAGER -->
   <div class="card">
     <h2>Equipment</h2>
-    <p class="small muted">Just a list stored in <code>config.json</code> under <code>equipment</code>. (No other pages are changed.)</p>
+    <p class="small muted">List stored in <code>config.json</code> under <code>equipment</code>.</p>
     <div class="row">
       <input id="equip_new" placeholder="e.g. John Deere 450J Dozer" style="flex:1">
       <button id="equip_add" class="btn">Add</button>
@@ -89,11 +132,10 @@ ul.compact li{margin:.2rem 0}
     </div>
   </div>
 
-  <!-- VERSION (optional, unchanged) -->
   <div class="card">
     <h2>Version</h2>
     <div class="row">
-      <input id="ver_value" placeholder="1.2.0" style="max-width:220px">
+      <input id="ver_value" placeholder="1.2.1" style="max-width:220px">
       <button id="ver_write" class="btn">Write version.json</button>
       <span id="ver_msg" class="muted"></span>
     </div>
@@ -104,226 +146,57 @@ ul.compact li{margin:.2rem 0}
 <div id="toast" class="toast"></div>
 
 <script>
-/* ===== helpers & GitHub API wrappers ===== */
-const $ = id => document.getElementById(id);
-function toast(msg, ok=true){ const t=$('toast'); t.textContent=msg; t.className='toast '+(ok?'ok':'err'); t.style.display='block'; clearTimeout(window.__t); window.__t=setTimeout(()=>{t.style.display='none'}, 3000); }
-function setBadge(txt, ok){ const el=$('gh_status'); el.textContent=txt; el.style.background=ok?'#065f46':'#5b1a1a'; }
+const $=id=>document.getElementById(id);
+function toast(msg,ok=true){const t=$('toast');t.textContent=msg;t.className='toast '+(ok?'ok':'err');t.style.display='block';clearTimeout(window.__t);window.__t=setTimeout(()=>{t.style.display='none'},3000);}
+function setBadge(txt,ok){const el=$('gh_status');el.textContent=txt;el.style.background=ok?'#065f46':'#5b1a1a';}
+function ghState(){try{const m=JSON.parse(localStorage.getItem('ironwood_gh')||'{}');return{owner:m.owner||'',repo:m.repo||'',branch:m.branch||'main',token:localStorage.getItem('ironwood_gh_token')||''};}catch(e){return{owner:'',repo:'',branch:'main',token:''};}}
+function mustGH(){const g=ghState();if(!g.owner||!g.repo||!g.token)throw new Error('GitHub Owner/Repo/Token required.');return g;}
+async function ghGet(path){const g=ghState();if(!g.owner||!g.repo)throw new Error('Owner/Repo missing');const url=`https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(g.branch)}`;const r=await fetch(url,{headers:g.token?{Authorization:`Bearer ${g.token}`}:{},cache:'no-store'});if(!r.ok)return null;return r.json();}
+async function ghPut(path,text,message){const g=mustGH();const existing=await ghGet(path);const body={message:message||`update ${path}`,content:btoa(unescape(encodeURIComponent(text))),branch:g.branch};if(existing&&existing.sha)body.sha=existing.sha;const url=`https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}`;const r=await fetch(url,{method:'PUT',headers:{'Authorization':`Bearer ${g.token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){const t=await r.text();throw new Error(t||('HTTP '+r.status));}return r.json();}
+async function ghDel(path){const g=mustGH();const existing=await ghGet(path);if(!existing||!existing.sha)return;const url=`https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}`;const body={message:`delete ${path}`,sha:existing.sha,branch:g.branch};const r=await fetch(url,{method:'DELETE',headers:{'Authorization':`Bearer ${g.token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){const t=await r.text();throw new Error(t||('HTTP '+r.status));}return r.json();}
+async function readJSON(path,fallback){try{const r=await fetch(path,{cache:'no-store'});if(r.ok)return await r.json();}catch(e){}return fallback;}
+function slugify(s){return(s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,80)||('job-'+Date.now());}
+function fileToBase64(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const b64=fr.result.split(',')[1]||'';res(b64);};fr.onerror=rej;fr.readAsDataURL(file);});}
 
-function ghState(){
-  try{
-    const m=JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
-    return { owner:m.owner||'', repo:m.repo||'', branch:m.branch||'main', token:localStorage.getItem('ironwood_gh_token')||'' };
-  }catch(e){ return { owner:'', repo:'', branch:'main', token:'' }; }
-}
-function mustGH(){
-  const g=ghState();
-  if(!g.owner||!g.repo||!g.token) throw new Error('GitHub Owner/Repo/Token required (set at top and Save).');
-  return g;
-}
-async function ghGet(path){ const g=ghState(); if(!g.owner||!g.repo) throw new Error('Owner/Repo missing');
-  const url=`https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(g.branch)}`;
-  const r=await fetch(url,{headers:g.token?{Authorization:`Bearer ${g.token}`}:{},cache:'no-store'}); if(!r.ok) return null; return r.json(); }
-async function ghPut(path, text, message){
-  const g=mustGH(); const existing=await ghGet(path);
-  const body={message:message||`update ${path}`, content:btoa(unescape(encodeURIComponent(text))), branch:g.branch};
-  if(existing && existing.sha) body.sha=existing.sha;
-  const url=`https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}`;
-  const r=await fetch(url,{method:'PUT',headers:{'Authorization':`Bearer ${g.token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok){ const t=await r.text(); throw new Error(t||('HTTP '+r.status)); }
-  return r.json();
-}
-async function ghDel(path){
-  const g=mustGH(); const existing=await ghGet(path); if(!existing||!existing.sha) return;
-  const url=`https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}`;
-  const body={message:`delete ${path}`, sha:existing.sha, branch:g.branch};
-  const r=await fetch(url,{method:'DELETE',headers:{'Authorization':`Bearer ${g.token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok){ const t=await r.text(); throw new Error(t||('HTTP '+r.status)); }
-  return r.json();
-}
-async function ghMkDir(path){ /* Contents API is file-based; create .keep to ensure folder exists */ 
-  await ghPut(path.replace(/\/$/,'')+'/.keep','keep','create folder'); 
-}
-async function readJSON(path, fallback){ try{ const r=await fetch(path,{cache:'no-store'}); if(r.ok) return await r.json(); }catch(e){} return fallback; }
-function slugify(s){ return (s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,80)||('job-'+Date.now()); }
-function fileToBase64(file){ return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>{ const b64=fr.result.split(',')[1]||''; res(b64); }; fr.onerror=rej; fr.readAsDataURL(file); }); }
-
-/* ===== init saved creds, config, jobs ===== */
 (async function init(){
-  const g=ghState(); $('gh_owner').value=g.owner; $('gh_repo').value=g.repo; $('gh_branch').value=g.branch; $('gh_token').value=g.token; setBadge(g.owner&&g.repo?'Saved':'Not set', !!(g.owner&&g.repo));
-  // Preload jobs list
+  const g=ghState();$('gh_owner').value=g.owner;$('gh_repo').value=g.repo;$('gh_branch').value=g.branch;$('gh_token').value=g.token;setBadge(g.owner&&g.repo?'Saved':'Not set',!!(g.owner&&g.repo));
   await refreshJobsList();
-  // Preload equipment list
-  const cfg = await readJSON('config.json', {});
-  renderEquip(Array.isArray(cfg.equipment)?cfg.equipment:[]);
+  const cfg=await readJSON('config.json',{})||{};renderEquip(Array.isArray(cfg.equipment)?cfg.equipment:[]);
+  if(cfg.business){$('biz_name').value=cfg.business.name||'';$('biz_phone').value=cfg.business.phone||'';$('biz_phone_raw').value=cfg.business.phone_raw||'';$('biz_hours').value=cfg.business.hours||'';$('biz_address_html').value=cfg.business.address_html||'';$('biz_address_text').value=cfg.business.address_text||'';}
+  $('contact_email').value=cfg.contact_email||'';
+  if(cfg.theme){$('brand_color').value=cfg.theme.brand||'#dc2626';$('accent_color').value=cfg.theme.accent||'#fca5a5';}
+  if(cfg.logos){$('logo_site').value=cfg.logos.site||'';$('logo_dump').value=cfg.logos.dumpsters||'';}
+  if(cfg.dumpsters){$('dump_company').value=cfg.dumpsters.company||'';$('dump_small').value=cfg.dumpsters.weekly_small??'';$('dump_large').value=cfg.dumpsters.weekly_large??'';$('dump_area').value=cfg.dumpsters.area||'';}
 })();
 
-/* ===== GH connect buttons ===== */
-$('gh_save').onclick = ()=>{
-  const owner=$('gh_owner').value.trim(), repo=$('gh_repo').value.trim(), branch=($('gh_branch').value.trim()||'main'), token=$('gh_token').value.trim();
-  if(!owner||!repo||!token){ setBadge('Missing',false); toast('Owner, Repo, and Token are required',false); return; }
-  localStorage.setItem('ironwood_gh', JSON.stringify({owner,repo,branch}));
-  localStorage.setItem('ironwood_gh_token', token);
-  setBadge('Saved',true); toast('GitHub connection saved', true);
-};
-$('gh_test').onclick = async ()=>{ try{ const ok=await ghGet('config.json'); setBadge(ok?'OK (config.json found)':'Repo reachable', !!ok); toast(ok?'Connected':'Repo reachable (config.json not found)', true); } catch(e){ setBadge('Failed',false); toast('Connection failed: '+e.message,false);} };
+$('gh_save').onclick=()=>{const owner=$('gh_owner').value.trim(),repo=$('gh_repo').value.trim(),branch=($('gh_branch').value.trim()||'main'),token=$('gh_token').value.trim();if(!owner||!repo||!token){setBadge('Missing',false);toast('Owner, Repo, and Token are required',false);return;}localStorage.setItem('ironwood_gh',JSON.stringify({owner,repo,branch}));localStorage.setItem('ironwood_gh_token',token);setBadge('Saved',true);toast('GitHub connection saved',true);};
+$('gh_test').onclick=async()=>{try{const ok=await ghGet('config.json');setBadge(ok?'OK (config.json found)':'Repo reachable',!!ok);toast(ok?'Connected':'Repo reachable (config.json not found)',true);}catch(e){setBadge('Failed',false);toast('Connection failed: '+e.message,false);}};
 
-/* ===== Jobs Manager ===== */
-async function getJobsIndex(){ return await readJSON('jobs/index.json', []); }
-async function writeJobsIndex(list){ await ghPut('jobs/index.json', JSON.stringify(list,null,2), 'admin: update jobs index'); }
+$('settings_save').onclick=async()=>{$('settings_msg').textContent='Saving...';try{const current=await readJSON('config.json',{})||{};const cfg=Object.assign({},current);cfg.business=Object.assign({},cfg.business||{}, {name:$('biz_name').value.trim(),phone:$('biz_phone').value.trim(),phone_raw:$('biz_phone_raw').value.trim(),hours:$('biz_hours').value.trim(),address_html:$('biz_address_html').value.trim(),address_text:$('biz_address_text').value.trim()});cfg.contact_email=$('contact_email').value.trim();await ghPut('config.json',JSON.stringify(cfg,null,2),'admin: update site settings');$('settings_msg').textContent='Saved to GitHub ✅';toast('Site settings saved',true);}catch(e){$('settings_msg').textContent='Error';toast('Save failed: '+e.message,false);}};
 
-async function refreshJobsList(){
-  const list = await getJobsIndex();
-  if(!list.length){ $('jobs_list').innerHTML = '<p class="muted">No jobs yet.</p>'; return; }
-  $('jobs_list').innerHTML = '<div class="small">'+ list.map(j => `
-    <div class="row" style="align-items:center;justify-content:space-between;border:1px solid #1a2128;border-radius:10px;padding:.5rem .6rem;margin:.3rem 0">
-      <div><strong>${j.title||j.id}</strong> <span class="muted">• ${j.location||''} ${j.date?('• '+new Date(j.date).toLocaleDateString()):''}</span></div>
-      <div class="row">
-        <button class="btn ghost" onclick="prefillJob('${j.id}')">Edit</button>
-        <button class="btn" onclick="deleteJob('${j.id}')">Delete</button>
-      </div>
-    </div>`).join('') + '</div>';
-}
+$('branding_save').onclick=async()=>{$('branding_msg').textContent='Saving...';try{const current=await readJSON('config.json',{})||{};const cfg=Object.assign({},current);cfg.theme=Object.assign({},cfg.theme||{}, {brand:$('brand_color').value,accent:$('accent_color').value});cfg.logos=Object.assign({},cfg.logos||{});if($('logo_site').value.trim())cfg.logos.site=$('logo_site').value.trim();if($('logo_dump').value.trim())cfg.logos.dumpsters=$('logo_dump').value.trim();await ghPut('config.json',JSON.stringify(cfg,null,2),'admin: update branding');$('branding_msg').textContent='Saved to GitHub ✅';toast('Branding saved',true);}catch(e){$('branding_msg').textContent='Error';toast('Save failed: '+e.message,false);}};
 
-window.prefillJob = async function(id){
-  try{
-    const meta = await readJSON(`jobs/${id}/meta.json`, null);
-    if(!meta){ toast('Job meta not found', false); return; }
-    $('job_id').value = id;
-    $('job_title').value = meta.title||'';
-    $('job_date').value = meta.date ? new Date(meta.date).toISOString().slice(0,10) : '';
-    $('job_location').value = meta.location||'';
-    $('job_desc').value = meta.description||'';
-    toast('Loaded job into form');
-  }catch(e){ toast('Error loading job: '+e.message, false); }
-};
+$('dump_save').onclick=async()=>{$('dump_msg').textContent='Saving...';try{const current=await readJSON('config.json',{})||{};const cfg=Object.assign({},current);cfg.dumpsters=Object.assign({},cfg.dumpsters||{}, {company:$('dump_company').value.trim(),weekly_small:Number($('dump_small').value||350),weekly_large:Number($('dump_large').value||450),area:$('dump_area').value.trim()||'Northeast Louisiana',includes_dump_fee:true});await ghPut('config.json',JSON.stringify(cfg,null,2),'admin: update dumpsters');$('dump_msg').textContent='Saved to GitHub ✅';toast('Dumpsters saved',true);}catch(e){$('dump_msg').textContent='Error';toast('Save failed: '+e.message,false);}};
 
-window.deleteJob = async function(id){
-  if(!confirm(`Delete job "${id}"? This removes its folder and index entry.`)) return;
-  try{
-    // remove files in folder (list directory)
-    const dir = await ghGet(`jobs/${id}`);
-    if(Array.isArray(dir)){ for(const it of dir){ await ghDel(`jobs/${id}/${it.name}`); } }
-    // remove the folder marker if any
-    await ghDel(`jobs/${id}/.keep`); // ignore errors
-    // update index
-    const idx = await getJobsIndex();
-    const next = idx.filter(j=>j.id!==id);
-    await writeJobsIndex(next);
-    await refreshJobsList();
-    toast('Job deleted', true);
-  }catch(e){ toast('Delete failed: '+e.message, false); }
-};
+/* Jobs */
+async function getJobsIndex(){return await readJSON('jobs/index.json',[]);}
+async function writeJobsIndex(list){await ghPut('jobs/index.json',JSON.stringify(list,null,2),'admin: update jobs index');}
+async function refreshJobsList(){const list=await getJobsIndex();if(!list.length){$('jobs_list').innerHTML='<p class="muted">No jobs yet.</p>';return;}$('jobs_list').innerHTML='<div class="small">'+list.map(j=>`<div class="row" style="align-items:center;justify-content:space-between;border:1px solid #1a2128;border-radius:10px;padding:.5rem .6rem;margin:.3rem 0"><div><strong>${j.title||j.id}</strong> <span class="muted">• ${j.location||''} ${j.date?('• '+new Date(j.date).toLocaleDateString()):''}</span></div><div class="row"><button class="btn ghost" onclick="prefillJob('${j.id}')">Edit</button><button class="btn" onclick="deleteJob('${j.id}')">Delete</button></div></div>`).join('')+'</div>';}
 
-$('job_title').addEventListener('input', ()=>{ if(!$('job_id').value.trim()) $('job_id').value = slugify($('job_title').value); });
+window.prefillJob=async function(id){try{const m=await readJSON(`jobs/${id}/meta.json`,null);if(!m){toast('Job meta not found',false);return;}$('job_id').value=id;$('job_title').value=m.title||'';$('job_date').value=m.date?new Date(m.date).toISOString().slice(0,10):'';$('job_location').value=m.location||'';$('job_desc').value=m.description||'';toast('Loaded job into form');}catch(e){toast('Error loading job: '+e.message,false);}};
+window.deleteJob=async function(id){if(!confirm(`Delete job "${id}"?`))return;try{const dir=await ghGet(`jobs/${id}`);if(Array.isArray(dir)){for(const it of dir){await ghDel(`jobs/${id}/${it.name}`);}}await ghDel(`jobs/${id}/.keep`);const idx=await getJobsIndex();const next=idx.filter(j=>j.id!==id);await writeJobsIndex(next);await refreshJobsList();toast('Job deleted',true);}catch(e){toast('Delete failed: '+e.message,false);}};
 
-$('job_save').onclick = async ()=>{
-  try{
-    const id = $('job_id').value.trim() || slugify($('job_title').value);
-    const title = $('job_title').value.trim();
-    if(!id || !title) return toast('Title is required (ID auto-filled)', false);
+$('job_title').addEventListener('input',()=>{if(!$('job_id').value.trim())$('job_id').value=(($('job_title').value)||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,80)||('job-'+Date.now());});
 
-    const date = $('job_date').value ? new Date($('job_date').value).toISOString() : '';
-    const location = $('job_location').value.trim();
-    const description = $('job_desc').value.trim();
+async function fileToContent(file){return new Promise((resolve,reject)=>{const fr=new FileReader();fr.onload=()=>{const base64=fr.result.split(',')[1]||'';resolve(base64);};fr.onerror=reject;fr.readAsDataURL(file);});}
 
-    // ensure folder
-    await ghMkDir(`jobs/${id}/`);
-    await ghMkDir(`jobs/${id}/before/`);
-    await ghMkDir(`jobs/${id}/after/`);
+$('job_save').onclick=async()=>{try{const id=$('job_id').value.trim()||(($('job_title').value)||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,80)||('job-'+Date.now());const title=$('job_title').value.trim();if(!id||!title)return toast('Title is required',false);const date=$('job_date').value?new Date($('job_date').value).toISOString():'';const location=$('job_location').value.trim();const description=$('job_desc').value.trim();await ghPut(`jobs/${id}/.keep`,'keep','ensure folder');await ghPut(`jobs/${id}/before/.keep`,'keep','ensure folder');await ghPut(`jobs/${id}/after/.keep`,'keep','ensure folder');const beforeFiles=[...($('job_before').files||[])];const afterFiles=[...($('job_after').files||[])];const beforeURLs=[],afterURLs=[];for(const f of beforeFiles){const b64=await fileToContent(f);const path=`jobs/${id}/before/${Date.now()}-${encodeURIComponent(f.name.replace(/\s+/g,'_'))}`;await ghPut(path, atob(b64), `admin: upload before ${id}`);}const bdir=await ghGet(`jobs/${id}/before`);if(Array.isArray(bdir))for(const it of bdir){if(it.name!=='.keep')beforeURLs.push(`jobs/${id}/before/${it.name}`);}for(const f of afterFiles){const b64=await fileToContent(f);const path=`jobs/${id}/after/${Date.now()}-${encodeURIComponent(f.name.replace(/\s+/g,'_'))}`;await ghPut(path, atob(b64), `admin: upload after ${id}`);}const adir=await ghGet(`jobs/${id}/after`);if(Array.isArray(adir))for(const it of adir){if(it.name!=='.keep')afterURLs.push(`jobs/${id}/after/${it.name}`);}const meta={id,title,date,location,description,before:beforeURLs,after:afterURLs};await ghPut(`jobs/${id}/meta.json`,JSON.stringify(meta,null,2),`admin: write meta ${id}`);const idx=await getJobsIndex();const cover_after=afterURLs[0]||'';const cover=cover_after||beforeURLs[0]||'';const entry={id,title,date,location,cover_after,cover};const found=idx.findIndex(j=>j.id===id);if(found>=0)idx[found]=Object.assign({},idx[found],entry);else idx.unshift(entry);await writeJobsIndex(idx);$('job_before').value='';$('job_after').value='';await refreshJobsList();toast('Job saved ✅',true);$('job_msg').textContent='Saved';}catch(e){$('job_msg').textContent='Error';toast('Save failed: '+e.message,false);}};
 
-    // upload images
-    const beforeFiles = Array.from($('job_before').files||[]);
-    const afterFiles  = Array.from($('job_after').files||[]);
-    const beforeURLs=[], afterURLs=[];
-    for(const f of beforeFiles){
-      const b64 = await fileToBase64(f);
-      const path = `jobs/${id}/before/${Date.now()}-${encodeURIComponent(f.name.replace(/\s+/g,'_'))}`;
-      await ghPut(path, atob(b64), `admin: upload before ${id}`); // atob to send raw? -> Contents API expects base64 of raw bytes; we already have base64. We'll PUT using text (base64) below:
-    }
-    // re-fetch directory to get raw paths as GitHub URLs? We store relative paths used by site.
-    const bdir = await ghGet(`jobs/${id}/before`);
-    if(Array.isArray(bdir)) for(const it of bdir){ if(it.name!=='.keep') beforeURLs.push(`jobs/${id}/before/${it.name}`); }
+/* Equipment */
+function renderEquip(list){const ul=$('equip_list');ul.innerHTML='';(list||[]).forEach((item,i)=>{const li=document.createElement('li');li.innerHTML=`<div class="row" style="align-items:center"><input value="${(item||'').replace(/"/g,'&quot;')}" data-idx="${i}" style="flex:1"><button class="btn ghost" data-rm="${i}">Remove</button></div>`;ul.appendChild(li);});ul.onclick=(e)=>{if(e.target&&e.target.dataset&&e.target.dataset.rm){const idx=+e.target.dataset.rm;const inputs=[...ul.querySelectorAll('input')];const arr=inputs.map(x=>x.value.trim()).filter(Boolean);arr.splice(idx,1);renderEquip(arr);}};}
+$('equip_add').onclick=()=>{const val=$('equip_new').value.trim();if(!val)return;const inputs=[...$('equip_list').querySelectorAll('input')];const arr=inputs.map(x=>x.value.trim()).filter(Boolean);arr.push(val);$('equip_new').value='';renderEquip(arr);};
+$('equip_save').onclick=async()=>{$('equip_msg').textContent='Saving...';try{const current=await readJSON('config.json',{})||{};const inputs=[...$('equip_list').querySelectorAll('input')];const arr=inputs.map(x=>x.value.trim()).filter(Boolean);const cfg=Object.assign({},current,{equipment:arr});await ghPut('config.json',JSON.stringify(cfg,null,2),'admin: update equipment');$('equip_msg').textContent='Saved to GitHub ✅';toast('Equipment saved',true);}catch(e){$('equip_msg').textContent='Error';toast('Save failed: '+e.message,false);}};
 
-    for(const f of afterFiles){
-      const b64 = await fileToBase64(f);
-      const path = `jobs/${id}/after/${Date.now()}-${encodeURIComponent(f.name.replace(/\s+/g,'_'))}`;
-      await ghPut(path, atob(b64), `admin: upload after ${id}`); // same note
-    }
-    const adir = await ghGet(`jobs/${id}/after`);
-    if(Array.isArray(adir)) for(const it of adir){ if(it.name!=='.keep') afterURLs.push(`jobs/${id}/after/${it.name}`); }
-
-    // build meta.json
-    const meta = { id, title, date, location, description, before: beforeURLs, after: afterURLs };
-    await ghPut(`jobs/${id}/meta.json`, JSON.stringify(meta,null,2), `admin: write meta ${id}`);
-
-    // update jobs/index.json
-    const idx = await getJobsIndex();
-    const cover_after = afterURLs[0] || '';
-    const cover = cover_after || beforeURLs[0] || '';
-    const entry = { id, title, date, location, cover_after, cover };
-    const found = idx.findIndex(j=>j.id===id);
-    if(found>=0) idx[found] = Object.assign({}, idx[found], entry);
-    else idx.unshift(entry);
-    await writeJobsIndex(idx);
-
-    // reset file inputs (keep form text)
-    $('job_before').value=''; $('job_after').value='';
-    await refreshJobsList();
-    toast('Job saved ✅', true);
-    $('job_msg').textContent='Saved';
-  }catch(e){
-    // If a binary PUT path used wrong encoding, surface it
-    $('job_msg').textContent='Error';
-    toast('Save failed: '+e.message, false);
-  }
-};
-
-/* ===== Equipment Manager ===== */
-function renderEquip(list){
-  const ul=$('equip_list'); ul.innerHTML='';
-  (list||[]).forEach((item,i)=>{
-    const li=document.createElement('li'); li.innerHTML=
-      `<div class="row" style="align-items:center">
-         <input value="${item.replace(/"/g,'&quot;')}" data-idx="${i}" style="flex:1">
-         <button class="btn ghost" data-rm="${i}">Remove</button>
-       </div>`;
-    ul.appendChild(li);
-  });
-  ul.addEventListener('click', (e)=>{
-    if(e.target && e.target.dataset && e.target.dataset.rm){
-      const idx=+e.target.dataset.rm; const inputs=ul.querySelectorAll('input');
-      const arr=[...inputs].map(x=>x.value.trim()).filter(Boolean);
-      arr.splice(idx,1);
-      renderEquip(arr);
-    }
-  }, {once:true});
-}
-$('equip_add').onclick = ()=>{
-  const val=$('equip_new').value.trim(); if(!val) return;
-  const inputs=[...$('equip_list').querySelectorAll('input')];
-  const arr=inputs.map(x=>x.value.trim()).filter(Boolean); arr.push(val);
-  $('equip_new').value=''; renderEquip(arr);
-};
-$('equip_save').onclick = async ()=>{
-  $('equip_msg').textContent='Saving...';
-  try{
-    const current = await readJSON('config.json', {}) || {};
-    const inputs=[...$('equip_list').querySelectorAll('input')];
-    const arr=inputs.map(x=>x.value.trim()).filter(Boolean);
-    const cfg = Object.assign({}, current, { equipment: arr });
-    await ghPut('config.json', JSON.stringify(cfg,null,2), 'admin: update equipment');
-    $('equip_msg').textContent='Saved to GitHub ✅'; toast('Equipment saved', true);
-  }catch(e){ $('equip_msg').textContent='Error'; toast('Save failed: '+e.message, false); }
-};
-
-/* ===== Version (unchanged) ===== */
-$('ver_write').onclick = async ()=>{
-  $('ver_msg').textContent='Writing...';
-  try{
-    const version=$('ver_value').value.trim()||'1.2.0';
-    const payload={name:'ironwood-site',updated_at:new Date().toISOString(),branch:(ghState().branch||'main'),last_commit_sha:version,note:'admin write'};
-    await ghPut('version.json', JSON.stringify(payload,null,2), 'admin: write version');
-    $('ver_msg').textContent='version.json updated ✅'; toast('version.json written', true);
-  }catch(e){ $('ver_msg').textContent='Error'; toast('Write failed: '+e.message, false); }
-};
+/* Version */
+$('ver_write').onclick=async()=>{$('ver_msg').textContent='Writing...';try{const version=$('ver_value').value.trim()||'1.2.1';const payload={name:'ironwood-site',updated_at:new Date().toISOString(),branch:(ghState().branch||'main'),last_commit_sha:version,note:'admin write'};await ghPut('version.json',JSON.stringify(payload,null,2),'admin: write version');$('ver_msg').textContent='version.json updated ✅';toast('version.json written',true);}catch(e){$('ver_msg').textContent='Error';toast('Write failed: '+e.message,false);}};
 </script>
