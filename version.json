@@ -1,7 +1,7 @@
 {
   "name": "ironwood-site",
-  "updated_at": "2025-10-27T21:58:18Z",
+  "updated_at": "2025-11-06T17:35:37.151Z",
   "branch": "main",
-  "last_commit_sha": "1.2.0",
-  "note": "Release 1.2.0 (Full UI + Admin + Carousel)"
+  "last_commit_sha": "1.2.4",
+  "note": "admin write"
 }
