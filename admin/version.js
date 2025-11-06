@@ -1,1 +1,0 @@
-const ADMIN_PASSCODE = "ironwood2025"; function checkPasscode(p){ return p === ADMIN_PASSCODE; }
