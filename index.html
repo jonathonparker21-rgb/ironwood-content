@@ -1,0 +1,207 @@
+
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ironwood Land Development — Land Clearing & Demolition</title>
+
+<style>
+:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
+.container{width:min(1200px,92vw);margin-inline:auto}.muted{color:#9aa7b3}
+.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.7rem 1rem;border-radius:999px;font-weight:700;border:2px solid transparent}
+.btn.secondary{background:transparent;border-color:#2b333b}
+.card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem}
+header.topbar{position:sticky;top:0;background:rgba(11,14,17,.8);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid #1a2128;z-index:20}
+header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;gap:.6rem;flex-wrap:wrap}
+.brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:44px}
+nav{display:flex;gap:.4rem;flex-wrap:wrap}.pill{padding:.45rem .7rem;border-radius:10px}nav a:hover{background:#1a2128}
+@media (max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
+footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
+
+/* Equipment styles */
+#equipment { background:#0f0f0f; color:#fff; padding:60px 0; }
+.equipment-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; margin-top:12px; }
+.equipment-card { background:#12161a; border:2px solid var(--brand, #dc2626); border-radius:12px; padding:1rem; text-align:center; font-weight:700; }
+
+
+/* Equipment grid + carousel */
+.equipment-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:12px}
+.equipment-card{background:#12161a;border:2px solid var(--brand,#dc2626);border-radius:12px;padding:1rem;text-align:center;font-weight:700}
+#equipment .carousel{position:relative;overflow:hidden;border-radius:14px;border:1px solid #1a2128;margin-bottom:18px;background:#0b0e11}
+#equipment .carousel-track{display:flex;transition:transform .6s ease}
+#equipment .carousel img{display:block;width:100%;height:360px;object-fit:cover}
+#equipment .carousel-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center}
+#equipment .carousel-dots .dot{width:8px;height:8px;border-radius:50%;background:#ffffff44}
+#equipment .carousel-dots .dot.active{background:var(--brand,#dc2626)}
+
+</style>
+
+<header class="topbar"><div class="container wrap">
+  <a class="brand" href="index.html"><img id="siteLogo" src="assets/logo-ld-original.png" alt=""><span id="brandName">Ironwood Land Development</span></a>
+  <nav>
+    <a class="pill" href="index.html#services">Services</a>
+    <a class="pill" href="jobs.html">Jobs</a>
+    <a class="pill" href="dumpsters.html">Dumpsters</a>
+    <a class="pill" href="contact.html">Contact</a>
+    <a class="btn" data-call href="tel:+13189142351">📞 Call</a>
+  </nav>
+</div></header>
+
+<main>
+  <section class="hero" style="position:relative;overflow:hidden">
+    <style>.hero::before{content:'';position:absolute;inset:0;background:url('assets/work-hero.jpg') center/cover no-repeat;filter:grayscale(.15) brightness(.58)}
+    .hero .inner{position:relative;padding:clamp(72px,10vw,140px) 0}
+    .eyebrow{color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.88rem}
+    h1{font-size:clamp(2rem,3.8vw,3.4rem);line-height:1.05;margin:.6rem 0 1rem}
+    .sub{color:#b6c2ce;max-width:58ch}</style>
+    <div class="container inner">
+      <div id="eyebrow" class="eyebrow">Residential • Commercial • Timber • Structures</div>
+      <h1 id="headline">Land Clearing & Demolition—Done Right.</h1>
+      <p id="sub" class="sub">Traditional land clearing (no mulching). Heavy equipment, safe crews, clean finishes.</p>
+      <div style="display:flex;gap:.9rem;flex-wrap:wrap;margin-top:1.2rem"><a class="btn" data-call>Call Now</a><a class="btn secondary" href="contact.html">Contact Us</a></div>
+    </div>
+  </section>
+
+  <section id="services" class="container" style="padding:clamp(56px,6vw,88px) 0">
+    <h2>Services</h2><p class="muted">If it’s in your way, we’ll clear it safely and efficiently.</p>
+    <div id="servicesGrid" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1rem"></div>
+  </section>
+
+  <section id="equipment" class="container">
+    <h2>Our Equipment</h2>
+    <div id="equipment-carousel" class="carousel" aria-label="Equipment photos" style="display:none">\n  <div class="carousel-track" id="equipment-track"></div>\n  <div class="carousel-dots" id="equipment-dots"></div>\n</div>\n<div id="equipment-list" class="equipment-grid"></div>
+  </section>
+
+
+
+  <section id="jobs" class="container" style="padding:clamp(56px,6vw,88px) 0">
+    <h2>Recent Jobs</h2><p class="muted">Before/After carousel on each job. Click “View” for details.</p>
+    <div id="jobsGrid" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:1rem"></div>
+    <p style="margin-top:12px"><a href="jobs.html" class="btn secondary">View All Jobs</a></p>
+  </section>
+</main>
+
+<footer><div class="container" style="display:grid;gap:1.2rem;grid-template-columns:1.2fr .8fr .8fr">
+  <div><div class="brand"><img id="siteLogoFoot" src="assets/logo-ld-original.png" style="height:34px"><span id="footName">Ironwood Land Development</span></div>
+    <p class="muted">Professional land development: clearing, grading, demolition, and dumpsters.</p>
+    <p><a class="btn" data-call>📞 Call</a></p></div>
+  <div><h3>Contact</h3><p><strong>Phone:</strong> <a id="footPhone">(318) 914-2351</a><br><strong>Hours:</strong> <span id="footHours">Mon–Sat 7a–6p</span></p></div>
+  <div><h3>Company</h3><p id="footAddress">805 E. Main St<br>Oak Grove, LA 71263</p><p><small><a href="#" id="adminLink" class="muted" style="text-decoration:underline;">Site admin</a></small></p></div>
+</div></footer>
+
+<script>
+(function(){
+  const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
+  const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
+  async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
+  window.Ironwood = {
+    cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
+    jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
+    jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
+    dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || []
+  };
+})();
+</script>
+
+<script>
+function carHTML(imgs){
+  if(!imgs||!imgs.length) return '';
+  const slides=imgs.map((u,i)=>"<img class='car-slide' style='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:"+(i?0:1)+";transition:opacity .35s' src='"+u+"'>").join('');
+  const dots=imgs.map((_,i)=>"<button data-i='"+i+"' style='width:8px;height:8px;border-radius:99px;border:none;background:#475569;opacity:"+(i?0.8:1)+"'></button>").join('');
+  return "<div class='car' style='position:relative;background:#0b0e11'><div class='car-viewport' style='position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:12px;border:1px solid #1a2128'>"+slides+"<button class='prev' style='position:absolute;top:50%;left:8px;transform:translateY(-50%);border:none;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;font-size:22px;width:36px;height:36px'>‹</button><button class='next' style='position:absolute;top:50%;right:8px;transform:translateY(-50%);border:none;border-radius:999px;background:rgba(0,0,0,.45);color:#fff;font-size:22px;width:36px;height:36px'>›</button><div class='car-dots' style='position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center'>"+dots+"</div></div></div>";
+}
+function hookCar(el){
+  const slides=[...el.querySelectorAll('.car-slide')], prev=el.querySelector('.prev'), next=el.querySelector('.next'), dots=[...el.querySelectorAll('.car-dots button')];
+  let i=0; function go(n){i=(n+slides.length)%slides.length; slides.forEach((s,idx)=>s.style.opacity=(idx===i?1:0)); dots.forEach((d,idx)=>d.style.opacity=(idx===i?1:.8));}
+  prev.onclick=e=>{e.preventDefault();go(i-1)}; next.onclick=e=>{e.preventDefault();go(i+1)}; dots.forEach(d=>d.onclick=()=>go(+d.dataset.i||0));
+}
+(async function(){
+  const c=await Ironwood.cfg();
+  const S=(c&&c.services&&c.services.length)?c.services:['Traditional Land Clearing','Demolition & Haul-Off','Tree & Stump Removal','Grading & Driveways','Right-of-Way','Ponds & Ditches'];
+  servicesGrid.innerHTML=S.map(s=>"<article class='card'><h3>"+s+"</h3></article>").join('');
+  const idx=await Ironwood.jobsIdx();
+  if(idx.length){
+    const metas=await Promise.all(idx.slice(0,9).map(j=>Ironwood.jobMeta(j.id)));
+    jobsGrid.innerHTML=idx.slice(0,9).map(function(j,i){
+      const m=metas[i]||{}; const imgs=[].concat(m.after||[], m.before||[]);
+      return "<div class='card' style='overflow:hidden;border-radius:18px'>"+carHTML(imgs)+"<div style='padding:12px'><h3>"+(j.title||'Job')+"</h3><small class='muted'>"+[j.date?new Date(j.date).toLocaleDateString():'', j.location||''].filter(Boolean).join(' • ')+"</small><p class='muted'>"+(j.summary||'')+"</p><p><a class='btn secondary' href='jobs.html?id="+encodeURIComponent(j.id)+"'>View</a></p></div></div>";
+    }).join('');
+    document.querySelectorAll('#jobsGrid .car').forEach(hookCar);
+  } else { jobsGrid.innerHTML='<p class="muted">No jobs yet.</p>'; }
+})();
+</script>
+
+<script>
+(async function(){
+  const c = await Ironwood.cfg();
+  if(c){
+    const map={brand:'--brand',accent:'--accent',bg:'--bg',surface:'--surface',text:'--text',muted:'--muted'};
+    if(c.theme) for(const k in map){ if(c.theme[k]) document.documentElement.style.setProperty(map[k], c.theme[k]); }
+    if(c.logos?.site){ siteLogo.src=c.logos.site; const f=document.getElementById('siteLogoFoot'); if(f) f.src=c.logos.site; }
+    brandName.textContent=c.business?.name||'Ironwood Land Development';
+    document.querySelectorAll('[data-call]').forEach(a=>{ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; a.href='tel:'+ph; a.textContent='📞 Call '+disp; });
+    const fa=document.getElementById('footAddress'); if(fa) fa.innerHTML=c.business?.address_html||'805 E. Main St<br>Oak Grove, LA 71263';
+    const fp=document.getElementById('footPhone'); if(fp){ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; fp.href='tel:'+ph; fp.textContent=disp; }
+    const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
+  }
+  const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
+})();
+</script>
+
+<script>
+(function(){
+  function renderEquipment(list){
+    var wrap = document.getElementById('equipment-list');
+    if(!wrap) return;
+    if(!list || !list.length){ wrap.innerHTML = '<p class="muted">No equipment listed yet.</p>'; return; }
+    wrap.innerHTML = list.map(function(name){
+      return '<div class="equipment-card"><span>'+ (name||'').replace(/</g,'&lt;') +'</span></div>';
+    }).join('');
+  }
+  fetch('config.json', {cache:'no-store'}).then(function(r){
+    if(!r.ok) return null; return r.json();
+  }).then(function(cfg){
+    var list = (cfg && cfg.equipment) ? cfg.equipment : [];
+    renderEquipment(list);
+  }).catch(function(){ renderEquipment([]); });
+})();
+</script>
+
+<script>
+(function(){
+  function renderEquipmentNames(list){
+    var wrap=document.getElementById('equipment-list'); if(!wrap) return;
+    if(!list||!list.length){ wrap.innerHTML='<p class="muted">No equipment listed yet.</p>'; return; }
+    wrap.innerHTML=list.map(function(n){ return '<div class="equipment-card"><span>'+String(n||'').replace(/</g,'&lt;')+'</span></div>'; }).join('');
+  }
+  function renderCarousel(urls){
+    var box=document.getElementById('equipment-carousel'),
+        track=document.getElementById('equipment-track'),
+        dots=document.getElementById('equipment-dots');
+    if(!box||!track||!dots) return;
+    if(!urls||!urls.length){ box.style.display='none'; return; }
+    box.style.display='block';
+    track.innerHTML=urls.map(function(u){ return '<img src="'+u+'" alt="Equipment photo">'; }).join('');
+    dots.innerHTML=urls.map(function(_,i){ return '<span class="dot'+(i===0?' active':'')+'"></span>'; }).join('');
+    var idx=0,n=urls.length,timer;
+    function go(i){
+      idx=(i+n)%n;
+      var x=-idx*box.clientWidth;
+      track.style.transform='translateX('+x+'px)';
+      dots.querySelectorAll('.dot').forEach(function(d,k){ d.classList.toggle('active', k===idx); });
+    }
+    function start(){ timer=setInterval(function(){ go(idx+1); }, 3000); }
+    function stop(){ clearInterval(timer); }
+    start();
+    box.addEventListener('mouseenter', stop);
+    box.addEventListener('mouseleave', start);
+    window.addEventListener('resize', function(){ go(idx); });
+  }
+  fetch('config.json',{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():{}; })
+    .then(function(cfg){
+      renderEquipmentNames(cfg.equipment||[]);
+      renderCarousel(Array.isArray(cfg.equipment_photos)?cfg.equipment_photos:[]);
+    })
+    .catch(function(){ renderEquipmentNames([]); });
+})();
+</script>
