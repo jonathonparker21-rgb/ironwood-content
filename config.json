@@ -44,5 +44,8 @@
     "Tree removal for homes and businesses",
     "Licensed and insured"
   ],
-  "equipment_photos": []
+  "dumpster_photos": [
+    "dumpsters/photos/1763504443028-IMG_5143.jpeg",
+    "dumpsters/photos/index.json"
+  ]
 }
