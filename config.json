@@ -7,7 +7,7 @@
     "address_text": "805 E. Main St, Oak Grove, LA 71263",
     "hours": "Mon–Sat 7a–6p"
   },
-  "contact_email": "joeysullivan318@icloud.com",
+  "contact_email": "",
   "dumpsters": {
     "company": "Ironwood Trucking LLC",
     "weekly_small": 350,
@@ -43,5 +43,6 @@
     "Complete site cleanup — we do all the work",
     "Tree removal for homes and businesses",
     "Licensed and insured"
-  ]
+  ],
+  "equipment_photos": []
 }
