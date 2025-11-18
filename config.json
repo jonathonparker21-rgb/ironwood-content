@@ -3,7 +3,7 @@
     "name": "Ironwood Land Development",
     "phone": "(318) 914-2351",
     "phone_raw": "+13189142351",
-    "address_html": "805 E. Main St<br>Oak Grove, LA 71263",
+    "address_html": "805 E. Main St<br>Oak Grove, LA 7126",
     "address_text": "805 E. Main St, Oak Grove, LA 71263",
     "hours": "Mon–Sat 7a–6p"
   },
@@ -43,8 +43,5 @@
     "Complete site cleanup — we do all the work",
     "Tree removal for homes and businesses",
     "Licensed and insured"
-  ],
-  "equipment_photos": [
-    "equipment/photos/1763504273408-IMG_8455.jpeg"
   ]
 }
