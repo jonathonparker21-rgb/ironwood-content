@@ -24,13 +24,20 @@
       bar.style.width = Math.max(0, Math.min(100, pct)) + '%';
       bar.style.background = ok ? 'var(--brand,#dc2626)' : '#64748b';
     }
-    if(note){ note.textContent = Math.round(pct) + '%'; }
+    if(note){
+      note.textContent = Math.round(pct) + '%';
+    }
   }
   function toast(msg, ok){
-    try{ if(window.toast) return window.toast(msg, ok!==false); }catch(_){}
+    try{
+      if(window.toast) return window.toast(msg, ok !== false);
+    }catch(_){}
     const t = document.createElement('div');
     t.textContent = msg;
-    t.style.cssText = 'position:fixed;right:12px;bottom:12px;background:#111827;color:white;padding:10px 12px;border:1px solid #1f2937;border-radius:10px;z-index:9999;font-size:13px';
+    t.style.cssText =
+      'position:fixed;right:12px;bottom:12px;background:#111827;color:white;' +
+      'padding:10px 12px;border:1px solid #1f2937;border-radius:10px;' +
+      'z-index:9999;font-size:13px';
     document.body.appendChild(t);
     setTimeout(()=>t.remove(), 2200);
   }

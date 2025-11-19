@@ -9,8 +9,11 @@
     const track = document.getElementById(id);
     if(!track) return;
     Array.from(track.querySelectorAll('img')).forEach(img=>{
-      const next = bust(img.getAttribute('src'));
-      if(next !== img.getAttribute('src')) img.setAttribute('src', next);
+      const current = img.getAttribute('src');
+      const next = bust(current);
+      if(next !== current){
+        img.setAttribute('src', next);
+      }
     });
   }
   function watch(id){
