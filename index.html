@@ -67,14 +67,23 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
   </section>
 
   <section id="equipment" class="container">
-    <h2>Our Equipment</h2>
-    <div id="equipment-carousel" class="carousel" aria-label="Equipment photos">
-      <div class="carousel-track" id="equipment-track"></div>
-      <div class="carousel-dots" id="equipment-dots"></div>
-    </div>
-    <p id="equipment-empty" class="muted" style="margin-top:.5rem">No equipment listed yet.</p>
-    <div id="equipment-list" class="equipment-grid"></div>
-  </section>
+  <h2>Our Equipment</h2>
+
+  <!-- Equipment Carousel -->
+  <div id="equipment-carousel" class="carousel" aria-label="Equipment photos">
+    <div class="carousel-track" id="equipment-track"></div>
+    <div class="carousel-dots" id="equipment-dots"></div>
+  </div>
+
+  <!-- Shown only when there are NO equipment photos -->
+  <p id="equipment-empty" class="muted" style="margin-top:.5rem">
+    No equipment listed yet.
+  </p>
+
+  <!-- Optional list / grid if you use it -->
+  <div id="equipment-list" class="equipment-grid"></div>
+</section>
+
 <section id="jobs" class="container" style="padding:clamp(56px,6vw,88px) 0">
     <h2>Recent Jobs</h2><p class="muted">Before/After carousel on each job. Click “View” for details.</p>
     <div id="jobsGrid" style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:1rem"></div>
