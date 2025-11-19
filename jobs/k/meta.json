@@ -1,0 +1,14 @@
+{
+  "id": "k",
+  "title": "Kilbourne House Clearing / Cleanup",
+  "date": "2025-06-05T00:00:00.000Z",
+  "location": "Kilbourne La",
+  "description": "Knocked down the structure and cleaned all debris from the site and cleaned up the pad.",
+  "before": [
+    "jobs/k/before/1763529230355-project-1c.jpg",
+    "jobs/k/before/1763529234094-project-1a.jpg"
+  ],
+  "after": [
+    "jobs/k/after/1763529236620-project-1-after-b.jpg"
+  ]
+}
