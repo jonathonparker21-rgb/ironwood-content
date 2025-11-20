@@ -293,8 +293,15 @@ async function ghPutB64(path, base64, message){
   if(existing && existing.sha) body.sha = existing.sha;
   const url = `https://api.github.com/repos/${g.owner}/${g.repo}/contents/${encodeURIComponent(path)}`;
   const r = await fetch(url, { method:'PUT', headers:{'Authorization':`Bearer ${g.token}`,'Content-Type':'application/json'}, body: JSON.stringify(body) });
-  if(!r.ok){ const t=await r.text(); throw new Error(t || ('HTTP '+r.status)); }
-  return r.json();
+  if(r.ok) return r.json();
+  const t = await r.text();
+  // Retry once on 409 (sha mismatch) with a new filename to avoid conflicts
+  if(r.status === 409){
+    const alt = path.replace(/(\.[^.]+)?$/, (m)=>'-'+Math.floor(Math.random()*1e6)+m);
+    console.warn('Retrying upload at new path due to 409:', alt);
+    return ghPutB64(alt, base64, message + ' (retry)');
+  }
+  throw new Error(t || ('HTTP '+r.status));
 }
 
 /* --- Equipment Photos (Admin) --- */
