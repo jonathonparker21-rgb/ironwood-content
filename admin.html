@@ -163,6 +163,7 @@
         if(payload) headers['Content-Type']='application/json';
         const body = payload ? JSON.stringify(payload) : undefined;
         const r = await fetch(url,{method,headers,body});
+        if(r.status === 404) return null;
         if(!r.ok) throw new Error('Worker '+method+' '+path+' failed: '+r.status);
         if(method==='DELETE') return true;
         return await r.json();
@@ -171,7 +172,10 @@
         if(s.gh_token) ghHeaders['Authorization']='Bearer '+s.gh_token;
         const base = `https://api.github.com/repos/${s.gh_owner}/${s.gh_repo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(s.gh_branch||'main')}`;
         if(method==='GET'){
-          const r=await fetch(base,{headers:ghHeaders,cache:'no-store'}); if(!r.ok) throw new Error('GitHub GET failed: '+r.status); return r.json();
+          const r=await fetch(base,{headers:ghHeaders,cache:'no-store'});
+          if(r.status === 404) return null;
+          if(!r.ok) throw new Error('GitHub GET failed: '+r.status);
+          return r.json();
         }
         if(method==='DELETE'){
           const existing=await api(path,'GET'); const sha=existing?.sha; if(!sha) throw new Error('Not found');
@@ -194,8 +198,18 @@
     async function listDir(prefix, target){
       try{
         const dir = await api(prefix,'GET');
-        if(!Array.isArray(dir) || !dir.length){target.innerHTML='<p class="muted">No photos yet.</p>'; return [];}
-        const files = dir.filter(x=>x.name && x.name!=='.keep').map(x=>prefix.replace(/\/$/,'')+'/'+x.name);
+        if(Array.isArray(dir)){
+          if(!dir.length){target.innerHTML='<p class="muted">No photos yet.</p>'; return [];}
+          const files = dir.filter(x=>x.name && x.name!=='.keep').map(x=>prefix.replace(/\/$/,'')+'/'+x.name);
+          target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
+          return files;
+        }
+        // if dir is JSON from config (array of strings)
+        if(Array.isArray(dir?.content)){
+          const files = (dir.content||[]).filter(Boolean);
+          target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
+          return files;
+        }
         target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
         return files;
       }catch(e){
