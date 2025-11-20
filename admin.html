@@ -233,7 +233,10 @@
         const dir = await api(prefix,'GET');
         if(Array.isArray(dir)){
           if(!dir.length){target.innerHTML='<p class="muted">No photos yet.</p>'; return [];}
-          const files = dir.filter(x=>x.name && x.name!=='.keep').map(x=>prefix.replace(/\/$/,'')+'/'+x.name);
+          const files = dir
+            .filter(x=>x.name && x.name!=='.keep')
+            .filter(x=>!x.name.endsWith('.json')) // hide index/config files
+            .map(x=>prefix.replace(/\/$/,'')+'/'+x.name);
           target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
           return files;
         }
