@@ -342,8 +342,6 @@
       <p id="equipment-empty" class="muted" style="margin-top:.5rem">
         No equipment listed yet.
       </p>
-
-      <div id="equipment-list" class="equipment-grid"></div>
     </section>
 
     <!-- Jobs teaser (your existing jobs page can stay separate) -->
@@ -389,20 +387,35 @@
 
   <!-- Equipment carousel tied into your admin -->
   <script>
+    (function(){
+      const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
+      const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
+      async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
+      window.Ironwood = {
+        cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
+        jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
+        jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
+        dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || [],
+        equipmentPhotos: async ()=> await j('equipment/photos/index.json') || (RAW && await j(RAW+'/equipment/photos/index.json')) || []
+      };
+    })();
+  </script>
+
+  <script>
     async function loadEquipmentPhotosFromAdmin() {
       if (!window.Ironwood) return [];
-      let getter =
-        Ironwood.equipmentPhotos ||
-        Ironwood.equipPhotos ||
-        Ironwood.getEquipmentPhotos;
-      if (!getter) return [];
-      try {
-        const result = getter();
-        if (result && typeof result.then === "function") {
-          return (await result) || [];
+      try{
+        const cfg = Ironwood.cfg ? (await Ironwood.cfg()) : null;
+        let photos = Array.isArray(cfg?.equipment_photos) ? cfg.equipment_photos : [];
+        if(!photos.length){
+          let getter = Ironwood.equipmentPhotos || Ironwood.equipPhotos || Ironwood.getEquipmentPhotos;
+          if(getter){
+            const result = getter();
+            photos = (result && typeof result.then === "function") ? (await result)||[] : (result||[]);
+          }
         }
-        return result || [];
-      } catch (e) {
+        return photos || [];
+      }catch(e){
         console.error("Error loading equipment photos from admin:", e);
         return [];
       }
@@ -480,6 +493,3 @@
   <script src="/carousel-cache-bust-patch.js"></script>
 </body>
 </html>
-
-})();
-</script>
