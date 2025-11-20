@@ -140,6 +140,29 @@
     }
     .muted { color: var(--muted); }
 
+    /* Hero background image */
+    #hero {
+      position: relative;
+      overflow: hidden;
+      padding: 1rem 1rem 2rem;
+      border-radius: 1rem;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.7), rgba(2,6,23,0.95));
+      color: var(--fg);
+      isolation: isolate;
+    }
+    #hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("assets/work-hero.jpg") center/cover no-repeat;
+      opacity: 0.28;
+      filter: grayscale(0.1) brightness(0.75);
+      z-index: -1;
+    }
+    @media (min-width: 640px) {
+      #hero { padding: 1.5rem 1.5rem 2.5rem; }
+    }
+
     .services-grid {
       display: grid;
       grid-template-columns: minmax(0,1fr);
