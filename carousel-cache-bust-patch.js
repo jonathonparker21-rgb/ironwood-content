@@ -1,4 +1,5 @@
 // carousel-cache-bust-patch.js
+// Optional helper: cache-busts images inside the equipment & dumpster carousels
 (function () {
   function bust(src) {
     if (!src) return src;
@@ -18,43 +19,8 @@
     });
   }
 
-  function updateEmptyStates() {
-    // Equipment empty text
-    const equipTrack = document.getElementById("equipment-track");
-    const equipEmpty = document.getElementById("equipment-empty");
-    if (equipTrack && equipEmpty) {
-      const hasImg = !!equipTrack.querySelector("img");
-      equipEmpty.style.display = hasImg ? "none" : "";
-    }
-
-    // Dumpster empty text
-    const dumpTrack = document.getElementById("dumpster-track");
-    const dumpEmpty = document.getElementById("dump-empty");
-    if (dumpTrack && dumpEmpty) {
-      const hasImg = !!dumpTrack.querySelector("img");
-      dumpEmpty.style.display = hasImg ? "none" : "";
-    }
-  }
-
-  function watch(id) {
-    const node = document.getElementById(id);
-    if (!node) return;
-    const obs = new MutationObserver(() => {
-      apply(id);
-      updateEmptyStates();
-    });
-    obs.observe(node, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["src"],
-    });
-    apply(id);
-    updateEmptyStates();
-  }
-
   window.addEventListener("load", function () {
-    watch("equipment-track");
-    watch("dumpster-track");
+    apply("equipment-track");
+    apply("dumpster-track");
   });
 })();
