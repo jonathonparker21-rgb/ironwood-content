@@ -142,57 +142,81 @@
     function badge(id,txt,ok){const el=$(id);if(el){el.textContent=txt;el.style.background=ok?'#065f46':'#5b1a1a';}}
 
     function state(){
+      const defaults = {gh_owner:'jonathonparker21-rgb', gh_repo:'ironwood-content', gh_branch:'main'};
       try{
         const gh=JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
         return {
-          gh_owner:gh.owner||'', gh_repo:gh.repo||'', gh_branch:gh.branch||'main',
+          gh_owner:gh.owner||defaults.gh_owner,
+          gh_repo:gh.repo||defaults.gh_repo,
+          gh_branch:gh.branch||defaults.gh_branch,
           gh_token:localStorage.getItem('ironwood_gh_token')||'',
           cf_url:localStorage.getItem('ironwood_cf_url')||'',
           cf_key:localStorage.getItem('ironwood_cf_key')||''
         };
-      }catch(_){return{gh_owner:'',gh_repo:'',gh_branch:'main',gh_token:'',cf_url:'',cf_key:''};}
+      }catch(_){return{...defaults,gh_token:'',cf_url:'',cf_key:''};}
     }
     function saveState(next){localStorage.setItem('ironwood_gh',JSON.stringify({owner:next.gh_owner,repo:next.gh_repo,branch:next.gh_branch}));localStorage.setItem('ironwood_gh_token',next.gh_token||'');localStorage.setItem('ironwood_cf_url',next.cf_url||'');localStorage.setItem('ironwood_cf_key',next.cf_key||'');}
     function useWorker(){const s=state();return !!(s.cf_url && s.cf_key);}
 
     async function api(path, method='GET', payload=null, isBase64=false){
       const s=state();
-      if(useWorker()){
-        const url = s.cf_url.replace(/\/$/,'') + '?path=' + encodeURIComponent(path);
-        const headers = {'Authorization':'Bearer '+s.cf_key};
-        if(payload) headers['Content-Type']='application/json';
-        const body = payload ? JSON.stringify(payload) : undefined;
-        const r = await fetch(url,{method,headers,body});
-        if(r.status === 404) return null;
-        if(!r.ok) throw new Error('Worker '+method+' '+path+' failed: '+r.status);
-        if(method==='DELETE') return true;
-        return await r.json();
-      }else{
+      const trimBranch = s.gh_branch || 'main';
+
+      // Helper: GitHub direct
+      async function viaGitHub() {
         const ghHeaders = {'Content-Type':'application/json'};
         if(s.gh_token) ghHeaders['Authorization']='Bearer '+s.gh_token;
-        const base = `https://api.github.com/repos/${s.gh_owner}/${s.gh_repo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(s.gh_branch||'main')}`;
+        const basePath = path.replace(/^\/+/,'');
+        const base = `https://api.github.com/repos/${s.gh_owner}/${s.gh_repo}/contents/${encodeURIComponent(basePath)}?ref=${encodeURIComponent(trimBranch)}`;
         if(method==='GET'){
           const r=await fetch(base,{headers:ghHeaders,cache:'no-store'});
           if(r.status === 404) return null;
-          if(!r.ok) throw new Error('GitHub GET failed: '+r.status);
+          if(!r.ok) throw new Error('GitHub GET failed: '+r.status+' '+(await r.text()));
           return r.json();
         }
         if(method==='DELETE'){
           const existing=await api(path,'GET'); const sha=existing?.sha; if(!sha) throw new Error('Not found');
-          const r=await fetch(base,{method:'DELETE',headers:ghHeaders,body:JSON.stringify({message:payload?.message||'delete '+path,sha,branch:s.gh_branch||'main'})}); if(!r.ok) throw new Error('GitHub DELETE failed: '+r.status); return true;
+          const r=await fetch(base,{method:'DELETE',headers:ghHeaders,body:JSON.stringify({message:payload?.message||'delete '+path,sha,branch:trimBranch})});
+          if(!r.ok) throw new Error('GitHub DELETE failed: '+r.status+' '+(await r.text()));
+          return true;
         }
-        // PUT/POST
         const existing = await api(path,'GET').catch(()=>null);
         const body = {
           message: payload?.message || ('update '+path),
           content: isBase64 ? payload.content : btoa(unescape(encodeURIComponent(payload.text||''))),
-          branch: s.gh_branch||'main'
+          branch: trimBranch
         };
         if(existing && existing.sha) body.sha = existing.sha;
         const r=await fetch(base,{method:'PUT',headers:ghHeaders,body:JSON.stringify(body)});
-        if(!r.ok) throw new Error('GitHub PUT failed: '+r.status);
+        if(!r.ok) throw new Error('GitHub PUT failed: '+r.status+' '+(await r.text()));
         return r.json();
       }
+
+      // Prefer worker if set; otherwise GitHub. If worker fails and GitHub creds exist, fallback for GET.
+      if(useWorker()){
+        try{
+          const url = s.cf_url.replace(/\/$/,'') + '?path=' + encodeURIComponent(path);
+          const headers = {'Authorization':'Bearer '+s.cf_key};
+          if(payload) headers['Content-Type']='application/json';
+          const body = payload ? JSON.stringify(payload) : undefined;
+          const r = await fetch(url,{method,headers,body});
+          if(r.status === 404) return null;
+          if(!r.ok){
+            const txt = await r.text();
+            throw new Error('Worker '+method+' '+path+' failed: '+r.status+' '+txt);
+          }
+          if(method==='DELETE') return true;
+          return await r.json();
+        }catch(err){
+          // Allow transparent GitHub fallback for GET if available
+          if(method==='GET' && (s.gh_owner || s.gh_repo)){
+            console.warn('Worker failed, trying GitHub fallback', err);
+            return viaGitHub();
+          }
+          throw err;
+        }
+      }
+      return viaGitHub();
     }
 
     async function listDir(prefix, target){
@@ -204,16 +228,15 @@
           target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
           return files;
         }
-        // if dir is JSON from config (array of strings)
         if(Array.isArray(dir?.content)){
           const files = (dir.content||[]).filter(Boolean);
           target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
           return files;
         }
-        target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
-        return files;
+        target.innerHTML='<p class="muted">No photos yet.</p>';
+        return [];
       }catch(e){
-        target.innerHTML='<p class="muted">Error loading list.</p>';
+        target.innerHTML=`<p class="muted">Error loading list: ${e.message}</p>`;
         return [];
       }
     }
