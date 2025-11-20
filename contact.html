@@ -1,7 +1,6 @@
-
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Contact Us | Ironwood Land Development</title>
-
 <style>
 :root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
@@ -12,27 +11,29 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-rad
 .btn:active{transform:translateY(0)}
 .btn.secondary{background:linear-gradient(145deg,#0f172a,#0b1220);border-color:#2b333b;color:#eef2f6}
 .card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem}
-header.topbar{position:sticky;top:0;background:rgba(11,14,17,.8);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid #1a2128;z-index:20}
-header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;gap:.6rem;flex-wrap:wrap}
-.brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:44px}
+header{position:sticky;top:0;background:rgba(11,14,17,.8);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid #1a2128;z-index:20}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;gap:.6rem;flex-wrap:wrap}
 .brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:42px}
 .brand-name{padding:2px 8px;border:1px solid rgba(248,113,113,.6);border-radius:12px;background:rgba(248,113,113,.08);letter-spacing:.04em}
 .brand-tag{padding:2px 8px;border:1px solid rgba(248,113,113,.6);border-radius:999px;font-size:12px;letter-spacing:.08em;color:var(--text)}
 nav{display:flex;gap:.4rem;flex-wrap:wrap}.pill{padding:.45rem .7rem;border-radius:10px}nav a:hover{background:#1a2128}
-@media (max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
-footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
+@media (max-width:640px){.nav-inner{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
+footer{background:#020617;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
+footer .footer-inner{max-width:960px;margin:0 auto;padding:1.5rem 1rem 2rem;display:grid;gap:1rem;grid-template-columns:minmax(0,1fr)}
+@media(min-width:640px){footer .footer-inner{grid-template-columns:repeat(3,minmax(0,1fr));}}
 .photo-card{background:linear-gradient(150deg,rgba(15,23,42,.95),rgba(11,17,32,.92));border:1px solid #1a2128;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);margin-top:12px}
 .photo-card img{width:100%;display:block;object-fit:cover;max-height:320px}
 </style>
 
-<header class="topbar"><div class="container wrap">
+<header><div class="container nav-inner">
   <a class="brand" href="index.html">
-    <img id="siteLogo" src="assets/logo-ld-original.png" alt="" style="height:42px">
+    <img id="siteLogo" src="assets/logo-ld-original.png" alt="">
     <span id="brandName" class="brand-name">Ironwood Land Development</span>
     <span class="brand-tag">NE LA</span>
   </a>
   <nav>
     <a class="pill" href="index.html#services">Services</a>
+    <a class="pill" href="index.html#equipment">Equipment</a>
     <a class="pill" href="dumpsters.html">Dumpsters</a>
     <a class="pill" href="#contact">Contact</a>
     <a class="btn" data-call href="tel:+13189142351">📞 Call</a>
@@ -77,36 +78,35 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
   </div>
 </main>
 
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="brand" style="gap:.4rem"><img src="assets/logo-ld-original.png" alt="" style="height:36px"><span id="footName">Ironwood Land Development</span></div>
+      <p class="muted">Professional land development: clearing, grading, demolition, and dumpsters.</p>
+      <p><a class="btn" data-call>📞 Call</a></p>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <p><strong>Phone:</strong> <a id="footPhone">(318) 914-2351</a><br><strong>Hours:</strong> <span id="footHours">Mon–Sat 7a–6p</span></p>
+    </div>
+    <div>
+      <h3>Company</h3>
+      <p id="footAddress">805 E. Main St<br>Oak Grove, LA 71263</p>
+      <p><small><a href="#" id="adminLink" class="muted" style="text-decoration:underline;">Site admin</a></small></p>
+    </div>
+  </div>
+</footer>
+
 <script>
 (function(){
   const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
   const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
   async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
   window.Ironwood = {
-  cfg: async () =>
-    (await j("config.json")) || (RAW && (await j(RAW + "/config.json"))) || null,
-
-  jobsIdx: async () =>
-    (await j("jobs/index.json")) ||
-    (RAW && (await j(RAW + "/jobs/index.json"))) ||
-    [],
-
-  jobMeta: async (id) =>
-    (await j("jobs/" + id + "/meta.json")) ||
-    (RAW && (await j(RAW + "/jobs/" + id + "/meta.json"))) ||
-    null,
-
-  dumpPhotos: async () =>
-    (await j("dumpsters/photos/index.json")) ||
-    (RAW && (await j(RAW + "/dumpsters/photos/index.json"))) ||
-    [],
-
-  // NEW: equipment photos helper (matches how dumpPhotos works)
-  equipmentPhotos: async () =>
-    (await j("equipment/photos/index.json")) ||
-    (RAW && (await j(RAW + "/equipment/photos/index.json"))) ||
-    []
-};
+    cfg: async () => (await j("config.json")) || (RAW && (await j(RAW + "/config.json"))) || null,
+    dumpPhotos: async () => (await j("dumpsters/photos/index.json")) || (RAW && (await j(RAW + "/dumpsters/photos/index.json"))) || [],
+    equipmentPhotos: async () => (await j("equipment/photos/index.json")) || (RAW && (await j(RAW + "/equipment/photos/index.json"))) || []
+  };
 })();
 </script>
 
@@ -149,14 +149,4 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
   }
   const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
 })();
-</script>
-<script>
-  // Secret admin shortcut: Ctrl/Cmd + Shift + A
-  window.addEventListener('keydown', function(e){
-    const isMod = e.ctrlKey || e.metaKey;
-    if(isMod && e.shiftKey && e.code === 'KeyA'){
-      e.preventDefault();
-      location.href = 'admin.html';
-    }
-  });
 </script>

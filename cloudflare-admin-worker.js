@@ -1,22 +1,34 @@
+const cors = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+  'Access-Control-Allow-Headers': '*',
+  'Content-Type': 'application/json'
+};
+
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), { status, headers: cors });
+}
+
 export default {
   async fetch(req, env) {
+    if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     const url = new URL(req.url);
     // Basic auth check
     const auth = req.headers.get('Authorization') || '';
     const key = auth.replace(/^Bearer\s+/i, '').trim();
     if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+      return json({ error: 'Unauthorized' }, 401);
     }
 
     const path = url.searchParams.get('path');
-    if (!path) return new Response(JSON.stringify({ error: 'Missing path' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+    if (!path) return json({ error: 'Missing path' }, 400);
 
     const owner = env.GITHUB_OWNER;
     const repo = env.GITHUB_REPO;
     const branch = env.GITHUB_BRANCH || 'main';
     const token = env.GITHUB_TOKEN;
     if (!owner || !repo || !token) {
-      return new Response(JSON.stringify({ error: 'Missing GitHub env vars' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+      return json({ error: 'Missing GitHub env vars' }, 500);
     }
 
     const ghHeaders = {
@@ -36,20 +48,20 @@ export default {
 
     if (req.method === 'GET') {
       const r = await fetch(`${ghBase}?ref=${branch}`, { headers: ghHeaders });
-      if (!r.ok) return new Response(JSON.stringify({ ok: false, status: r.status, text: await r.text() }), { status: r.status, headers: { 'Content-Type': 'application/json' } });
+      if (!r.ok) return json({ ok: false, status: r.status, text: await r.text() }, r.status);
       const j = await r.json();
-      return new Response(JSON.stringify(j), { headers: { 'Content-Type': 'application/json' } });
+      return json(j, 200);
     }
 
     if (req.method === 'DELETE') {
       const body = await req.json().catch(() => ({}));
       const message = body.message || `delete ${path}`;
       const sha = await getSha();
-      if (!sha) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+      if (!sha) return json({ error: 'Not found' }, 404);
       const payload = { message, sha, branch };
       const r = await fetch(ghBase, { method: 'DELETE', headers: ghHeaders, body: JSON.stringify(payload) });
       const text = await r.text();
-      return new Response(text || '{}', { status: r.status, headers: { 'Content-Type': 'application/json' } });
+      return new Response(text || '{}', { status: r.status, headers: cors });
     }
 
     if (req.method === 'POST' || req.method === 'PUT') {
@@ -63,9 +75,9 @@ export default {
       if (sha) payload.sha = sha;
       const r = await fetch(ghBase, { method: 'PUT', headers: ghHeaders, body: JSON.stringify(payload) });
       const text = await r.text();
-      return new Response(text || '{}', { status: r.status, headers: { 'Content-Type': 'application/json' } });
+      return new Response(text || '{}', { status: r.status, headers: cors });
     }
 
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
+    return json({ error: 'Method not allowed' }, 405);
   }
 };
