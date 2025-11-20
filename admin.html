@@ -190,9 +190,10 @@
           return true;
         }
         const existing = await api(path,'GET').catch(()=>null);
+        const isB64 = isBase64 || !!payload?.base64;
         const body = {
           message: payload?.message || ('update '+path),
-          content: isBase64 ? payload.content : btoa(unescape(encodeURIComponent(payload.text||''))),
+          content: isB64 ? (payload?.content || '') : btoa(unescape(encodeURIComponent(payload?.text || ''))),
           branch: trimBranch
         };
         if(existing && existing.sha) body.sha = existing.sha;
@@ -269,7 +270,7 @@
           const dataUrl = await new Promise((res,rej)=>{const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f);});
           const b64 = String(dataUrl).split(',')[1]||'';
           const safe = (Date.now()+'-'+f.name.replace(/\s+/g,'_'));
-          await api(folder+'/'+safe,'POST',{content:b64,base64:true,message:'upload '+folder});
+          await api(folder+'/'+safe,'POST',{content:b64,base64:true,message:'upload '+folder}, true);
         }
         const listEl=$(targetId);
         const filesList = await listDir(folder, listEl);
