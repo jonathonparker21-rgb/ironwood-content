@@ -1,406 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Dumpster Rentals (Weekly) | Ironwood Trucking LLC – Oak Grove, LA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1220;
+      --fg: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #dc2626;
+      --accent-soft: rgba(220, 38, 38, 0.12);
+      --card: #0b1120;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
+      color: var(--fg);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dumpster Rentals (Weekly) | Ironwood Trucking LLC – Oak Grove, LA</title>
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(15,23,42,0.94), rgba(15,23,42,0.70), transparent);
+      border-bottom: 1px solid rgba(148,163,184,0.25);
+    }
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      justify-content: space-between;
+    }
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .brand span {
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(248,113,113,0.6);
+      background: linear-gradient(135deg, rgba(248,113,113,0.15), rgba(248,113,113,0.02));
+      font-size: 0.7rem;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.85rem;
+    }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--fg); }
+    .call-chip {
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(250,250,250,0.2);
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(15,23,42,0.9);
+    }
 
-<style>
-:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
-.container{width:min(1200px,92vw);margin-inline:auto}.muted{color:#9aa7b3}
-.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.7rem 1rem;border-radius:999px;font-weight:700;border:2px solid transparent}
-.btn.secondary{background:transparent;border-color:#2b333b}
-.card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem}
-header.topbar{position:sticky;top:0;background:rgba(11,14,17,.8);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid #1a2128;z-index:20}
-header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;gap:.6rem;flex-wrap:wrap}
-.brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:44px}
-nav{display:flex;gap:.4rem;flex-wrap:wrap}.pill{padding:.45rem .7rem;border-radius:10px}nav a:hover{background:#1a2128}
-@media (max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
-footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
+    main {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
 
-/* Dumpsters carousel */
-#dumpster-carousel{position:relative;overflow:hidden;border-radius:14px;border:1px solid #1a2128;margin:18px 0;background:#0b0e11}
-#dumpster-carousel .carousel-track{display:flex;transition:transform .6s ease}
-#dumpster-carousel img{display:block;width:100%;height:360px;object-fit:cover}
-#dumpster-carousel .carousel-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center}
-#dumpster-carousel .dot{width:8px;height:8px;border-radius:50%;background:#ffffff44}
-#dumpster-carousel .dot.active{background:var(--brand,#dc2626)}
+    .hero-kicker {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 4vw, 2.3rem);
+      margin-bottom: 0.5rem;
+    }
+    .hero-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 32rem;
+      margin-bottom: 1rem;
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      align-items: center;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border-radius: 999px;
+      padding: 0.55rem 1.4rem;
+      border: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-primary:hover { filter: brightness(1.05); }
+    .hero-badge {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
 
-</style>
+    section { margin-top: 2rem; }
+    section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.4rem;
+    }
+    .muted { color: var(--muted); }
 
-<header class="topbar"><div class="container wrap">
-  <a class="brand" href="index.html"><img id="siteLogo" src="assets/logo-ld-original.png" alt=""><span id="brandName">Ironwood Land Development</span></a>
-  <nav>
-    <a class="pill" href="index.html#services">Services</a>
-    <a class="pill" href="jobs.html">Jobs</a>
-    <a class="pill" href="dumpsters.html">Dumpsters</a>
-    <a class="pill" href="contact.html">Contact</a>
-    <a class="btn" data-call href="tel:+13189142351">📞 Call</a>
-  </nav>
-</div></header>
+    .rates {
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .rate-card {
+      padding: 0.8rem 1rem;
+      border-radius: 0.85rem;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top left, rgba(220,38,38,0.12), rgba(15,23,42,0.95));
+      font-size: 0.9rem;
+    }
+    .rate-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+    .rate-price {
+      font-weight: 600;
+      color: #f97316;
+      margin-bottom: 0.3rem;
+    }
+    @media (min-width: 640px) {
+      .rates { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
 
-<main>
-  <section class="container" style="padding:clamp(48px,6vw,80px) 0">
-    <img id="dumpLogoHero" src="assets/logo-dumpsters-original.png" alt="Ironwood Dumpster Rentals" style="height:84px;margin-bottom:12px">
-    <p class="muted" style="letter-spacing:.12em;text-transform:uppercase;">Weekly Roll-Off Rentals • <span id="dumpCo">Ironwood Trucking LLC</span></p>
-    <h1>Dumpsters—Delivered Fast. Picked Up On Time.</h1>
-    <p class="muted">Weekly pricing includes the <strong>dump fee</strong>. Area: <span id="area">Northeast Louisiana</span>.</p>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem"><a class="btn" data-call>Book by Phone</a><a id="smsDump" class="btn secondary" href="#">Text to Reserve</a></div>
-  </section>
-  <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-    <h2>Sizes & Weekly Rates</h2>
-    <div style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1rem">
-      <article class="card"><h3>Small (≈12–15 yd)</h3><p><strong>Weekly:</strong> $<span id="rateSmall">350</span></p></article>
-      <article class="card"><h3>Large (≈30 yd)</h3><p><strong>Weekly:</strong> $<span id="rateLarge">450</span></p></article>
+    .photo-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .photo-grid img {
+      width: 100%;
+      border-radius: 0.8rem;
+      object-fit: cover;
+      display: block;
+    }
+    @media (min-width: 640px) {
+      .photo-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+
+    .carousel {
+      margin-top: 1rem;
+      border-radius: 0.9rem;
+      border: 1px solid var(--border);
+      background: #020617;
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-track {
+      width: 100%;
+      position: relative;
+      min-height: 220px;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.8), rgba(2,6,23,1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .carousel-track img {
+      max-width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      display: none;
+      border-radius: 0.9rem;
+    }
+    .carousel-track img.is-active {
+      display: block;
+    }
+    .carousel-dots {
+      display: flex;
+      gap: 0.35rem;
+      justify-content: center;
+      padding: 0.5rem 0.6rem 0.6rem;
+      background: linear-gradient(to top, #020617, transparent);
+    }
+    .carousel-dots button {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(148,163,184,0.5);
+      cursor: pointer;
+    }
+    .carousel-dots button.is-active {
+      background: var(--accent);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: #020617;
+      margin-top: auto;
+    }
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="brand">
+        Ironwood Land Development
+        <span>NE LA</span>
+      </div>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/#services">Services</a>
+        <a href="/#equipment">Equipment</a>
+        <a href="/dumpsters">Dumpsters</a>
+        <a href="/#contact">Contact</a>
+        <a class="call-chip" href="tel:+13189142351">Call (318) 914-2351</a>
+      </nav>
     </div>
-  </section>
- <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-  <h2>Dumpster Photos</h2>
-  <p>Uploaded in Admin → Dumpster Photos (TEST).
-</p>
+  </header>
 
-  <!-- Grid of dumpster photos -->
-  <div id="dump-photos" class="photo-grid"></div>
+  <main>
+    <section id="hero">
+      <p class="hero-kicker">Weekly Roll-Off Rentals • Ironwood Trucking LLC</p>
+      <h1>Dumpsters—Delivered Fast. Picked Up On Time.</h1>
+      <p class="hero-sub">
+        Weekly pricing includes the dump fee. Serving Northeast Louisiana with small and large roll-off
+        dumpsters for clean-outs, remodels, and job sites.
+      </p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="tel:+13189142351">Book by Phone</a>
+        <a class="btn-primary" style="background:#f97316" href="sms:+13189142351">Text to Reserve</a>
+        <p class="hero-badge">Northeast Louisiana • Ironwood Trucking LLC</p>
+      </div>
+    </section>
 
-  <!-- Auto carousel of the same photos -->
-  <div id="dumpster-carousel" class="carousel" aria-label="Dumpster photos" style="margin-top:24px;">
-    <div class="carousel-track" id="dumpster-track"></div>
-    <div class="carousel-dots" id="dumpster-dots"></div>
-  </div>
-</section>
+    <section id="rates">
+      <h2>Sizes &amp; Weekly Rates</h2>
+      <p class="muted">Weekly fee includes delivery, pickup, and dump fee within our service area.</p>
+      <div class="rates">
+        <div class="rate-card">
+          <h3>Small (≈12–15 yd)</h3>
+          <p class="rate-price">Weekly: $350</p>
+          <p>
+            Perfect for garage clean-outs, small remodels, and light construction debris.
+          </p>
+        </div>
+        <div class="rate-card">
+          <h3>Large (≈30 yd)</h3>
+          <p class="rate-price">Weekly: $450</p>
+          <p>
+            Ideal for whole-home clean-outs, major remodels, roofing tear-offs, and heavier jobs.
+          </p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:0.75rem;">
+        Service Area: Northeast Louisiana. Weekly rate includes dump fee.
+      </p>
+    </section>
 
+    <section id="photos">
+      <h2>Dumpster Photos</h2>
+      <p class="muted">Photos managed via your admin (GitHub-backed), just like before.</p>
 
-    <div id="dumpster-carousel" class="carousel" aria-label="Dumpster photos" style="display:none">
-      <div class="carousel-track" id="dumpster-track"></div>
-      <div class="carousel-dots" id="dumpster-dots"></div>
+      <!-- Grid of dumpster photos -->
+      <div id="dump-photos" class="photo-grid"></div>
+
+      <!-- Carousel driven by same photos -->
+      <div id="dumpster-carousel" class="carousel" aria-label="Dumpster photos">
+        <div class="carousel-track" id="dumpster-track"></div>
+        <div class="carousel-dots" id="dumpster-dots"></div>
+      </div>
+
+      <p id="dump-empty" class="muted" style="margin-top:.5rem">
+        No dumpster photos yet.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>Weekly roll-off dumpster rentals via Ironwood Trucking LLC.</div>
+      <div>Call or text <a href="tel:+13189142351">(318) 914-2351</a> to schedule delivery.</div>
     </div>
-    
-</main>
+  </footer>
 
-<script>
-(function(){
-  const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
-  const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
-  async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
-  window.Ironwood = {
-    cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
-    jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
-    jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
-    dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || []
-  };
-})();
-</script>
-
-<script>
-(async function(){
-  const photos = await Ironwood.dumpPhotos();
-  const box = document.getElementById('dumpster-carousel');
-  const track = document.getElementById('dumpster-track');
-  const dots = document.getElementById('dumpster-dots');
-  if(!box || !track || !dots) return;
-
-  if(!photos || !photos.length){
-    box.style.display = 'none';
-    return;
-  }
-
-  box.style.display = 'block';
-  track.innerHTML = photos.map(u => "<img src='"+u+"' alt='Dumpster photo' loading='lazy'>").join('');
-  dots.innerHTML = photos.map((_,i)=>"<button type='button' data-index='"+i+"'></button>").join('');
-
-  // simple auto slider
-  let index = 0;
-  function update(){
-    const imgs = track.querySelectorAll('img');
-    const total = imgs.length;
-    if(!total) return;
-    imgs.forEach((img, i)=>{
-      img.style.display = i === index ? 'block' : 'none';
-    });
-    dots.querySelectorAll('button').forEach((b, i)=>{
-      b.classList.toggle('active', i === index);
-    });
-  }
-  dots.addEventListener('click', function(e){
-    const btn = e.target.closest('button[data-index]');
-    if(!btn) return;
-    index = parseInt(btn.getAttribute('data-index'), 10) || 0;
-    update();
-  });
-  update();
-  setInterval(function(){
-    const total = track.querySelectorAll('img').length;
-    if(total > 1){
-      index = (index + 1) % total;
-      update();
+  <script>
+    async function loadDumpsterPhotosFromAdmin() {
+      if (!window.Ironwood) return [];
+      let getter =
+        Ironwood.dumpPhotos ||
+        Ironwood.dumpsterPhotos ||
+        Ironwood.getDumpsterPhotos;
+      if (!getter) return [];
+      try {
+        const result = getter();
+        if (result && typeof result.then === "function") {
+          return (await result) || [];
+        }
+        return result || [];
+      } catch (e) {
+        console.error("Error loading dumpster photos from admin:", e);
+        return [];
+      }
     }
-  }, 5000);
-})();
-</script>
 
-<script>
-(async function(){
-  const c=await Ironwood.cfg();
-  if(c){
-    const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351';
-    document.querySelectorAll('[data-call]').forEach(a=>{a.href='tel:'+ph; a.textContent='📞 Call '+disp;});
-    rateSmall.textContent=(c.dumpsters?.weekly_small??350);
-    rateLarge.textContent=(c.dumpsters?.weekly_large??450);
-    area.textContent=c.dumpsters?.area||'Northeast Louisiana';
-    dumpCo.textContent=c.dumpsters?.company||'Ironwood Trucking LLC';
-    if(c.logos?.dumpsters) dumpLogoHero.src=c.logos.dumpsters;
-    smsDump.href='sms:'+ph+'?&body='+encodeURIComponent('I need a dumpster. Address: __  Size: Small or Large | Start date: __');
-  }
-  const photos=await Ironwood.dumpPhotos();
-  dumpGrid.innerHTML=photos.length?photos.map(u=>"<img src='"+u+"' alt='Dumpster photo' loading='lazy' style='width:100%;border-radius:12px;object-fit:cover'>").join(''):'<p id="dump-empty" class="muted">No dumpster photos yet.</p>';
-})();
-</script>
+    (async function initDumpsterPhotos() {
+      const grid  = document.getElementById("dump-photos");
+      const box   = document.getElementById("dumpster-carousel");
+      const track = document.getElementById("dumpster-track");
+      const dots  = document.getElementById("dumpster-dots");
+      const empty = document.getElementById("dump-empty");
 
-<script>
-(async function(){
-  const photos = await Ironwood.dumpPhotos();
-  const box = document.getElementById('dumpster-carousel');
-  const track = document.getElementById('dumpster-track');
-  const dots = document.getElementById('dumpster-dots');
-  if(!box || !track || !dots) return;
+      if (!grid || !box || !track || !dots) return;
 
-  if(!photos || !photos.length){
-    box.style.display = 'none';
-    return;
-  }
+      const photos = await loadDumpsterPhotosFromAdmin();
 
-  box.style.display = 'block';
-  track.innerHTML = photos.map(u => "<img src='"+u+"' alt='Dumpster photo' loading='lazy'>").join('');
-  dots.innerHTML = photos.map((_,i)=>"<button type='button' data-index='"+i+"'></button>").join('');
+      if (!photos || !photos.length) {
+        grid.innerHTML = "";
+        box.style.display = "none";
+        if (empty) empty.style.display = "";
+        return;
+      }
 
-  // simple auto slider
-  let index = 0;
-  function update(){
-    const imgs = track.querySelectorAll('img');
-    const total = imgs.length;
-    if(!total) return;
-    imgs.forEach((img, i)=>{
-      img.style.display = i === index ? 'block' : 'none';
-    });
-    dots.querySelectorAll('button').forEach((b, i)=>{
-      b.classList.toggle('active', i === index);
-    });
-  }
-  dots.addEventListener('click', function(e){
-    const btn = e.target.closest('button[data-index]');
-    if(!btn) return;
-    index = parseInt(btn.getAttribute('data-index'), 10) || 0;
-    update();
-  });
-  update();
-  setInterval(function(){
-    const total = track.querySelectorAll('img').length;
-    if(total > 1){
-      index = (index + 1) % total;
-      update();
-    }
-  }, 5000);
-})();
-</script>
+      if (empty) empty.style.display = "none";
+      box.style.display = "block";
 
-<script>
-(async function(){
-  const c = await Ironwood.cfg();
-  if(c){
-    const map={brand:'--brand',accent:'--accent',bg:'--bg',surface:'--surface',text:'--text',muted:'--muted'};
-    if(c.theme) for(const k in map){ if(c.theme[k]) document.documentElement.style.setProperty(map[k], c.theme[k]); }
-    if(c.logos?.site){ siteLogo.src=c.logos.site; const f=document.getElementById('siteLogoFoot'); if(f) f.src=c.logos.site; }
-    brandName.textContent=c.business?.name||'Ironwood Land Development';
-    document.querySelectorAll('[data-call]').forEach(a=>{ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; a.href='tel:'+ph; a.textContent='📞 Call '+disp; });
-    const fa=document.getElementById('footAddress'); if(fa) fa.innerHTML=c.business?.address_html||'805 E. Main St<br>Oak Grove, LA 71263';
-    const fp=document.getElementById('footPhone'); if(fp){ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; fp.href='tel:'+ph; fp.textContent=disp; }
-    const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
-  }
-  const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
-})();
-</script>
-
-<script>
-(async function(){
-  const photos = await Ironwood.dumpPhotos();
-  const box = document.getElementById('dumpster-carousel');
-  const track = document.getElementById('dumpster-track');
-  const dots = document.getElementById('dumpster-dots');
-  if(!box || !track || !dots) return;
-
-  if(!photos || !photos.length){
-    box.style.display = 'none';
-    return;
-  }
-
-  box.style.display = 'block';
-  track.innerHTML = photos.map(u => "<img src='"+u+"' alt='Dumpster photo' loading='lazy'>").join('');
-  dots.innerHTML = photos.map((_,i)=>"<button type='button' data-index='"+i+"'></button>").join('');
-
-  // simple auto slider
-  let index = 0;
-  function update(){
-    const imgs = track.querySelectorAll('img');
-    const total = imgs.length;
-    if(!total) return;
-    imgs.forEach((img, i)=>{
-      img.style.display = i === index ? 'block' : 'none';
-    });
-    dots.querySelectorAll('button').forEach((b, i)=>{
-      b.classList.toggle('active', i === index);
-    });
-  }
-  dots.addEventListener('click', function(e){
-    const btn = e.target.closest('button[data-index]');
-    if(!btn) return;
-    index = parseInt(btn.getAttribute('data-index'), 10) || 0;
-    update();
-  });
-  update();
-  setInterval(function(){
-    const total = track.querySelectorAll('img').length;
-    if(total > 1){
-      index = (index + 1) % total;
-      update();
-    }
-  }, 5000);
-})();
-</script>
-
-<script>
-(function(){
-  function renderDumpCarousel(urls){
-    var box=document.getElementById('dumpster-carousel'),
-        track=document.getElementById('dumpster-track'),
-        dots=document.getElementById('dumpster-dots');
-    if(!box||!track||!dots) return;
-    if(!urls||!urls.length){ box.style.display='none'; return; }
-    box.style.display='block';
-    track.innerHTML=urls.map(function(u){ return '<img src="'+u+'" alt="Dumpster photo">'; }).join('');
-    dots.innerHTML=urls.map(function(_,i){ return '<span class="dot'+(i===0?' active':'')+'"></span>'; }).join('');
-    var idx=0,n=urls.length,timer;
-    function go(i){
-      idx=(i+n)%n;
-      var x=-idx*box.clientWidth;
-      track.style.transform='translateX('+x+'px)';
-      dots.querySelectorAll('.dot').forEach(function(d,k){ d.classList.toggle('active', k===idx); });
-    }
-    function start(){ timer=setInterval(function(){ go(idx+1); }, 3000); }
-    function stop(){ clearInterval(timer); }
-    start();
-    box.addEventListener('mouseenter', stop);
-    box.addEventListener('mouseleave', start);
-    window.addEventListener('resize', function(){ go(idx); });
-  }
-  fetch('config.json', {cache:'no-store'})
-    .then(function(r){ return r.ok?r.json():{}; })
-    .then(function(cfg){
-      var urls = Array.isArray(cfg.dumpster_photos) ? cfg.dumpster_photos : [];
-      renderDumpCarousel(urls);
-    })
-    .catch(function(){});
-})();
-</script>
-
-<script>
-(async function () {
-  // Require the global Ironwood helper
-  if (!window.Ironwood || typeof Ironwood.dumpPhotos !== "function") return;
-
-  const photos = await Ironwood.dumpPhotos();
-
-  const grid  = document.getElementById("dump-photos");
-  const box   = document.getElementById("dumpster-carousel");
-  const track = document.getElementById("dumpster-track");
-  const dots  = document.getElementById("dumpster-dots");
-  let   empty = document.getElementById("dump-empty");
-
-  // 1) Grid rendering + empty message
-  if (grid) {
-    if (photos && photos.length) {
+      // Grid
       grid.innerHTML = photos
         .map(
           (u) =>
-            `<img src="${u}" alt="Dumpster photo" loading="lazy" style="width:100%;border-radius:12px;object-fit:cover;">`
+            `<img src="${u}" alt="Dumpster photo" loading="lazy">`
         )
         .join("");
-    } else {
-      // Create empty message if it doesn't exist yet
-      if (!empty) {
-        empty = document.createElement("p");
-        empty.id = "dump-empty";
-        empty.className = "muted";
-        empty.textContent = "No dumpster photos yet.";
-        grid.appendChild(empty);
-      } else {
-        empty.style.display = "";
+
+      // Carousel images
+      track.innerHTML = photos
+        .map(
+          (u, i) =>
+            `<img src="${u}" alt="Dumpster photo ${i + 1}" loading="lazy" class="${
+              i === 0 ? "is-active" : ""
+            }">`
+        )
+        .join("");
+
+      // Dots
+      dots.innerHTML = photos
+        .map(
+          (_u, i) =>
+            `<button type="button" data-index="${i}" class="${
+              i === 0 ? "is-active"
+            }"></button>`
+        )
+        .join("");
+
+      let current = 0;
+      const imgs = () => track.querySelectorAll("img");
+      const btns = () => dots.querySelectorAll("button[data-index]");
+
+      function show(index) {
+        const list = imgs();
+        const buttons = btns();
+        if (!list.length) return;
+        const total = list.length;
+        current = (index + total) % total;
+        list.forEach((img, i) => {
+          img.classList.toggle("is-active", i === current);
+        });
+        buttons.forEach((b, i) => {
+          b.classList.toggle("is-active", i === current);
+        });
       }
-    }
-  }
 
-  // 2) If no photos, hide carousel and bail out
-  if (!photos || !photos.length || !box || !track || !dots) {
-    if (box) box.style.display = "none";
-    return;
-  }
+      dots.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-index]");
+        if (!btn) return;
+        const idx = parseInt(btn.getAttribute("data-index"), 10) || 0;
+        show(idx);
+      });
 
-  // We have photos: show carousel and hide empty message if present
-  box.style.display = "";
-  if (empty) empty.style.display = "none";
+      setInterval(() => {
+        if (photos.length > 1) {
+          show(current + 1);
+        }
+      }, 5000);
+    })();
+  </script>
 
-  // 3) Build carousel slides & dots
-  track.innerHTML = photos
-    .map(
-      (u, i) => `
-      <img
-        data-index="${i}"
-        src="${u}"
-        alt="Dumpster photo ${i + 1}"
-        loading="lazy"
-        style="width:100%;border-radius:12px;object-fit:cover;display:${i === 0 ? "block" : "none"};">
-    `
-    )
-    .join("");
-
-  dots.innerHTML = photos
-    .map(
-      (_u, i) =>
-        `<button type="button" data-index="${i}" class="${i === 0 ? "active" : ""}"></button>`
-    )
-    .join("");
-
-  let current = 0;
-  const imgs = () => track.querySelectorAll("img[data-index]");
-  const btns = () => dots.querySelectorAll("button[data-index]");
-
-  function show(idx) {
-    const list = imgs();
-    const buttons = btns();
-    if (!list.length) return;
-    const total = list.length;
-    current = (idx + total) % total;
-
-    list.forEach((img, i) => {
-      img.style.display = i === current ? "block" : "none";
-    });
-    buttons.forEach((b, i) => {
-      b.classList.toggle("active", i === current);
-    });
-  }
-
-  // Dot click
-  dots.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-index]");
-    if (!btn) return;
-    const idx = parseInt(btn.getAttribute("data-index"), 10) || 0;
-    show(idx);
-  });
-
-  // Autoplay every 5s
-  setInterval(() => {
-    if (imgs().length > 1) {
-      show(current + 1);
-    }
-  }, 5000);
-})();
-</script>
-
+  <script src="/carousel-cache-bust-patch.js"></script>
+</body>
+</html>
