@@ -326,6 +326,12 @@
       const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
       const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
       async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
+      window.__INLINE_DUMP_PHOTOS = [
+        "dumpsters/photos/1763517712002-IMG_5843.jpeg",
+        "dumpsters/photos/1763517713140-IMG_5143.jpeg",
+        "dumpsters/photos/1763517714779-IMG_5141.jpeg",
+        "dumpsters/photos/1763517716520-IMG_5140.jpeg"
+      ];
       window.Ironwood = {
         cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
         jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
@@ -351,6 +357,9 @@
             const result = getter();
             photos = (result && typeof result.then === "function") ? (await result)||[] : (result||[]);
           }
+        }
+        if(!photos.length && Array.isArray(window.__INLINE_DUMP_PHOTOS)){
+          photos = window.__INLINE_DUMP_PHOTOS;
         }
         return photos || [];
       }catch(e){

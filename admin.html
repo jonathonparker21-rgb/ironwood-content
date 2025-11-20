@@ -43,15 +43,25 @@ input,textarea{
 textarea{min-height:80px}
 .btn{
   display:inline-flex;gap:.6rem;align-items:center;
-  background:var(--brand);
+  background:linear-gradient(135deg, var(--brand), #ef4444);
   color:#fff;
   padding:.6rem .9rem;
   border-radius:999px;
   font-weight:700;
-  border:2px solid transparent;
+  border:2px solid rgba(239, 68, 68, 0.35);
   cursor:pointer;
+  box-shadow:0 10px 30px rgba(239, 68, 68, 0.25);
+  transition:transform .08s ease, box-shadow .12s ease, filter .12s ease;
 }
-.btn.ghost{background:transparent;border-color:#2b333b}
+.btn:hover{filter:brightness(1.05);box-shadow:0 12px 34px rgba(239, 68, 68, 0.32);transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
+.btn.ghost{
+  background:transparent;
+  border:1px solid #2b333b;
+  color:var(--text);
+  box-shadow:none;
+}
+.btn.ghost:hover{border-color:#475569;filter:brightness(1.02);}
 .badge{padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:#5b1a1a}
 .muted{color:var(--muted)}
 header{
