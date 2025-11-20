@@ -358,7 +358,7 @@ document.getElementById('equip_photos_upload')?.addEventListener('click', async 
     for(const f of files){
       const dataUrl = await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
       const b64 = String(dataUrl).split(',')[1] || '';
-      const safe = (Date.now()+'-'+f.name).replace(/\s+/g,'_');
+      const safe = (Date.now()+'-'+Math.random().toString(36).slice(2,8)+'-'+f.name).replace(/\s+/g,'_');
       await ghPutB64('equipment/photos/'+safe, b64, 'admin: upload equipment photo');
     }
     await refreshEquipPhotosFromDirToConfig();
@@ -424,7 +424,7 @@ document.getElementById('dump_photos_upload')?.addEventListener('click', async (
     for(const f of files){
       const dataUrl = await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
       const b64 = String(dataUrl).split(',')[1] || '';
-      const safe = (Date.now()+'-'+f.name).replace(/\s+/g,'_');
+      const safe = (Date.now()+'-'+Math.random().toString(36).slice(2,8)+'-'+f.name).replace(/\s+/g,'_');
       await ghPutB64('dumpsters/photos/'+safe, b64, 'admin: upload dumpster photo');
     }
     await refreshDumpPhotosFromDirToConfig();

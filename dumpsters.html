@@ -176,50 +176,30 @@
       .photo-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
     }
 
-    .carousel {
-      margin-top: 1rem;
-      border-radius: 0.9rem;
+    /* Framed photo cards */
+    .photo-cards {
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 0.9rem;
+      margin-top: 0.8rem;
+    }
+    .photo-card {
+      background: linear-gradient(150deg, rgba(15,23,42,0.95), rgba(11,17,32,0.92));
       border: 1px solid var(--border);
-      background: #020617;
-      overflow: hidden;
-      position: relative;
-    }
-    .carousel-track {
-      width: 100%;
-      position: relative;
-      min-height: 220px;
-      background: radial-gradient(circle at top, rgba(15,23,42,0.8), rgba(2,6,23,1));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .carousel-track img {
-      max-width: 100%;
-      max-height: 260px;
-      object-fit: cover;
-      display: none;
       border-radius: 0.9rem;
+      overflow: hidden;
+      padding: 0.75rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
-    .carousel-track img.is-active {
+    .photo-card img {
+      width: 100%;
+      border-radius: 0.65rem;
       display: block;
+      object-fit: cover;
+      max-height: 320px;
     }
-    .carousel-dots {
-      display: flex;
-      gap: 0.35rem;
-      justify-content: center;
-      padding: 0.5rem 0.6rem 0.6rem;
-      background: linear-gradient(to top, #020617, transparent);
-    }
-    .carousel-dots button {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      border: none;
-      background: rgba(148,163,184,0.5);
-      cursor: pointer;
-    }
-    .carousel-dots button.is-active {
-      background: var(--accent);
+    @media (min-width: 640px) {
+      .photo-cards { grid-template-columns: repeat(2,minmax(0,1fr)); }
     }
 
     footer {
@@ -297,20 +277,8 @@
 
     <section id="photos">
       <h2>Dumpster Photos</h2>
-      <p class="muted">Photos managed via your admin (GitHub-backed), just like before.</p>
-
-      <!-- Grid of dumpster photos -->
-      <div id="dump-photos" class="photo-grid"></div>
-
-      <!-- Carousel driven by same photos -->
-      <div id="dumpster-carousel" class="carousel" aria-label="Dumpster photos">
-        <div class="carousel-track" id="dumpster-track"></div>
-        <div class="carousel-dots" id="dumpster-dots"></div>
-      </div>
-
-      <p id="dump-empty" class="muted" style="margin-top:.5rem">
-        No dumpster photos yet.
-      </p>
+      <p class="muted">Recent roll-offs in the field.</p>
+      <div id="dump-photos-cards" class="photo-cards" style="margin-top:1.1rem;"></div>
     </section>
   </main>
 
@@ -368,84 +336,19 @@
     }
 
     (async function initDumpsterPhotos() {
-      const grid  = document.getElementById("dump-photos");
-      const box   = document.getElementById("dumpster-carousel");
-      const track = document.getElementById("dumpster-track");
-      const dots  = document.getElementById("dumpster-dots");
-      const empty = document.getElementById("dump-empty");
-
-      if (!grid || !box || !track || !dots) return;
+      const cards  = document.getElementById("dump-photos-cards");
+      if (!cards) return;
 
       const photos = await loadDumpsterPhotosFromAdmin();
 
       if (!photos || !photos.length) {
-        grid.innerHTML = "";
-        box.style.display = "none";
-        if (empty) empty.style.display = "";
+        cards.innerHTML = '<p class="muted">No dumpster photos yet.</p>';
         return;
       }
 
-      if (empty) empty.style.display = "none";
-      box.style.display = "block";
-
-      // Grid
-      grid.innerHTML = photos
-        .map(
-          (u) =>
-            `<img src="${u}" alt="Dumpster photo" loading="lazy">`
-        )
+      cards.innerHTML = photos
+        .map((u)=>`<div class="photo-card"><img src="${u}" alt="Dumpster photo" loading="lazy"></div>`)
         .join("");
-
-      // Carousel images
-      track.innerHTML = photos
-        .map(
-          (u, i) =>
-            `<img src="${u}" alt="Dumpster photo ${i + 1}" loading="lazy" class="${
-              i === 0 ? "is-active" : ""
-            }">`
-        )
-        .join("");
-
-      // Dots
-      dots.innerHTML = photos
-        .map(
-          (_u, i) =>
-            `<button type="button" data-index="${i}" class="${
-              i === 0 ? "is-active"
-            }"></button>`
-        )
-        .join("");
-
-      let current = 0;
-      const imgs = () => track.querySelectorAll("img");
-      const btns = () => dots.querySelectorAll("button[data-index]");
-
-      function show(index) {
-        const list = imgs();
-        const buttons = btns();
-        if (!list.length) return;
-        const total = list.length;
-        current = (index + total) % total;
-        list.forEach((img, i) => {
-          img.classList.toggle("is-active", i === current);
-        });
-        buttons.forEach((b, i) => {
-          b.classList.toggle("is-active", i === current);
-        });
-      }
-
-      dots.addEventListener("click", (e) => {
-        const btn = e.target.closest("button[data-index]");
-        if (!btn) return;
-        const idx = parseInt(btn.getAttribute("data-index"), 10) || 0;
-        show(idx);
-      });
-
-      setInterval(() => {
-        if (photos.length > 1) {
-          show(current + 1);
-        }
-      }, 5000);
     })();
   </script>
 
