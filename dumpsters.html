@@ -61,6 +61,22 @@
       background: linear-gradient(135deg, rgba(248,113,113,0.15), rgba(248,113,113,0.02));
       font-size: 0.7rem;
     }
+    .brand-name{
+      padding: 2px 8px;
+      border:1px solid rgba(248,113,113,0.6);
+      border-radius:12px;
+      background:rgba(248,113,113,0.08);
+      letter-spacing:0.04em;
+      color: var(--fg);
+    }
+    .brand-tag{
+      padding: 2px 8px;
+      border:1px solid rgba(248,113,113,0.6);
+      border-radius:999px;
+      font-size:12px;
+      letter-spacing:0.08em;
+      color:var(--fg);
+    }
     nav {
       display: flex;
       align-items: center;
@@ -237,8 +253,8 @@
     <div class="container nav-inner">
       <a class="brand" href="/index.html">
         <img src="assets/logo-ld-original.png" alt="" style="height:42px">
-        <span>Ironwood Land Development</span>
-        <span style="padding:2px 8px;border:1px solid rgba(248,113,113,0.6);border-radius:999px;font-size:12px;letter-spacing:0.08em;">NE LA</span>
+        <span class="brand-name">Ironwood Land Development</span>
+        <span class="brand-tag">NE LA</span>
       </a>
       <nav>
         <a href="/index.html#services">Services</a>
