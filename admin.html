@@ -158,7 +158,7 @@
     async function api(path, method='GET', payload=null, isBase64=false){
       const s=state();
       if(useWorker()){
-        const url = s.cf_url.replace(/\\/$/,'') + '?path=' + encodeURIComponent(path);
+        const url = s.cf_url.replace(/\/$/,'') + '?path=' + encodeURIComponent(path);
         const headers = {'Authorization':'Bearer '+s.cf_key};
         if(payload) headers['Content-Type']='application/json';
         const body = payload ? JSON.stringify(payload) : undefined;
@@ -195,8 +195,8 @@
       try{
         const dir = await api(prefix,'GET');
         if(!Array.isArray(dir) || !dir.length){target.innerHTML='<p class="muted">No photos yet.</p>'; return [];}
-        const files = dir.filter(x=>x.name && x.name!=='.keep').map(x=>prefix.replace(/\\/$/,'')+'/'+x.name);
-        target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
+        const files = dir.filter(x=>x.name && x.name!=='.keep').map(x=>prefix.replace(/\/$/,'')+'/'+x.name);
+        target.innerHTML = files.map(p=>`<div style="display:flex;align-items:center;gap:10px;margin:.3rem 0;border:1px solid #1a2128;padding:.3rem .5rem;border-radius:8px"><img src="${p}" alt=""><code style="flex:1">${p}</code><button class="btn ghost" onclick="deletePhoto('${p.replace(/^\//,'')}', '${prefix}', '${target.id}')">Delete</button></div>`).join('');
         return files;
       }catch(e){
         target.innerHTML='<p class="muted">Error loading list.</p>';
@@ -205,7 +205,7 @@
     }
     window.deletePhoto = async function(relPath, prefix, targetId){
       try{
-        await api(relPath.replace(/^\\//,''), 'DELETE', {message:'delete '+relPath});
+        await api(relPath.replace(/^\//,''), 'DELETE', {message:'delete '+relPath});
         await listDir(prefix, document.getElementById(targetId));
         toast('Photo deleted', true);
       }catch(e){ toast('Delete failed: '+e.message, false); }
@@ -219,7 +219,7 @@
         for(const f of files){
           const dataUrl = await new Promise((res,rej)=>{const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f);});
           const b64 = String(dataUrl).split(',')[1]||'';
-          const safe = (Date.now()+'-'+f.name.replace(/\\s+/g,'_'));
+          const safe = (Date.now()+'-'+f.name.replace(/\s+/g,'_'));
           await api(folder+'/'+safe,'POST',{content:b64,base64:true,message:'upload '+folder});
         }
         const listEl=$(targetId);
