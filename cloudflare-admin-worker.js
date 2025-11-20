@@ -36,7 +36,9 @@ export default {
       'Content-Type': 'application/json',
       'User-Agent': 'cf-worker-admin-proxy'
     };
-    const ghBase = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
+    // Preserve nested paths by encoding each segment instead of the entire path.
+    const safePath = path.replace(/^\/+/, '').split('/').map(encodeURIComponent).join('/');
+    const ghBase = `https://api.github.com/repos/${owner}/${repo}/contents/${safePath}`;
 
     async function getSha() {
       const r = await fetch(`${ghBase}?ref=${branch}`, { headers: ghHeaders });
