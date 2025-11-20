@@ -62,11 +62,30 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
   const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
   async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
   window.Ironwood = {
-    cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
-    jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
-    jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
-    dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || []
-  };
+  cfg: async () =>
+    (await j("config.json")) || (RAW && (await j(RAW + "/config.json"))) || null,
+
+  jobsIdx: async () =>
+    (await j("jobs/index.json")) ||
+    (RAW && (await j(RAW + "/jobs/index.json"))) ||
+    [],
+
+  jobMeta: async (id) =>
+    (await j("jobs/" + id + "/meta.json")) ||
+    (RAW && (await j(RAW + "/jobs/" + id + "/meta.json"))) ||
+    null,
+
+  dumpPhotos: async () =>
+    (await j("dumpsters/photos/index.json")) ||
+    (RAW && (await j(RAW + "/dumpsters/photos/index.json"))) ||
+    [],
+
+  // NEW: equipment photos helper (matches how dumpPhotos works)
+  equipmentPhotos: async () =>
+    (await j("equipment/photos/index.json")) ||
+    (RAW && (await j(RAW + "/equipment/photos/index.json"))) ||
+    []
+};
 })();
 </script>
 
