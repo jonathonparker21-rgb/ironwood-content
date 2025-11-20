@@ -166,8 +166,9 @@
       async function viaGitHub() {
         const ghHeaders = {'Content-Type':'application/json'};
         if(s.gh_token) ghHeaders['Authorization']='Bearer '+s.gh_token;
-        const basePath = path.replace(/^\/+/,'');
-        const base = `https://api.github.com/repos/${s.gh_owner}/${s.gh_repo}/contents/${encodeURIComponent(basePath)}?ref=${encodeURIComponent(trimBranch)}`;
+        // Preserve nested paths (encode each segment, not the slash).
+        const basePath = path.replace(/^\/+/,'').split('/').map(encodeURIComponent).join('/');
+        const base = `https://api.github.com/repos/${s.gh_owner}/${s.gh_repo}/contents/${basePath}?ref=${encodeURIComponent(trimBranch)}`;
         if(method==='GET'){
           const r=await fetch(base,{headers:ghHeaders,cache:'no-store'});
           if(r.status === 404) return null;
