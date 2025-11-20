@@ -1,251 +1,55 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dumpster Rentals (Weekly) | Ironwood Trucking LLC – Oak Grove, LA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --bg: #050816;
-      --bg-alt: #0b1220;
-      --fg: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #dc2626;
-      --accent-soft: rgba(220, 38, 38, 0.12);
-      --card: #0b1120;
-      --border: #1f2937;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%);
-      color: var(--fg);
-      line-height: 1.5;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    a { color: inherit; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom, rgba(15,23,42,0.94), rgba(15,23,42,0.70), transparent);
-      border-bottom: 1px solid rgba(148,163,184,0.25);
-    }
-    .nav-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0.75rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      justify-content: space-between;
-    }
-    .brand {
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .brand-name{
-      padding: 2px 8px;
-      border:1px solid rgba(248,113,113,0.6);
-      border-radius:12px;
-      background:rgba(248,113,113,0.08);
-      letter-spacing:0.04em;
-      color: var(--fg);
-    }
-    .brand-tag{
-      padding: 2px 8px;
-      border:1px solid rgba(248,113,113,0.6);
-      border-radius:999px;
-      font-size:12px;
-      letter-spacing:0.08em;
-      color:var(--fg);
-    }
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.85rem;
-    }
-    nav a { color: var(--muted); text-decoration: none; }
-    nav a:hover { color: var(--fg); }
-    .call-chip {
-      padding: 0.45rem 0.85rem;
-      border-radius: 10px;
-      border: 1px solid rgba(220,38,38,0.5);
-      font-size: 0.82rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: linear-gradient(145deg, #0f172a, #0b1220);
-      transition: box-shadow .15s ease, border-color .12s ease, transform .08s ease;
-    }
-    .call-chip:hover {
-      border-color: rgba(252,165,165,0.85);
-      box-shadow: 0 0 12px rgba(220,38,38,0.35);
-      transform: translateY(-1px);
-    }
-
-    main {
-      flex: 1;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 3rem;
-    }
-
-    .hero-kicker {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 0.4rem;
-    }
-    h1 {
-      font-size: clamp(1.9rem, 4vw, 2.3rem);
-      margin-bottom: 0.5rem;
-    }
-    .hero-sub {
-      color: var(--muted);
-      font-size: 0.95rem;
-      max-width: 32rem;
-      margin-bottom: 1rem;
-    }
-    .hero-cta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
-      align-items: center;
-    }
-    .btn-primary {
-      background: linear-gradient(145deg, #1f2937, #0f172a);
-      color: #ffdddd;
-      border-radius: 10px;
-      padding: 0.6rem 1.4rem;
-      border: 1px solid rgba(220,38,38,0.45);
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 0 0 rgba(220,38,38,0.25);
-      transition: box-shadow .15s ease, transform .08s ease, filter .12s ease, border-color .12s ease;
-    }
-    .btn-primary:hover {
-      filter: brightness(1.05);
-      border-color: rgba(252, 165, 165, 0.9);
-      box-shadow: 0 0 14px rgba(220,38,38,0.4);
-      transform: translateY(-1px);
-    }
-    .btn-primary:active { transform: translateY(0); }
-    .hero-badge {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    section { margin-top: 2rem; }
-    section h2 {
-      font-size: 1.25rem;
-      margin-bottom: 0.4rem;
-    }
-    .muted { color: var(--muted); }
-
-    .rates {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 0.75rem;
-      margin-top: 0.5rem;
-    }
-    .rate-card {
-      padding: 0.8rem 1rem;
-      border-radius: 0.85rem;
-      border: 1px solid var(--border);
-      background: radial-gradient(circle at top left, rgba(220,38,38,0.12), rgba(15,23,42,0.95));
-      font-size: 0.9rem;
-    }
-    .rate-card h3 {
-      font-size: 1rem;
-      margin-bottom: 0.2rem;
-    }
-    .rate-price {
-      font-weight: 600;
-      color: #f97316;
-      margin-bottom: 0.3rem;
-    }
-    @media (min-width: 640px) {
-      .rates { grid-template-columns: repeat(2,minmax(0,1fr)); }
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 0.75rem;
-      margin-top: 0.75rem;
-    }
-    .photo-grid img {
-      width: 100%;
-      border-radius: 0.8rem;
-      object-fit: cover;
-      display: block;
-    }
-    @media (min-width: 640px) {
-      .photo-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-    }
-
-    /* Framed photo cards */
-    .photo-cards {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 0.9rem;
-      margin-top: 0.8rem;
-    }
-    .photo-card {
-      background: linear-gradient(150deg, rgba(15,23,42,0.95), rgba(11,17,32,0.92));
-      border: 1px solid var(--border);
-      border-radius: 0.9rem;
-      overflow: hidden;
-      padding: 0.75rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
-    .photo-card img {
-      width: 100%;
-      border-radius: 0.65rem;
-      display: block;
-      object-fit: cover;
-      max-height: 320px;
-    }
-    @media (min-width: 640px) {
-      .photo-cards { grid-template-columns: repeat(2,minmax(0,1fr)); }
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      background: #020617;
-      margin-top: auto;
-    }
-    .footer-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      font-size: 0.85rem;
-    }
+    :root{--bg:#050816;--bg-alt:#0b1220;--fg:#e5e7eb;--muted:#9ca3af;--accent:#dc2626;--accent-soft:rgba(220,38,38,0.12);--card:#0b1120;--border:#1f2937}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;background:radial-gradient(circle at top,#111827 0,#020617 55%);color:var(--fg);line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
+    a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
+    header{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:linear-gradient(to bottom,rgba(15,23,42,0.94),rgba(15,23,42,0.70),transparent);border-bottom:1px solid rgba(148,163,184,0.25)}
+    .nav-inner{max-width:960px;margin:0 auto;padding:0.75rem 1rem;display:flex;align-items:center;gap:1.25rem;justify-content:space-between}
+    .brand{font-weight:700;letter-spacing:0.05em;text-transform:uppercase;font-size:0.95rem;display:flex;align-items:center;gap:0.5rem}
+    .brand img{height:42px}
+    .brand-name{padding:2px 8px;border:1px solid rgba(248,113,113,0.6);border-radius:12px;background:rgba(248,113,113,0.08);letter-spacing:0.04em}
+    .brand-tag{padding:2px 8px;border:1px solid rgba(248,113,113,0.6);border-radius:999px;font-size:12px;letter-spacing:0.08em;color:var(--fg)}
+    nav{display:flex;align-items:center;gap:1rem;font-size:0.85rem}
+    nav a{color:var(--muted);text-decoration:none;padding:0.4rem 0.65rem;border-radius:10px}
+    nav a:hover{color:var(--fg);background:rgba(220,38,38,0.1)}
+    .call-chip{padding:0.45rem 0.85rem;border-radius:10px;border:1px solid rgba(220,38,38,0.5);font-size:0.82rem;display:flex;align-items:center;gap:0.4rem;background:linear-gradient(145deg,#0f172a,#0b1220);transition:box-shadow .15s ease,border-color .12s ease,transform .08s ease}
+    .call-chip:hover{border-color:rgba(252,165,165,0.85);box-shadow:0 0 12px rgba(220,38,38,0.35);transform:translateY(-1px)}
+    main{flex:1;max-width:960px;margin:0 auto;padding:1.5rem 1rem 3rem}
+    .hero-kicker{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem}
+    h1{font-size:clamp(1.9rem,4vw,2.3rem);margin-bottom:0.5rem}
+    .hero-sub{color:var(--muted);font-size:0.95rem;max-width:32rem;margin-bottom:1rem}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:2rem;align-items:center}
+    .btn-primary{background:linear-gradient(145deg,#1f2937,#0f172a);color:#ffdddd;border-radius:10px;padding:0.6rem 1.4rem;border:1px solid rgba(220,38,38,0.45);font-size:0.9rem;cursor:pointer;text-decoration:none;box-shadow:0 0 0 rgba(220,38,38,0.25);transition:box-shadow .15s ease,transform .08s ease,filter .12s ease,border-color .12s ease}
+    .btn-primary:hover{filter:brightness(1.05);border-color:rgba(252,165,165,0.9);box-shadow:0 0 14px rgba(220,38,38,0.4);transform:translateY(-1px)}
+    .btn-primary:active{transform:translateY(0)}
+    section{margin-top:2rem}
+    section h2{font-size:1.25rem;margin-bottom:0.4rem}
+    .muted{color:var(--muted)}
+    .rates{display:grid;grid-template-columns:minmax(0,1fr);gap:0.75rem;margin-top:0.5rem}
+    .rate-card{padding:0.8rem 1rem;border-radius:0.85rem;border:1px solid var(--border);background:radial-gradient(circle at top left,rgba(220,38,38,0.12),rgba(15,23,42,0.95));font-size:0.9rem}
+    .rate-card h3{font-size:1rem;margin-bottom:0.2rem}
+    .rate-price{font-weight:600;color:#f97316;margin-bottom:0.3rem}
+    @media(min-width:640px){.rates{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    .photo-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:0.9rem;margin-top:0.8rem}
+    .photo-card{background:linear-gradient(150deg,rgba(15,23,42,0.95),rgba(11,17,32,0.92));border:1px solid var(--border);border-radius:0.9rem;overflow:hidden;padding:0.75rem;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+    .photo-card img{width:100%;border-radius:0.65rem;display:block;object-fit:cover;max-height:320px}
+    @media(min-width:640px){.photo-cards{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    footer{border-top:1px solid var(--border);background:#020617;margin-top:auto}
+    footer .footer-inner{max-width:960px;margin:0 auto;padding:1.5rem 1rem 2rem;display:grid;gap:1rem;grid-template-columns:minmax(0,1fr)}
+    @media(min-width:640px){footer .footer-inner{grid-template-columns:repeat(3,minmax(0,1fr));}}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container nav-inner">
+  <header>
+    <div class="nav-inner">
       <a class="brand" href="/index.html">
-        <img src="assets/logo-ld-original.png" alt="" style="height:42px">
+        <img src="assets/logo-ld-original.png" alt="">
         <span class="brand-name">Ironwood Land Development</span>
         <span class="brand-tag">NE LA</span>
       </a>
@@ -281,34 +85,24 @@
         <div class="rate-card">
           <h3>Small (≈12–15 yd)</h3>
           <p class="rate-price">Weekly: $350</p>
-          <p>
-            Perfect for garage clean-outs, small remodels, and light construction debris.
-          </p>
+          <p>Perfect for garage clean-outs, small remodels, and light construction debris.</p>
         </div>
         <div class="rate-card">
           <h3>Large (≈30 yd)</h3>
           <p class="rate-price">Weekly: $450</p>
-          <p>
-            Ideal for whole-home clean-outs, major remodels, roofing tear-offs, and heavier jobs.
-          </p>
+          <p>Ideal for whole-home clean-outs, major remodels, roofing tear-offs, and heavier jobs.</p>
         </div>
       </div>
-      <p class="muted" style="margin-top:0.75rem;">
-        Service Area: Northeast Louisiana. Weekly rate includes dump fee.
-      </p>
-    </section>
-
-    <section id="photos">
-      <h2>Dumpster Photos</h2>
-      <p class="muted">Recent roll-offs in the field.</p>
+      <p class="muted" style="margin-top:0.75rem;">Service Area: Northeast Louisiana. Weekly rate includes dump fee.</p>
       <div id="dump-photos-cards" class="photo-cards" style="margin-top:1.1rem;"></div>
     </section>
   </main>
 
   <footer>
     <div class="footer-inner">
-      <div>Weekly roll-off dumpster rentals via Ironwood Trucking LLC.</div>
-      <div>Call or text <a href="tel:+13189142351">(318) 914-2351</a> to schedule delivery.</div>
+      <div><strong>Ironwood Land Development</strong><br><span class="muted">Professional land development: clearing, grading, demolition, and dumpsters.</span></div>
+      <div><strong>Phone:</strong> (318) 914-2351<br><span class="muted">Mon–Sat 7a–6p</span></div>
+      <div><strong>Address:</strong> 805 E. Main St, Oak Grove, LA 71263</div>
     </div>
   </footer>
 
@@ -317,15 +111,9 @@
       const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
       const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
       async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
-      window.__INLINE_DUMP_PHOTOS = [
-        "/dumpsters/photos/1763623859930-IMG_5843.jpeg"
-      ];
       window.Ironwood = {
         cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
-        jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
-        jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
         dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || [],
-        equipmentPhotos: async ()=> await j('equipment/photos/index.json') || (RAW && await j(RAW+'/equipment/photos/index.json')) || []
       };
     })();
   </script>
@@ -339,17 +127,12 @@
         let photos = Array.isArray(cfg?.dumpster_photos) ? cfg.dumpster_photos.map(fix) : [];
         if(!photos.length){
           let getter =
-            Ironwood.dumpPhotos ||
-            Ironwood.dumpsterPhotos ||
-            Ironwood.getDumpsterPhotos;
+            Ironwood.dumpPhotos;
           if(getter){
             const result = getter();
             const out = (result && typeof result.then === "function") ? (await result)||[] : (result||[]);
             photos = (out||[]).map(fix);
           }
-        }
-        if(!photos.length && Array.isArray(window.__INLINE_DUMP_PHOTOS)){
-          photos = window.__INLINE_DUMP_PHOTOS.map(fix);
         }
         return photos || [];
       }catch(e){
@@ -359,7 +142,7 @@
     }
 
     (async function initDumpsterPhotos() {
-      const cards  = document.getElementById("dump-photos-cards");
+      const cards = document.getElementById("dump-photos-cards");
       if (!cards) return;
 
       const photos = await loadDumpsterPhotosFromAdmin();
@@ -373,18 +156,6 @@
         .map((u)=>`<div class="photo-card"><img src="${u}" alt="Dumpster photo" loading="lazy"></div>`)
         .join("");
     })();
-  </script>
-
-  <script src="/carousel-cache-bust-patch.js"></script>
-  <script>
-    // Secret admin shortcut: Ctrl/Cmd + Shift + A
-    window.addEventListener('keydown', function(e){
-      const isMod = e.ctrlKey || e.metaKey;
-      if(isMod && e.shiftKey && e.code === 'KeyA'){
-        e.preventDefault();
-        location.href = 'admin.html';
-      }
-    });
   </script>
 </body>
 </html>

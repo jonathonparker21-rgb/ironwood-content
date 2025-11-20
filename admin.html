@@ -39,6 +39,18 @@
     footer .footer-inner{max-width:960px;margin:0 auto;padding:1.5rem 1rem 2rem;display:grid;gap:1rem;grid-template-columns:minmax(0,1fr)}
     @media(min-width:640px){footer .footer-inner{grid-template-columns:repeat(3,minmax(0,1fr));}}
     .photo-list img{width:72px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #1a2128}
+    .toast{
+      position:fixed;right:16px;bottom:16px;
+      background:#0f172a;
+      border:1px solid #1f2937;
+      border-radius:12px;
+      padding:.7rem 1rem;
+      display:none;
+      box-shadow:0 10px 30px rgba(0,0,0,0.35);
+      z-index:9999;
+    }
+    .toast.ok{background:#0f1a14;border-color:#1c3a2c}
+    .toast.err{background:#1a1010;border-color:#3a1c1c}
   </style>
 </head>
 <body>
@@ -227,9 +239,9 @@
     }
 
     (function init(){
-      const s=state();
-      $('cf_url').value=s.cf_url; $('cf_key').value=s.cf_key;
-      $('gh_owner').value=s.gh_owner; $('gh_repo').value=s.gh_repo; $('gh_branch').value=s.gh_branch; $('gh_token').value=s.gh_token;
+    const s=state();
+    $('cf_url').value=s.cf_url; $('cf_key').value=s.cf_key;
+    $('gh_owner').value=s.gh_owner; $('gh_repo').value=s.gh_repo; $('gh_branch').value=s.gh_branch; $('gh_token').value=s.gh_token;
       badge('cf_status', (s.cf_url&&s.cf_key)?'Saved (worker)':'Not set', !!(s.cf_url&&s.cf_key));
       badge('gh_status', (s.gh_owner&&s.gh_repo&&s.gh_token)?'Saved':'Not set', !!(s.gh_owner&&s.gh_repo&&s.gh_token));
     })();
