@@ -327,7 +327,7 @@
       const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
       async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
       window.__INLINE_DUMP_PHOTOS = [
-        "dumpsters/photos/1763623859930-IMG_5843.jpeg"
+        "/dumpsters/photos/1763623859930-IMG_5843.jpeg"
       ];
       window.Ironwood = {
         cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
@@ -344,7 +344,8 @@
       if (!window.Ironwood) return [];
       try{
         const cfg = Ironwood.cfg ? (await Ironwood.cfg()) : null;
-        let photos = Array.isArray(cfg?.dumpster_photos) ? cfg.dumpster_photos : [];
+        const fix = (u)=>!u?'':(u.startsWith('http')?u:(u.startsWith('/')?u:'/'+u));
+        let photos = Array.isArray(cfg?.dumpster_photos) ? cfg.dumpster_photos.map(fix) : [];
         if(!photos.length){
           let getter =
             Ironwood.dumpPhotos ||
@@ -352,11 +353,12 @@
             Ironwood.getDumpsterPhotos;
           if(getter){
             const result = getter();
-            photos = (result && typeof result.then === "function") ? (await result)||[] : (result||[]);
+            const out = (result && typeof result.then === "function") ? (await result)||[] : (result||[]);
+            photos = (out||[]).map(fix);
           }
         }
         if(!photos.length && Array.isArray(window.__INLINE_DUMP_PHOTOS)){
-          photos = window.__INLINE_DUMP_PHOTOS;
+          photos = window.__INLINE_DUMP_PHOTOS.map(fix);
         }
         return photos || [];
       }catch(e){
