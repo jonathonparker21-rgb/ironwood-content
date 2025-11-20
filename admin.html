@@ -1,4 +1,5 @@
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ironwood Admin</title>
 <style>
 :root{
@@ -95,22 +96,24 @@ ul.compact li{margin:.2rem 0}
 @import url('admin-nav.css');
 </style>
 
-<header class="topbar">
-  <div class="bar">
-    <a class="brand" href="index.html">
-      <img src="assets/logo-ld-original.png" alt="" style="height:40px">
-      <span>Ironwood Land Development</span>
-      <span style="padding:2px 8px;border:1px solid rgba(248,113,113,0.6);border-radius:999px;font-size:12px;letter-spacing:0.08em;">NE LA</span>
-    </a>
-    <nav>
-      <a href="index.html#services">Services</a>
-      <a href="index.html#equipment">Equipment</a>
-      <a href="dumpsters.html">Dumpsters</a>
-      <a href="contact.html">Contact</a>
-      <a href="admin.html" style="color:#e5e7eb">Admin</a>
-    </nav>
-  </div>
-</header>
+<html>
+<body>
+  <header class="topbar">
+    <div class="bar">
+      <a class="brand" href="index.html">
+        <img src="assets/logo-ld-original.png" alt="" style="height:40px">
+        <span>Ironwood Land Development</span>
+        <span style="padding:2px 8px;border:1px solid rgba(248,113,113,0.6);border-radius:999px;font-size:12px;letter-spacing:0.08em;">NE LA</span>
+      </a>
+      <nav>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#equipment">Equipment</a>
+        <a href="dumpsters.html">Dumpsters</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin.html" style="color:#e5e7eb">Admin</a>
+      </nav>
+    </div>
+  </header>
 
 <div class="container" style="padding:24px 0 80px">
 
@@ -235,9 +238,9 @@ ul.compact li{margin:.2rem 0}
     </div>
   </div>
 
-</div>
+  </div>
 
-<div id="toast" class="toast"></div>
+  <div id="toast" class="toast"></div>
 
 <script>
 const $=id=>document.getElementById(id);
@@ -497,4 +500,6 @@ document.getElementById('job_photos_upload')?.addEventListener('click', async ()
 (async()=>{ try{ await listJobPhotos(); }catch(_){} })();
 
 </script>
+</body>
+</html>
 <script src="admin-upload-ui-patch.js"></script>

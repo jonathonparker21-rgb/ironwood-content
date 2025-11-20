@@ -18,6 +18,8 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;paddi
 nav{display:flex;gap:.4rem;flex-wrap:wrap}.pill{padding:.45rem .7rem;border-radius:10px}nav a:hover{background:#1a2128}
 @media (max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
 footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
+.photo-card{background:linear-gradient(150deg,rgba(15,23,42,.95),rgba(11,17,32,.92));border:1px solid #1a2128;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);margin-top:12px}
+.photo-card img{width:100%;display:block;object-fit:cover;max-height:320px}
 </style>
 
 <header class="topbar"><div class="container wrap">
@@ -56,7 +58,10 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
     <div class="card">
       <h3>Office</h3>
       <p><strong id="addr">805 E. Main St, Oak Grove, LA 71263</strong><br><span class="muted">Mon–Sat 7 AM – 6 PM</span><br>Phone: <a id="phoneLink" href="tel:+13189142351">(318) 914-2351</a></p>
-      <iframe id="map" style="width:100%;height:360px;border:0;border-radius:12px" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <iframe id="map" style="width:100%;height:240px;border:0;border-radius:12px" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="photo-card" style="margin-top:12px">
+        <img src="equipment/photos/1763515721595-IMG_8455.jpeg" alt="Equipment" loading="lazy">
+      </div>
     </div>
   </div>
 </main>
