@@ -256,6 +256,32 @@
       text-decoration: none;
     }
 
+    /* Shared photo cards */
+    .photo-cards {
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 0.9rem;
+      margin-top: 0.8rem;
+    }
+    .photo-card {
+      background: linear-gradient(150deg, rgba(15,23,42,0.95), rgba(11,17,32,0.92));
+      border: 1px solid var(--border);
+      border-radius: 0.9rem;
+      overflow: hidden;
+      padding: 0.75rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .photo-card img {
+      width: 100%;
+      border-radius: 0.65rem;
+      display: block;
+      object-fit: cover;
+      max-height: 320px;
+    }
+    @media (min-width: 640px) {
+      .photo-cards { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+
     footer {
       border-top: 1px solid var(--border);
       background: #020617;
@@ -357,33 +383,14 @@
     <section id="equipment">
       <h2>Our Equipment</h2>
 
-      <div id="equipment-carousel" class="carousel" aria-label="Equipment photos">
-        <div class="carousel-track" id="equipment-track"></div>
-        <div class="carousel-dots" id="equipment-dots"></div>
-      </div>
-
-      <p id="equipment-empty" class="muted" style="margin-top:.5rem">
-        No equipment listed yet.
-      </p>
+      <div id="equipment-photos" class="photo-cards" style="margin-top:1rem;"></div>
     </section>
 
-    <!-- Jobs teaser (your existing jobs page can stay separate) -->
+    <!-- Jobs photos -->
     <section id="jobs">
-      <h2>Recent Jobs</h2>
-      <div class="jobs-teaser card">
-        <p>
-          Before/after work on land clears, demo, and dumpster jobs. Each job can have a photo set
-          that shows where we started and how clean we left it.
-        </p>
-        <p class="muted">
-          Want your project featured here? Ask when you book and we’ll capture before/after shots
-          of the work.
-        </p>
-        <a class="jobs-link" href="/jobs">
-          View all jobs
-          <span>→</span>
-        </a>
-      </div>
+      <h2>Job Photos</h2>
+      <p class="muted">Snapshots from recent work.</p>
+      <div id="job-photos" class="photo-cards" style="margin-top:1rem;"></div>
     </section>
   </main>
 
@@ -419,7 +426,8 @@
         jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
         jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
         dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || [],
-        equipmentPhotos: async ()=> await j('equipment/photos/index.json') || (RAW && await j(RAW+'/equipment/photos/index.json')) || []
+        equipmentPhotos: async ()=> await j('equipment/photos/index.json') || (RAW && await j(RAW+'/equipment/photos/index.json')) || [],
+        jobPhotos: async ()=> await j('jobs/photos/index.json') || (RAW && await j(RAW+'/jobs/photos/index.json')) || []
       };
     })();
   </script>
@@ -429,12 +437,14 @@
       if (!window.Ironwood) return [];
       try{
         const cfg = Ironwood.cfg ? (await Ironwood.cfg()) : null;
-        let photos = Array.isArray(cfg?.equipment_photos) ? cfg.equipment_photos : [];
+        const fix = (u)=>!u?'':(u.startsWith('http')?u:(u.startsWith('/')?u:'/'+u));
+        let photos = Array.isArray(cfg?.equipment_photos) ? cfg.equipment_photos.map(fix) : [];
         if(!photos.length){
           let getter = Ironwood.equipmentPhotos || Ironwood.equipPhotos || Ironwood.getEquipmentPhotos;
           if(getter){
             const result = getter();
             photos = (result && typeof result.then === "function") ? (await result)||[] : (result||[]);
+            photos = (photos||[]).map(fix);
           }
         }
         return photos || [];
@@ -445,71 +455,49 @@
     }
 
     (async function initEquipmentCarousel() {
-      const track = document.getElementById("equipment-track");
-      const dots = document.getElementById("equipment-dots");
-      const empty = document.getElementById("equipment-empty");
-      const box = document.getElementById("equipment-carousel");
-      if (!track || !dots || !box) return;
+      const cards = document.getElementById("equipment-photos");
+      if(!cards) return;
 
       const photos = await loadEquipmentPhotosFromAdmin();
 
       if (!photos || !photos.length) {
-        box.style.display = "none";
-        if (empty) empty.style.display = "";
+        cards.innerHTML = '<p class="muted">No equipment photos yet.</p>';
         return;
       }
 
-      if (empty) empty.style.display = "none";
-      box.style.display = "block";
-
-      track.innerHTML = photos
-        .map(
-          (url, i) =>
-            `<img src="${url}" alt="Equipment photo ${i + 1}" loading="lazy" class="${
-              i === 0 ? "is-active" : ""
-            }">`
-        )
+      cards.innerHTML = photos
+        .map((u)=>`<div class="photo-card"><img src="${u}" alt="Equipment photo" loading="lazy"></div>`)
         .join("");
+    })();
+  </script>
 
-      dots.innerHTML = photos
-        .map(
-          (_url, i) =>
-            `<button type="button" data-index="${i}" class="${
-              i === 0 ? "is-active" : ""
-            }"></button>`
-        )
-        .join("");
-
-      let current = 0;
-      const imgs = () => track.querySelectorAll("img");
-      const btns = () => dots.querySelectorAll("button");
-
-      function show(index) {
-        const list = imgs();
-        const buttons = btns();
-        if (!list.length) return;
-        const total = list.length;
-        current = (index + total) % total;
-        list.forEach((img, i) => {
-          img.classList.toggle("is-active", i === current);
-        });
-        buttons.forEach((b, i) => {
-          b.classList.toggle("is-active", i === current);
-        });
-      }
-
-      dots.addEventListener("click", (e) => {
-        const btn = e.target.closest("button[data-index]");
-        if (!btn) return;
-        const idx = parseInt(btn.getAttribute("data-index"), 10) || 0;
-        show(idx);
-      });
-
-      setInterval(() => {
-        if (photos.length > 1) {
-          show(current + 1);
+  <script>
+    async function loadJobPhotos(){
+      if(!window.Ironwood) return [];
+      try{
+        const cfg = Ironwood.cfg ? (await Ironwood.cfg()) : null;
+        const fix = (u)=>!u?'':(u.startsWith('http')?u:(u.startsWith('/')?u:'/'+u));
+        let photos = Array.isArray(cfg?.job_photos) ? cfg.job_photos.map(fix) : [];
+        if(!photos.length && Ironwood.jobPhotos){
+          const result = Ironwood.jobPhotos();
+          photos = (result && typeof result.then === 'function') ? (await result)||[] : (result||[]);
+          photos = (photos||[]).map(fix);
         }
-      }, 5000);
+        return photos||[];
+      }catch(e){
+        console.error('Error loading job photos', e);
+        return [];
+      }
+    }
+    (async function initJobPhotos(){
+      const cards=document.getElementById('job-photos');
+      if(!cards) return;
+      const photos=await loadJobPhotos();
+      if(!photos.length){
+        cards.innerHTML='<p class="muted">No job photos yet.</p>';
+        return;
+      }
+      cards.innerHTML=photos.map(u=>`<div class="photo-card"><img src="${u}" alt="Job photo" loading="lazy"></div>`).join('');
     })();
   </script>
 

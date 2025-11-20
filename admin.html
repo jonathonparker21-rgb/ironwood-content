@@ -161,26 +161,6 @@ ul.compact li{margin:.2rem 0}
   </div>
 
   <div class="card">
-    <h2>Jobs Manager</h2>
-    <div class="grid">
-      <label>Title</label><input id="job_title" placeholder="e.g. Oak Grove House Pad">
-      <label>Job ID (auto from title)</label><input id="job_id" placeholder="oak-grove-house-pad">
-      <label>Date</label><input id="job_date" type="date">
-      <label>Location</label><input id="job_location" placeholder="Oak Grove, LA">
-      <label>Description</label><textarea id="job_desc" placeholder="Short summary for this job…"></textarea>
-      <label>Before Photos</label><input id="job_before" type="file" accept="image/*" multiple>
-      <label>After Photos</label><input id="job_after" type="file" accept="image/*" multiple>
-    </div>
-    <div class="row" style="margin-top:10px">
-      <button id="job_save" class="btn">Create / Update Job</button>
-      <span id="job_msg" class="muted"></span>
-    </div>
-    <div class="hr"></div>
-    <h3 style="margin:.2rem 0 .6rem">Existing Jobs</h3>
-    <div id="jobs_list" class="small muted">Loading…</div>
-  </div>
-
-  <div class="card">
     <h2>Equipment</h2>
     <p class="small muted">List stored in <code>config.json</code> under <code>equipment</code>.</p>
     <div class="row">
@@ -264,19 +244,7 @@ $('branding_save').onclick=async()=>{$('branding_msg').textContent='Saving...';t
 
 $('dump_save').onclick=async()=>{$('dump_msg').textContent='Saving...';try{const current=await readJSON('config.json',{})||{};const cfg=Object.assign({},current);cfg.dumpsters=Object.assign({},cfg.dumpsters||{}, {company:$('dump_company').value.trim(),weekly_small:Number($('dump_small').value||350),weekly_large:Number($('dump_large').value||450),area:$('dump_area').value.trim()||'Northeast Louisiana',includes_dump_fee:true});await ghPut('config.json',JSON.stringify(cfg,null,2),'admin: update dumpsters');$('dump_msg').textContent='Saved to GitHub ✅';toast('Dumpsters saved',true);}catch(e){$('dump_msg').textContent='Error';toast('Save failed: '+e.message,false);}};
 
-/* Jobs */
-async function getJobsIndex(){return await readJSON('jobs/index.json',[]);}
-async function writeJobsIndex(list){await ghPut('jobs/index.json',JSON.stringify(list,null,2),'admin: update jobs index');}
-async function refreshJobsList(){const list=await getJobsIndex();if(!list.length){$('jobs_list').innerHTML='<p class="muted">No jobs yet.</p>';return;}$('jobs_list').innerHTML='<div class="small">'+list.map(j=>`<div class="row" style="align-items:center;justify-content:space-between;border:1px solid #1a2128;border-radius:10px;padding:.5rem .6rem;margin:.3rem 0"><div><strong>${j.title||j.id}</strong> <span class="muted">• ${j.location||''} ${j.date?('• '+new Date(j.date).toLocaleDateString()):''}</span></div><div class="row"><button class="btn ghost" onclick="prefillJob('${j.id}')">Edit</button><button class="btn" onclick="deleteJob('${j.id}')">Delete</button></div></div>`).join('')+'</div>';}
-
-window.prefillJob=async function(id){try{const m=await readJSON(`jobs/${id}/meta.json`,null);if(!m){toast('Job meta not found',false);return;}$('job_id').value=id;$('job_title').value=m.title||'';$('job_date').value=m.date?new Date(m.date).toISOString().slice(0,10):'';$('job_location').value=m.location||'';$('job_desc').value=m.description||'';toast('Loaded job into form');}catch(e){toast('Error loading job: '+e.message,false);}};
-window.deleteJob=async function(id){if(!confirm(`Delete job "${id}"?`))return;try{const dir=await ghGet(`jobs/${id}`);if(Array.isArray(dir)){for(const it of dir){await ghDel(`jobs/${id}/${it.name}`);}}await ghDel(`jobs/${id}/.keep`);const idx=await getJobsIndex();const next=idx.filter(j=>j.id!==id);await writeJobsIndex(next);await refreshJobsList();toast('Job deleted',true);}catch(e){toast('Delete failed: '+e.message,false);}};
-
-$('job_title').addEventListener('input',()=>{if(!$('job_id').value.trim())$('job_id').value=(($('job_title').value)||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,80)||('job-'+Date.now());});
-
-async function fileToContent(file){return new Promise((resolve,reject)=>{const fr=new FileReader();fr.onload=()=>{const base64=fr.result.split(',')[1]||'';resolve(base64);};fr.onerror=reject;fr.readAsDataURL(file);});}
-
-$('job_save').onclick=async()=>{try{const id=$('job_id').value.trim()||(($('job_title').value)||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,80)||('job-'+Date.now());const title=$('job_title').value.trim();if(!id||!title)return toast('Title is required',false);const date=$('job_date').value?new Date($('job_date').value).toISOString():'';const location=$('job_location').value.trim();const description=$('job_desc').value.trim();await ghPut(`jobs/${id}/.keep`,'keep','ensure folder');await ghPut(`jobs/${id}/before/.keep`,'keep','ensure folder');await ghPut(`jobs/${id}/after/.keep`,'keep','ensure folder');const beforeFiles=[...($('job_before').files||[])];const afterFiles=[...($('job_after').files||[])];const beforeURLs=[],afterURLs=[];for(const f of beforeFiles){const b64=await fileToContent(f);const path=`jobs/${id}/before/${Date.now()}-${encodeURIComponent(f.name.replace(/\s+/g,'_'))}`;await ghPut(path, atob(b64), `admin: upload before ${id}`);}const bdir=await ghGet(`jobs/${id}/before`);if(Array.isArray(bdir))for(const it of bdir){if(it.name!=='.keep')beforeURLs.push(`jobs/${id}/before/${it.name}`);}for(const f of afterFiles){const b64=await fileToContent(f);const path=`jobs/${id}/after/${Date.now()}-${encodeURIComponent(f.name.replace(/\s+/g,'_'))}`;await ghPut(path, atob(b64), `admin: upload after ${id}`);}const adir=await ghGet(`jobs/${id}/after`);if(Array.isArray(adir))for(const it of adir){if(it.name!=='.keep')afterURLs.push(`jobs/${id}/after/${it.name}`);}const meta={id,title,date,location,description,before:beforeURLs,after:afterURLs};await ghPut(`jobs/${id}/meta.json`,JSON.stringify(meta,null,2),`admin: write meta ${id}`);const idx=await getJobsIndex();const cover_after=afterURLs[0]||'';const cover=cover_after||beforeURLs[0]||'';const entry={id,title,date,location,cover_after,cover};const found=idx.findIndex(j=>j.id===id);if(found>=0)idx[found]=Object.assign({},idx[found],entry);else idx.unshift(entry);await writeJobsIndex(idx);$('job_before').value='';$('job_after').value='';await refreshJobsList();toast('Job saved ✅',true);$('job_msg').textContent='Saved';}catch(e){$('job_msg').textContent='Error';toast('Save failed: '+e.message,false);}};
+/* Jobs removed */
 
 /* Equipment */
 function renderEquip(list){const ul=$('equip_list');ul.innerHTML='';(list||[]).forEach((item,i)=>{const li=document.createElement('li');li.innerHTML=`<div class="row" style="align-items:center"><input value="${(item||'').replace(/"/g,'&quot;')}" data-idx="${i}" style="flex:1"><button class="btn ghost" data-rm="${i}">Remove</button></div>`;ul.appendChild(li);});ul.onclick=(e)=>{if(e.target&&e.target.dataset&&e.target.dataset.rm){const idx=+e.target.dataset.rm;const inputs=[...ul.querySelectorAll('input')];const arr=inputs.map(x=>x.value.trim()).filter(Boolean);arr.splice(idx,1);renderEquip(arr);}};}
