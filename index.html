@@ -93,6 +93,12 @@
       background: linear-gradient(145deg, #0f172a, #0b1220);
       transition: box-shadow .15s ease, border-color .12s ease, transform .08s ease;
     }
+    @media (max-width: 820px) {
+      .nav-inner { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+      nav { flex-wrap: wrap; width: 100%; gap: 0.4rem; }
+      nav a { padding: 0.55rem 0.75rem; border-radius: 10px; background: rgba(15,23,42,0.6); }
+      .call-chip { width: 100%; justify-content: center; text-align: center; }
+    }
     .call-chip:hover {
       border-color: rgba(252,165,165,0.85);
       box-shadow: 0 0 12px rgba(220,38,38,0.35);
@@ -519,6 +525,7 @@
   </script>
 
   <script src="/carousel-cache-bust-patch.js"></script>
+  <script src="/webapp-prompt.js"></script>
   <script>
     // Secret admin shortcut: Ctrl/Cmd + Shift + A
     window.addEventListener('keydown', function(e){
