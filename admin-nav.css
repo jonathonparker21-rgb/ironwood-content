@@ -31,6 +31,21 @@
   text-transform: uppercase;
   color: var(--text);
 }
+.brand-name{
+  padding: 2px 8px;
+  border:1px solid rgba(248,113,113,0.6);
+  border-radius:12px;
+  background:rgba(248,113,113,0.08);
+  letter-spacing:0.04em;
+}
+.brand-tag{
+  padding: 2px 8px;
+  border:1px solid rgba(248,113,113,0.6);
+  border-radius:999px;
+  font-size:12px;
+  letter-spacing:0.08em;
+  color:var(--text);
+}
 .topbar nav, header nav {
   display: flex;
   align-items: center;
