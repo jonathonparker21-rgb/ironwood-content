@@ -5,7 +5,7 @@
     "phone_raw": "+13189142351",
     "address_html": "805 E. Main St<br>Oak Grove, LA 71263",
     "address_text": "805 E. Main St, Oak Grove, LA 71263",
-    "hours": "MonâSat 7aâ6p"
+    "hours": "MonÃ¢ÂÂSat 7aÃ¢ÂÂ6p"
   },
   "contact_email": "",
   "dumpsters": {
@@ -28,8 +28,8 @@
     "muted": "#8c98a4"
   },
   "hero": {
-    "eyebrow": "Residential â¢ Commercial â¢ Timber â¢ Structures",
-    "headline": "Land Clearing & DemolitionâDone Right.",
+    "eyebrow": "Residential Ã¢ÂÂ¢ Commercial Ã¢ÂÂ¢ Timber Ã¢ÂÂ¢ Structures",
+    "headline": "Land Clearing & DemolitionÃ¢ÂÂDone Right.",
     "sub": "Traditional land clearing (no mulching). Heavy equipment, safe crews, clean finishes.",
     "image": "assets/work-hero.jpg"
   },
@@ -38,9 +38,9 @@
     "House pad preparation",
     "Road building and grading",
     "House demolition and debris removal",
-    "Weekly dumpster rentals (small & large) â dump fee included",
-    "Scrap metal removal â we pay you for the metal",
-    "Complete site cleanup â we do all the work",
+    "Weekly dumpster rentals (small & large) Ã¢ÂÂ dump fee included",
+    "Scrap metal removal Ã¢ÂÂ we pay you for the metal",
+    "Complete site cleanup Ã¢ÂÂ we do all the work",
     "Tree removal for homes and businesses",
     "Licensed and insured"
   ],
@@ -56,6 +56,7 @@
     "/equipment/photos/1763627659034-hizouf-IMG_8891.jpeg",
     "/equipment/photos/1763627662295-IMG_8134-691669-65883-70012.png",
     "/equipment/photos/1763653233477-490780153_2033604713800225_8692570469088468182_n.jpg",
+    "/equipment/photos/1763653292381-571363047_2196779184149443_4666840344243855923_n.jpg",
     "/equipment/photos/index.json"
   ],
   "job_photos": [
