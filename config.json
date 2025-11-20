@@ -5,7 +5,7 @@
     "phone_raw": "+13189142351",
     "address_html": "805 E. Main St<br>Oak Grove, LA 71263",
     "address_text": "805 E. Main St, Oak Grove, LA 71263",
-    "hours": "Mon–Sat 7a–6p"
+    "hours": "MonâSat 7aâ6p"
   },
   "contact_email": "",
   "dumpsters": {
@@ -28,8 +28,8 @@
     "muted": "#8c98a4"
   },
   "hero": {
-    "eyebrow": "Residential • Commercial • Timber • Structures",
-    "headline": "Land Clearing & Demolition—Done Right.",
+    "eyebrow": "Residential â¢ Commercial â¢ Timber â¢ Structures",
+    "headline": "Land Clearing & DemolitionâDone Right.",
     "sub": "Traditional land clearing (no mulching). Heavy equipment, safe crews, clean finishes.",
     "image": "assets/work-hero.jpg"
   },
@@ -38,9 +38,9 @@
     "House pad preparation",
     "Road building and grading",
     "House demolition and debris removal",
-    "Weekly dumpster rentals (small & large) — dump fee included",
-    "Scrap metal removal — we pay you for the metal",
-    "Complete site cleanup — we do all the work",
+    "Weekly dumpster rentals (small & large) â dump fee included",
+    "Scrap metal removal â we pay you for the metal",
+    "Complete site cleanup â we do all the work",
     "Tree removal for homes and businesses",
     "Licensed and insured"
   ],
@@ -49,16 +49,14 @@
     "dumpsters/photos/1763625401129-IMG_5143.jpeg"
   ],
   "equipment_photos": [
-    "equipment/photos/1763515721595-IMG_8455.jpeg",
-    "equipment/photos/1763627648675-705qif-IMG_0035.jpeg",
-    "equipment/photos/1763627653379-IMG_0040.jpeg",
-    "equipment/photos/1763627657740-IMG_8870-727279.jpeg",
-    "equipment/photos/1763627659034-hizouf-IMG_8891.jpeg",
-    "equipment/photos/1763627660673-hbbi9s-IMG_8870-61791.jpeg",
-    "equipment/photos/1763627662295-IMG_8134-691669-65883-70012.png",
-    "equipment/photos/1763627664673-qazxm6-IMG_8134.png",
-    "equipment/photos/1763627666884-hydd40-IMG_8455.jpeg",
-    "equipment/photos/1763627671951-IMG_8455.jpeg"
+    "/equipment/photos/1763515721595-IMG_8455.jpeg",
+    "/equipment/photos/1763627648675-705qif-IMG_0035.jpeg",
+    "/equipment/photos/1763627653379-IMG_0040.jpeg",
+    "/equipment/photos/1763627657740-IMG_8870-727279.jpeg",
+    "/equipment/photos/1763627659034-hizouf-IMG_8891.jpeg",
+    "/equipment/photos/1763627662295-IMG_8134-691669-65883-70012.png",
+    "/equipment/photos/1763653233477-490780153_2033604713800225_8692570469088468182_n.jpg",
+    "/equipment/photos/index.json"
   ],
   "job_photos": [
     "/jobs/k/before/1763529234094-project-1a.jpg",
