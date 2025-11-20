@@ -1,30 +1,82 @@
 <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ironwood Admin</title>
 <style>
-:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5}
-*{box-sizing:border-box}html,body{margin:0;background:#0b0e11;color:#eef2f6;font-family:system-ui}
+:root{
+  --bg:#050816;
+  --surface:#0b1120;
+  --card:#0b1120;
+  --border:#1f2937;
+  --muted:#9ca3af;
+  --text:#e5e7eb;
+  --brand:#dc2626;
+  --accent:#f97316;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  background:radial-gradient(circle at top, #111827 0, #020617 55%);
+  color:var(--text);
+  font-family:system-ui, -apple-system, Segoe UI, sans-serif;
+}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline}
 .container{width:min(1100px,92vw);margin-inline:auto}
-.card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem;margin-top:16px}
+.card{
+  background:linear-gradient(160deg, rgba(15,23,42,0.92), rgba(11,17,32,0.9));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1rem;
+  margin-top:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
 h2{margin:.2rem 0 .8rem}
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .grid{display:grid;grid-template-columns:160px 1fr;gap:10px;align-items:center}
-input,textarea{width:100%;padding:.55rem .7rem;border-radius:10px;border:1px solid #27313a;background:#0f1419;color:#e7eef6}
+input,textarea{
+  width:100%;
+  padding:.55rem .7rem;
+  border-radius:10px;
+  border:1px solid #1f2937;
+  background:#0f172a;
+  color:var(--text);
+}
 textarea{min-height:80px}
-.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.6rem .9rem;border-radius:999px;font-weight:700;border:2px solid transparent;cursor:pointer}
+.btn{
+  display:inline-flex;gap:.6rem;align-items:center;
+  background:var(--brand);
+  color:#fff;
+  padding:.6rem .9rem;
+  border-radius:999px;
+  font-weight:700;
+  border:2px solid transparent;
+  cursor:pointer;
+}
 .btn.ghost{background:transparent;border-color:#2b333b}
 .badge{padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:#5b1a1a}
-.muted{color:#9aa7b3}
-header{border-bottom:1px solid #1a2128;background:#0b0e11cc;backdrop-filter:blur(8px)}
-header .bar{display:flex;align-items:center;gap:.6rem;padding:.6rem 0}
-header a{display:flex;gap:.6rem;align-items:center;color:#eef2f6;text-decoration:none}
+.muted{color:var(--muted)}
+header{
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(to bottom, rgba(15,23,42,0.94), rgba(15,23,42,0.70), transparent);
+  backdrop-filter:blur(12px);
+}
+header .bar{display:flex;align-items:center;gap:.6rem;padding:.8rem 0}
+header a{display:flex;gap:.6rem;align-items:center;color:var(--text);text-decoration:none;font-weight:700;letter-spacing:0.01em}
 header img{height:40px}
-.toast{position:fixed;right:16px;bottom:16px;background:#101519;border:1px solid #1b222a;border-radius:12px;padding:.7rem 1rem;display:none}
+.toast{
+  position:fixed;right:16px;bottom:16px;
+  background:#0f172a;
+  border:1px solid #1f2937;
+  border-radius:12px;
+  padding:.7rem 1rem;
+  display:none;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
 .toast.ok{background:#0f1a14;border-color:#1c3a2c}
 .toast.err{background:#1a1010;border-color:#3a1c1c}
 .small{font-size:.92rem}
 ul.compact{margin:.4rem 0 0;padding-left:1.2rem}
 ul.compact li{margin:.2rem 0}
-.hr{height:1px;background:#1a2128;margin:.8rem 0}
+.hr{height:1px;background:var(--border);margin:.8rem 0}
 </style>
 
 <header>

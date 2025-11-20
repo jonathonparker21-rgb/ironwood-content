@@ -129,3 +129,13 @@ footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margi
   const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
 })();
 </script>
+<script>
+  // Secret admin shortcut: Ctrl/Cmd + Shift + A
+  window.addEventListener('keydown', function(e){
+    const isMod = e.ctrlKey || e.metaKey;
+    if(isMod && e.shiftKey && e.code === 'KeyA'){
+      e.preventDefault();
+      location.href = 'admin.html';
+    }
+  });
+</script>

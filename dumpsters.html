@@ -442,5 +442,15 @@
   </script>
 
   <script src="/carousel-cache-bust-patch.js"></script>
+  <script>
+    // Secret admin shortcut: Ctrl/Cmd + Shift + A
+    window.addEventListener('keydown', function(e){
+      const isMod = e.ctrlKey || e.metaKey;
+      if(isMod && e.shiftKey && e.code === 'KeyA'){
+        e.preventDefault();
+        location.href = 'admin.html';
+      }
+    });
+  </script>
 </body>
 </html>

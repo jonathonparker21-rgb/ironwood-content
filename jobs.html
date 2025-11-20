@@ -113,6 +113,16 @@ function initCompare(b,a){
     const fp=document.getElementById('footPhone'); if(fp){ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; fp.href='tel:'+ph; fp.textContent=disp; }
     const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
   }
-  const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
+const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
 })();
+</script>
+<script>
+  // Secret admin shortcut: Ctrl/Cmd + Shift + A
+  window.addEventListener('keydown', function(e){
+    const isMod = e.ctrlKey || e.metaKey;
+    if(isMod && e.shiftKey && e.code === 'KeyA'){
+      e.preventDefault();
+      location.href = 'admin.html';
+    }
+  });
 </script>
