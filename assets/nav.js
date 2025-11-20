@@ -6,8 +6,8 @@
       <span class="brand-tag">NE LA</span>
     </a>
     <nav class="nav-links">
-      <a href="/index.html#services">Services</a>
-      <a href="/index.html#equipment">Equipment</a>
+      <a href="/#services">Services</a>
+      <a href="/#equipment">Equipment</a>
       <a href="/dumpsters.html">Dumpsters</a>
       <a href="/contact.html">Contact</a>
     </nav>
