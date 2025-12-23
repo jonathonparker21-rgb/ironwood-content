@@ -5,7 +5,7 @@
     "phone_raw": "+13189142351",
     "address_html": "805 E. Main St<br>Oak Grove, LA 71263",
     "address_text": "805 E. Main St, Oak Grove, LA 71263",
-    "hours": "Mon-Sat 7a-6p"
+    "hours": "Mon\u2013Sat 7a\u20136p"
   },
   "contact_email": "",
   "dumpsters": {
@@ -28,8 +28,8 @@
     "muted": "#8c98a4"
   },
   "hero": {
-    "eyebrow": "Residential â¢ Commercial â¢ Timber â¢ Structures",
-    "headline": "Land Clearing & DemolitionâDone Right.",
+    "eyebrow": "Residential \u2022 Commercial \u2022 Timber \u2022 Structures",
+    "headline": "Land Clearing & Demolition\u2014Done Right.",
     "sub": "Traditional land clearing (no mulching). Heavy equipment, safe crews, clean finishes.",
     "image": "assets/work-hero.jpg"
   },
@@ -38,27 +38,22 @@
     "House pad preparation",
     "Road building and grading",
     "House demolition and debris removal",
-    "Weekly dumpster rentals (small & large) â dump fee included",
-    "Scrap metal removal â we pay you for the metal",
-    "Complete site cleanup â we do all the work",
+    "Weekly dumpster rentals (small & large) \u2014 dump fee included",
+    "Scrap metal removal \u2014 we pay you for the metal",
+    "Complete site cleanup \u2014 we do all the work",
     "Tree removal for homes and businesses",
     "Licensed and insured"
   ],
-  "dumpster_photos": [
-    "/dumpsters/photos/1763625008174-IMG_5843.jpeg",
-    "/dumpsters/photos/1763625401129-IMG_5143.jpeg",
-    "/dumpsters/photos/1763656134163-485759268_2012874419206588_8765740933964037006_n.jpeg",
-    "/dumpsters/photos/1763656386240-485958777_2012929155867781_5591607075968335982_n.jpg"
-  ],
-  "equipment_photos": [
-    "/equipment/photos/1763515721595-IMG_8455.jpeg",
-    "/equipment/photos/1763627648675-705qif-IMG_0035.jpeg",
-    "/equipment/photos/1763627653379-IMG_0040.jpeg",
-    "/equipment/photos/1763627657740-IMG_8870-727279.jpeg",
-    "/equipment/photos/1763627659034-hizouf-IMG_8891.jpeg",
-    "/equipment/photos/1763627662295-IMG_8134-691669-65883-70012.png",
-    "/equipment/photos/1763656721405-571363047_2196779184149443_4666840344243855923_n.jpg",
-    "/equipment/photos/1764113304211-IMG_8689.jpeg"
-  ],
-  "job_photos": []
+  "popup": {
+    "enabled": true,
+    "once_days": 1,
+    "logo": "assets/logo-ld-original.png",
+    "title": "Ironwood Land Development",
+    "tagline": "Land clearing \u2022 Demo \u2022 Pads \u2022 Roads \u2022 Dumpster rentals",
+    "bullets": [
+      "Licensed & insured \u2022 Serving Northeast Louisiana",
+      "Traditional land clearing (no mulching)",
+      "Weekly dumpster rentals \u2014 dump fee included"
+    ]
+  }
 }
