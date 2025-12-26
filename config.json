@@ -43,17 +43,5 @@
     "Complete site cleanup \u2014 we do all the work",
     "Tree removal for homes and businesses",
     "Licensed and insured"
-  ],
-  "popup": {
-    "enabled": true,
-    "once_days": 1,
-    "logo": "assets/logo-ld-original.png",
-    "title": "Ironwood Land Development",
-    "tagline": "Land clearing \u2022 Demo \u2022 Pads \u2022 Roads \u2022 Dumpster rentals",
-    "bullets": [
-      "Licensed & insured \u2022 Serving Northeast Louisiana",
-      "Traditional land clearing (no mulching)",
-      "Weekly dumpster rentals \u2014 dump fee included"
-    ]
-  }
+  ]
 }

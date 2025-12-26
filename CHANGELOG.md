@@ -9,3 +9,11 @@
 ### Behavior
 - Falls back to bundled `config.json` when GitHub connection not found.
 - No other features or layout modified.
+
+## [1.2.7] - 2025-11-11
+### Added
+- Admin uploads now show a progress bar and success confirmation (equipment & dumpsters).
+- Carousels now cache-bust image URLs so new uploads appear immediately.
+
+### Notes
+- No styling or layout changes; existing behavior preserved.
