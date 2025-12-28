@@ -1,151 +1,213 @@
-
-<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dumpster Rentals (Weekly) | Ironwood Trucking LLC – Oak Grove, LA</title>
-
-<style>
-:root{--bg:#0b0e11;--surface:#12161a;--muted:#8c98a4;--text:#eef2f6;--brand:#dc2626;--accent:#fca5a5}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
-.container{width:min(1200px,92vw);margin-inline:auto}.muted{color:#9aa7b3}
-.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.7rem 1rem;border-radius:999px;font-weight:700;border:2px solid transparent}
-.btn.secondary{background:transparent;border-color:#2b333b}
-.card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem}
-header.topbar{position:sticky;top:0;background:rgba(11,14,17,.8);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid #1a2128;z-index:20}
-header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;gap:.6rem;flex-wrap:wrap}
-.brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:44px}
-nav{display:flex;gap:.4rem;flex-wrap:wrap}.pill{padding:.45rem .7rem;border-radius:10px}nav a:hover{background:#1a2128}
-@media (max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
-footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
-
-/* Dumpsters carousel */
-#dumpster-carousel{position:relative;overflow:hidden;border-radius:14px;border:1px solid #1a2128;margin:18px 0;background:#0b0e11}
-#dumpster-carousel .carousel-track{display:flex;transition:transform .6s ease}
-#dumpster-carousel img{display:block;width:100%;height:360px;object-fit:cover}
-#dumpster-carousel .carousel-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;gap:6px;justify-content:center}
-#dumpster-carousel .dot{width:8px;height:8px;border-radius:50%;background:#ffffff44}
-#dumpster-carousel .dot.active{background:var(--brand,#dc2626)}
-
-</style>
-
-<header class="topbar"><div class="container wrap">
-  <a class="brand" href="index.html"><img id="siteLogo" src="assets/logo-ld-original.png" alt=""><span id="brandName">Ironwood Land Development</span></a>
-  <nav>
-    <a class="pill" href="index.html#services">Services</a>
-    <a class="pill" href="jobs.html">Jobs</a>
-    <a class="pill" href="dumpsters.html">Dumpsters</a>
-    <a class="pill" href="contact.html">Contact</a>
-    <a class="btn" data-call href="tel:+13189142351">📞 Call</a>
-  </nav>
-</div></header>
-
-<main>
-  <section class="container" style="padding:clamp(48px,6vw,80px) 0">
-    <img id="dumpLogoHero" src="assets/logo-dumpsters-original.png" alt="Ironwood Dumpster Rentals" style="height:84px;margin-bottom:12px">
-    <p class="muted" style="letter-spacing:.12em;text-transform:uppercase;">Weekly Roll-Off Rentals • <span id="dumpCo">Ironwood Trucking LLC</span></p>
-    <h1>Dumpsters—Delivered Fast. Picked Up On Time.</h1>
-    <p class="muted">Weekly pricing includes the <strong>dump fee</strong>. Area: <span id="area">Northeast Louisiana</span>.</p>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem"><a class="btn" data-call>Book by Phone</a><a id="smsDump" class="btn secondary" href="#">Text to Reserve</a></div>
-  </section>
-  <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-    <h2>Sizes & Weekly Rates</h2>
-    <div style="display:grid;gap:1.2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1rem">
-      <article class="card"><h3>Small (≈12–15 yd)</h3><p><strong>Weekly:</strong> $<span id="rateSmall">350</span></p></article>
-      <article class="card"><h3>Large (≈30 yd)</h3><p><strong>Weekly:</strong> $<span id="rateLarge">450</span></p></article>
-    </div>
-  </section>
-  <section class="container" style="padding:clamp(24px,4vw,48px) 0">
-    <h2>Dumpster Photos</h2>
-    <p class="muted">Uploaded in Admin → Dumpster Photos.</p>
-    <div id="dumpGrid" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:1rem"></div>
-  </section>
-
-    <div id="dumpster-carousel" class="carousel" aria-label="Dumpster photos" style="display:none">
-      <div class="carousel-track" id="dumpster-track"></div>
-      <div class="carousel-dots" id="dumpster-dots"></div>
-    </div>
-    
-</main>
-
-<script>
-(function(){
-  const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
-  const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
-  async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
-  window.Ironwood = {
-    cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
-    jobsIdx: async ()=> await j('jobs/index.json') || (RAW && await j(RAW+'/jobs/index.json')) || [],
-    jobMeta: async (id)=> await j('jobs/'+id+'/meta.json') || (RAW && await j(RAW+'/jobs/'+id+'/meta.json')) || null,
-    dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || []
-  };
-})();
-</script>
-
-<script>
-(async function(){
-  const c=await Ironwood.cfg();
-  if(c){
-    const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351';
-    document.querySelectorAll('[data-call]').forEach(a=>{a.href='tel:'+ph; a.textContent='📞 Call '+disp;});
-    rateSmall.textContent=(c.dumpsters?.weekly_small??350);
-    rateLarge.textContent=(c.dumpsters?.weekly_large??450);
-    area.textContent=c.dumpsters?.area||'Northeast Louisiana';
-    dumpCo.textContent=c.dumpsters?.company||'Ironwood Trucking LLC';
-    if(c.logos?.dumpsters) dumpLogoHero.src=c.logos.dumpsters;
-    smsDump.href='sms:'+ph+'?&body='+encodeURIComponent('I need a dumpster. Address: __  Size: Small or Large | Start date: __');
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dumpster Rentals (Weekly) | Ironwood Trucking LLC – Oak Grove, LA</title>
+  <meta name="description" content="Weekly roll-off dumpster rentals in Northeast Louisiana. Small and large sizes, dump fee included, delivered and picked up by Ironwood Trucking LLC." />
+  <link rel="canonical" href="https://ironwood-content.pages.dev/dumpsters.html" />
+  <meta property="og:title" content="Dumpster Rentals | Ironwood Trucking LLC" />
+  <meta property="og:description" content="Weekly roll-off dumpsters delivered fast in Northeast Louisiana. Small and large sizes; dump fee included." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ironwood-content.pages.dev/dumpsters.html" />
+  <meta property="og:image" content="https://ironwood-content.pages.dev/assets/logo-dumpsters-original.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Ironwood Trucking LLC",
+    "telephone": "+13189142351",
+    "image": "https://ironwood-content.pages.dev/assets/logo-dumpsters-original.png",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "805 E. Main St",
+      "addressLocality": "Oak Grove",
+      "addressRegion": "LA",
+      "postalCode": "71263",
+      "addressCountry": "US"
+    },
+    "url": "https://ironwood-content.pages.dev/dumpsters.html",
+    "description": "Weekly roll-off dumpster rentals (small and large) with dump fee included. Serving Northeast Louisiana.",
+    "areaServed": "Northeast Louisiana",
+    "openingHours": "Mo-Sa 07:00-18:00"
   }
-  const photos=await Ironwood.dumpPhotos();
-  dumpGrid.innerHTML=photos.length?photos.map(u=>"<img src='"+u+"' alt='Dumpster'>").join(''):'<p class="muted">No dumpster photos yet.</p>';
-})();
-</script>
-
-<script>
-(async function(){
-  const c = await Ironwood.cfg();
-  if(c){
-    const map={brand:'--brand',accent:'--accent',bg:'--bg',surface:'--surface',text:'--text',muted:'--muted'};
-    if(c.theme) for(const k in map){ if(c.theme[k]) document.documentElement.style.setProperty(map[k], c.theme[k]); }
-    if(c.logos?.site){ siteLogo.src=c.logos.site; const f=document.getElementById('siteLogoFoot'); if(f) f.src=c.logos.site; }
-    brandName.textContent=c.business?.name||'Ironwood Land Development';
-    document.querySelectorAll('[data-call]').forEach(a=>{ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; a.href='tel:'+ph; a.textContent='📞 Call '+disp; });
-    const fa=document.getElementById('footAddress'); if(fa) fa.innerHTML=c.business?.address_html||'805 E. Main St<br>Oak Grove, LA 71263';
-    const fp=document.getElementById('footPhone'); if(fp){ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; fp.href='tel:'+ph; fp.textContent=disp; }
-    const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
-  }
-  const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
-})();
-</script>
-
-<script>
-(function(){
-  function renderDumpCarousel(urls){
-    var box=document.getElementById('dumpster-carousel'),
-        track=document.getElementById('dumpster-track'),
-        dots=document.getElementById('dumpster-dots');
-    if(!box||!track||!dots) return;
-    if(!urls||!urls.length){ box.style.display='none'; return; }
-    box.style.display='block';
-    track.innerHTML=urls.map(function(u){ return '<img src="'+u+'" alt="Dumpster photo">'; }).join('');
-    dots.innerHTML=urls.map(function(_,i){ return '<span class="dot'+(i===0?' active':'')+'"></span>'; }).join('');
-    var idx=0,n=urls.length,timer;
-    function go(i){
-      idx=(i+n)%n;
-      var x=-idx*box.clientWidth;
-      track.style.transform='translateX('+x+'px)';
-      dots.querySelectorAll('.dot').forEach(function(d,k){ d.classList.toggle('active', k===idx); });
+  </script>
+  <script src="/assets/nav.js"></script>
+  <style>
+    :root{--bg:#050816;--bg-alt:#0b1220;--fg:#e5e7eb;--muted:#9ca3af;--accent:#dc2626;--accent-soft:rgba(220,38,38,0.12);--card:#0b1120;--border:#1f2937}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;background:radial-gradient(circle at top,#111827 0,#020617 55%);color:var(--fg);line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
+    a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
+    header{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:linear-gradient(to bottom,rgba(15,23,42,0.94),rgba(15,23,42,0.70),transparent);border-bottom:1px solid rgba(148,163,184,0.25)}
+    .nav-inner{width:min(1180px,92vw);margin:0 auto;padding:0.75rem 1rem;display:flex;align-items:center;gap:1rem;justify-content:flex-start}
+    .brand{font-weight:700;letter-spacing:0.05em;text-transform:uppercase;font-size:0.95rem;display:flex;align-items:center;gap:0.5rem;line-height:1;flex-shrink:0}
+    .brand img{height:42px;flex-shrink:0}
+    .brand-name{padding:2px 8px;border:1px solid rgba(248,113,113,0.6);border-radius:12px;background:rgba(248,113,113,0.08);letter-spacing:0.04em}
+    .brand-tag{padding:2px 8px;border:1px solid rgba(248,113,113,0.6);border-radius:999px;font-size:12px;letter-spacing:0.08em;color:var(--fg)}
+    .nav-links{display:flex;align-items:center;gap:1.05rem;font-size:0.9rem;flex:1;justify-content:center}
+    .nav-links a{color:var(--muted);text-decoration:none;padding:0.4rem 0.65rem;border-radius:10px;transition:color .12s ease,background .12s ease}
+    .nav-links a:hover{color:var(--fg);background:rgba(220,38,38,0.1)}
+    .call-chip{margin-left:auto;padding:0.45rem 0.9rem;border-radius:10px;border:1px solid rgba(220,38,38,0.5);font-size:0.85rem;display:flex;align-items:center;gap:0.45rem;background:linear-gradient(145deg,#1f2937,#0b1220);transition:box-shadow .15s ease,border-color .12s ease,transform .08s ease}
+    .call-chip:hover{border-color:rgba(252,165,165,0.85);box-shadow:0 0 12px rgba(220,38,38,0.35);transform:translateY(-1px)}
+    @media(max-width:820px){
+      .nav-inner{flex-direction:column;align-items:flex-start;gap:.6rem}
+      .nav-links{flex-wrap:wrap;width:100%;gap:.4rem;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));justify-content:flex-start}
+      .nav-links a{background:rgba(15,23,42,.6);padding:.55rem .7rem;border-radius:10px;font-size:0.92rem}
+      .call-chip{width:100%;justify-content:center;text-align:center;font-size:0.92rem;margin-left:0}
+      .brand{font-size:0.9rem}
     }
-    function start(){ timer=setInterval(function(){ go(idx+1); }, 3000); }
-    function stop(){ clearInterval(timer); }
-    start();
-    box.addEventListener('mouseenter', stop);
-    box.addEventListener('mouseleave', start);
-    window.addEventListener('resize', function(){ go(idx); });
-  }
-  fetch('config.json', {cache:'no-store'})
-    .then(function(r){ return r.ok?r.json():{}; })
-    .then(function(cfg){
-      var urls = Array.isArray(cfg.dumpster_photos) ? cfg.dumpster_photos : [];
-      renderDumpCarousel(urls);
-    })
-    .catch(function(){});
-})();
-</script>
+    main{flex:1;max-width:960px;margin:0 auto;padding:1.5rem 1rem 3rem}
+    .hero-kicker{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem}
+    h1{font-size:clamp(1.9rem,4vw,2.3rem);margin-bottom:0.5rem}
+    .hero-sub{color:var(--muted);font-size:0.95rem;max-width:32rem;margin-bottom:1rem}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:2rem;align-items:center}
+    .btn-primary{background:linear-gradient(145deg,#1f2937,#0f172a);color:#ffdddd;border-radius:10px;padding:0.6rem 1.4rem;border:1px solid rgba(220,38,38,0.45);font-size:0.9rem;cursor:pointer;text-decoration:none;box-shadow:0 0 0 rgba(220,38,38,0.25);transition:box-shadow .15s ease,transform .08s ease,filter .12s ease,border-color .12s ease}
+    .btn-primary:hover{filter:brightness(1.05);border-color:rgba(252,165,165,0.9);box-shadow:0 0 14px rgba(220,38,38,0.4);transform:translateY(-1px)}
+    .btn-primary:active{transform:translateY(0)}
+    #hero{position:relative;overflow:hidden;padding:1.2rem 1rem 1.8rem;border-radius:1rem;border:1px solid var(--border);background:radial-gradient(circle at top,rgba(15,23,42,.7),rgba(2,6,23,.96));box-shadow:0 16px 36px rgba(0,0,0,.35);isolation:isolate}
+    #hero::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(220,38,38,.12),transparent 45%);opacity:.35;z-index:-1}
+    section{margin-top:2rem}
+    section h2{font-size:1.25rem;margin-bottom:0.4rem}
+    .muted{color:var(--muted)}
+    .rates{display:grid;grid-template-columns:minmax(0,1fr);gap:0.75rem;margin-top:0.5rem}
+    .rate-card{padding:0.8rem 1rem;border-radius:0.85rem;border:1px solid var(--border);background:radial-gradient(circle at top left,rgba(220,38,38,0.12),rgba(15,23,42,0.95));font-size:0.9rem}
+    .rate-card h3{font-size:1rem;margin-bottom:0.2rem}
+    .rate-price{font-weight:600;color:#f97316;margin-bottom:0.3rem}
+    @media(min-width:640px){.rates{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    .photo-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:0.9rem;margin-top:0.8rem}
+    .photo-card{background:linear-gradient(150deg,rgba(15,23,42,0.95),rgba(11,17,32,0.92));border:1px solid var(--border);border-radius:0.9rem;overflow:hidden;padding:0.75rem;box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+    .photo-card img{width:100%;border-radius:0.65rem;display:block;object-fit:cover;max-height:320px}
+    @media(min-width:640px){.photo-cards{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    footer{border-top:1px solid var(--border);background:#020617;margin-top:auto}
+    footer .footer-inner{max-width:960px;margin:0 auto;padding:1.5rem 1rem 2rem;display:grid;gap:1rem;grid-template-columns:minmax(0,1fr)}
+    @media(min-width:640px){footer .footer-inner{grid-template-columns:repeat(3,minmax(0,1fr));}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav-inner">
+      <a class="brand" href="/index.html">
+        <img src="assets/logo-ld-original.png" alt="" style="height:42px">
+        <span class="brand-name">Ironwood Land Development</span>
+        <span class="brand-tag">NE LA</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/index.html#services">Services</a>
+        <a href="/index.html#equipment">Equipment</a>
+        <a href="/dumpsters.html">Dumpsters</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+      <a class="call-chip" href="tel:+13189142351">Call (318) 914-2351</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero">
+      <p class="hero-kicker">Weekly Roll-Off Rentals • Ironwood Trucking LLC</p>
+      <h1>Dumpsters—Delivered Fast. Picked Up On Time.</h1>
+      <p class="hero-sub">
+        Weekly pricing includes the dump fee. Serving Northeast Louisiana with small and large roll-off
+        dumpsters for clean-outs, remodels, and job sites.
+      </p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="tel:+13189142351">Book by Phone</a>
+        <a class="btn-primary" style="background:#f97316" href="sms:+13189142351">Text to Reserve</a>
+        <p class="hero-badge">Northeast Louisiana • Ironwood Trucking LLC</p>
+      </div>
+    </section>
+
+    <section id="rates">
+      <h2>Sizes &amp; Weekly Rates</h2>
+      <p class="muted">Weekly fee includes delivery, pickup, and dump fee within our service area.</p>
+      <div class="rates">
+        <div class="rate-card">
+          <h3>Small (≈12–15 yd)</h3>
+          <p class="rate-price">Weekly: $350</p>
+          <p>Perfect for garage clean-outs, small remodels, and light construction debris.</p>
+        </div>
+        <div class="rate-card">
+          <h3>Large (≈30 yd)</h3>
+          <p class="rate-price">Weekly: $450</p>
+          <p>Ideal for whole-home clean-outs, major remodels, roofing tear-offs, and heavier jobs.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:0.75rem;">Service Area: Northeast Louisiana. Weekly rate includes dump fee.</p>
+      <div id="dump-photos-cards" class="photo-cards" style="margin-top:1.1rem;"></div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div>
+        <h3>Contact</h3>
+        <p>Phone: <a href="tel:+13189142351">(318) 914-2351</a></p>
+        <p>Hours: Mon–Sat 7a–6p</p>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <p>Ironwood Land Development</p>
+        <p>805 E. Main St</p>
+        <p>Oak Grove, LA 71263</p>
+      </div>
+      <div>
+        <h3>Dumpsters</h3>
+        <p>Weekly roll-off rentals via Ironwood Trucking LLC.</p>
+        <p><a href="/dumpsters">View dumpster sizes &amp; rates →</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const GHLS = JSON.parse(localStorage.getItem('ironwood_gh')||'{}');
+      const RAW = (GHLS.owner&&GHLS.repo)?('https://raw.githubusercontent.com/'+GHLS.owner+'/'+GHLS.repo+'/'+(GHLS.branch||'main')):null;
+      async function j(u){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); }catch(e){} return null; }
+      window.Ironwood = {
+        cfg: async ()=> await j('config.json') || (RAW && await j(RAW+'/config.json')) || null,
+        dumpPhotos: async ()=> await j('dumpsters/photos/index.json') || (RAW && await j(RAW+'/dumpsters/photos/index.json')) || [],
+      };
+    })();
+  </script>
+
+  <script>
+    async function loadDumpsterPhotosFromAdmin() {
+      if (!window.Ironwood) return [];
+      try{
+        const cfg = Ironwood.cfg ? (await Ironwood.cfg()) : null;
+        const fix = (u)=>!u?'':(u.startsWith('http')?u:(u.startsWith('/')?u:'/'+u));
+        let photos = Array.isArray(cfg?.dumpster_photos) ? cfg.dumpster_photos.map(fix) : [];
+        if(!photos.length){
+          let getter =
+            Ironwood.dumpPhotos;
+          if(getter){
+            const result = getter();
+            const out = (result && typeof result.then === "function") ? (await result)||[] : (result||[]);
+            photos = (out||[]).map(fix);
+          }
+        }
+        return photos || [];
+      }catch(e){
+        console.error("Error loading dumpster photos from admin:", e);
+        return [];
+      }
+    }
+
+    (async function initDumpsterPhotos() {
+      const cards = document.getElementById("dump-photos-cards");
+      if (!cards) return;
+
+      const photos = await loadDumpsterPhotosFromAdmin();
+
+      if (!photos || !photos.length) {
+        cards.innerHTML = '<p class="muted">No dumpster photos yet.</p>';
+        return;
+      }
+
+      cards.innerHTML = photos
+        .map((u)=>`<div class="photo-card"><img src="${u}" alt="Dumpster photo" loading="lazy"></div>`)
+        .join("");
+    })();
+  </script>
+  <script src="/webapp-prompt.js"></script>
+</body>
+</html>

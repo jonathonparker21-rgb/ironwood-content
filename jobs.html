@@ -7,24 +7,31 @@
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block;border-radius:12px}
 .container{width:min(1200px,92vw);margin-inline:auto}.muted{color:#9aa7b3}
-.btn{display:inline-flex;gap:.6rem;align-items:center;background:var(--brand);color:#fff;padding:.7rem 1rem;border-radius:999px;font-weight:700;border:2px solid transparent}
-.btn.secondary{background:transparent;border-color:#2b333b}
+.btn{display:inline-flex;gap:.6rem;align-items:center;background:linear-gradient(145deg,#1f2937,#0f172a);color:#ffdddd;padding:.7rem 1rem;border-radius:10px;font-weight:700;border:1px solid rgba(220,38,38,.45);box-shadow:0 0 0 rgba(220,38,38,.25);transition:box-shadow .15s ease,transform .08s ease,filter .12s ease,border-color .12s ease}
+.btn:hover{filter:brightness(1.05);border-color:rgba(252,165,165,.9);box-shadow:0 0 14px rgba(220,38,38,.4);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.secondary{background:linear-gradient(145deg,#0f172a,#0b1220);border-color:#2b333b;color:#eef2f6}
 .card{background:#12161a;border:1px solid #1a2128;border-radius:18px;padding:1rem}
 header.topbar{position:sticky;top:0;background:rgba(11,14,17,.8);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid #1a2128;z-index:20}
 header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;gap:.6rem;flex-wrap:wrap}
-.brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:44px}
+.brand{display:flex;gap:.6rem;align-items:center;font-weight:900}.brand img{height:42px}
+.brand-name{padding:2px 8px;border:1px solid rgba(248,113,113,.6);border-radius:12px;background:rgba(248,113,113,.08);letter-spacing:.04em}
+.brand-tag{padding:2px 8px;border:1px solid rgba(248,113,113,.6);border-radius:999px;font-size:12px;letter-spacing:.08em;color:var(--text)}
 nav{display:flex;gap:.4rem;flex-wrap:wrap}.pill{padding:.45rem .7rem;border-radius:10px}nav a:hover{background:#1a2128}
 @media (max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}.brand img{height:36px}nav{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}nav .btn{grid-column:1/-1;justify-content:center}}
 footer{background:#0a0d10;border-top:1px solid #182028;padding:36px 0 80px;margin-top:40px}
 </style>
 
 <header class="topbar"><div class="container wrap">
-  <a class="brand" href="index.html"><img id="siteLogo" src="assets/logo-ld-original.png" alt=""><span id="brandName">Ironwood Land Development</span></a>
+  <a class="brand" href="index.html">
+    <img id="siteLogo" src="assets/logo-ld-original.png" alt="" style="height:42px">
+    <span id="brandName" class="brand-name">Ironwood Land Development</span>
+    <span class="brand-tag">NE LA</span>
+  </a>
   <nav>
     <a class="pill" href="index.html#services">Services</a>
-    <a class="pill" href="jobs.html">Jobs</a>
     <a class="pill" href="dumpsters.html">Dumpsters</a>
-    <a class="pill" href="contact.html">Contact</a>
+    <a class="pill" href="#contact">Contact</a>
     <a class="btn" data-call href="tel:+13189142351">📞 Call</a>
   </nav>
 </div></header>
@@ -113,6 +120,16 @@ function initCompare(b,a){
     const fp=document.getElementById('footPhone'); if(fp){ const ph=c.business?.phone_raw||'+13189142351', disp=c.business?.phone||'(318) 914-2351'; fp.href='tel:'+ph; fp.textContent=disp; }
     const fh=document.getElementById('footHours'); if(fh) fh.textContent=c.business?.hours||'Mon–Sat 7a–6p';
   }
-  const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
+const a=document.getElementById('adminLink'); if(a){ a.addEventListener('click',e=>{e.preventDefault(); const p=prompt('Enter passcode'); if(p==='0102') location.href='admin.html'; else if(p!==null) alert('Incorrect passcode'); }); }
 })();
+</script>
+<script>
+  // Secret admin shortcut: Ctrl/Cmd + Shift + A
+  window.addEventListener('keydown', function(e){
+    const isMod = e.ctrlKey || e.metaKey;
+    if(isMod && e.shiftKey && e.code === 'KeyA'){
+      e.preventDefault();
+      location.href = 'admin.html';
+    }
+  });
 </script>
