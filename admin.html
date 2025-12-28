@@ -116,12 +116,18 @@
 
     <div class="card">
       <h2>Hero Image</h2>
+      <p class="muted">Upload a new hero background image for the homepage.</p>
       <div class="row">
         <input id="hero_image" type="file" accept="image/*">
         <button id="hero_upload" class="btn">Upload</button>
       </div>
       <div class="hr"></div>
-      <div id="hero_preview" class="hero-preview muted">Loading…</div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <img id="hero_preview" alt="Hero preview" style="width:220px;max-width:100%;border-radius:12px;border:1px solid #1a2128;display:none">
+        <div>
+          <p id="hero_note" class="muted" style="margin:0">Loading hero image…</p>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -300,38 +306,50 @@
       }catch(e){ toast('Upload failed: '+e.message,false); }
     }
 
+    async function getConfig(){
+      const cfg = await api('config.json','GET');
+      return cfg && cfg.content ? JSON.parse(atob(cfg.content)) : cfg;
+    }
+
     async function loadHeroPreview(){
-      const target = $('hero_preview');
-      if(!target) return;
+      const preview = $('hero_preview');
+      const note = $('hero_note');
       try{
-        const cfg = await api('config.json','GET');
-        const parsed = cfg && cfg.content ? JSON.parse(atob(cfg.content)) : cfg;
-        const heroImage = parsed?.hero?.image || 'assets/work-hero.jpg';
-        target.innerHTML = `<img src="${heroImage}" alt="Hero image preview">`;
+        const cfg = await getConfig();
+        const image = cfg?.hero?.image || '';
+        if(image){
+          const src = image.startsWith('http') ? image : (image.startsWith('/') ? image : '/' + image);
+          preview.src = src + '?v=' + Date.now();
+          preview.style.display = 'block';
+          note.textContent = image;
+        }else{
+          preview.style.display = 'none';
+          note.textContent = 'No hero image set.';
+        }
       }catch(e){
-        target.innerHTML = `<p class="muted">Error loading hero: ${e.message}</p>`;
+        preview.style.display = 'none';
+        note.textContent = 'Unable to load hero image.';
       }
     }
 
     async function uploadHeroImage(){
+      const input = $('hero_image');
+      const file = input?.files?.[0];
+      if(!file) return toast('Pick a hero image first', false);
       try{
-        const input = $('hero_image');
-        const file = input?.files?.[0];
-        if(!file) return toast('Pick a hero image first', false);
         const dataUrl = await new Promise((res,rej)=>{const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file);});
-        const b64 = String(dataUrl).split(',')[1] || '';
-        const ext = (file.name.split('.').pop() || 'jpg').replace(/[^a-z0-9]/gi,'').toLowerCase() || 'jpg';
-        const filename = `hero-${Date.now()}.${ext}`;
-        const path = `assets/${filename}`;
+        const b64 = String(dataUrl).split(',')[1]||'';
+        const safeName = ('hero-' + Date.now() + '-' + file.name).replace(/\s+/g,'_');
+        const path = 'assets/' + safeName;
         await api(path,'POST',{content:b64,base64:true,message:'admin: upload hero image'}, true);
-        const cfg = await api('config.json','GET');
-        const parsed = cfg && cfg.content ? JSON.parse(atob(cfg.content)) : cfg || {};
-        parsed.hero = parsed.hero || {};
-        parsed.hero.image = path;
-        await api('config.json','POST',{text:JSON.stringify(parsed,null,2),message:'admin: update hero image'});
+        const cfg = await getConfig();
+        const next = cfg || {};
+        next.hero = next.hero || {};
+        next.hero.image = path;
+        await api('config.json','POST',{text:JSON.stringify(next,null,2),message:'admin: update hero image'});
+        toast('Hero image updated ✅', true);
         input.value = '';
         await loadHeroPreview();
-        toast('Hero image updated ✅', true);
       }catch(e){
         toast('Hero upload failed: '+e.message, false);
       }
@@ -370,10 +388,10 @@
       }catch(e){ badge('gh_status','Failed',false); toast('Test failed: '+e.message,false); }
     };
 
+    $('hero_upload').onclick=uploadHeroImage;
     $('equip_upload').onclick=()=>uploadPhotos('equip_photos','equipment/photos','equip_list','equipment_photos');
     $('dump_upload').onclick=()=>uploadPhotos('dump_photos','dumpsters/photos','dump_list','dumpster_photos');
-    $('hero_upload').onclick=uploadHeroImage;
-    (async()=>{ await listDir('equipment/photos', $('equip_list')); await listDir('dumpsters/photos', $('dump_list')); await loadHeroPreview(); })();
+    (async()=>{ await loadHeroPreview(); await listDir('equipment/photos', $('equip_list')); await listDir('dumpsters/photos', $('dump_list')); })();
   </script>
 </body>
 </html>
