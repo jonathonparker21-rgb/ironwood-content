@@ -167,6 +167,7 @@
       background: radial-gradient(circle at top, rgba(15,23,42,0.7), rgba(2,6,23,0.95));
       color: var(--fg);
       isolation: isolate;
+      --hero-bg: url("assets/work-hero.jpg");
     }
     #hero::before {
       content: "";
@@ -261,6 +262,58 @@
     .modal-close:hover {
       border-color: rgba(220,38,38,0.6);
       box-shadow: 0 0 10px rgba(220,38,38,0.35);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 30;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-card {
+      width: min(520px, 100%);
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+      padding: 1.5rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .modal-logo {
+      width: min(320px, 80vw);
+      height: auto;
+      margin: 0 auto 1rem;
+      display: block;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.8);
+      color: var(--fg);
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-lines {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.95rem;
     }
 
     /* Simple carousel */
@@ -398,9 +451,9 @@
   <main>
     <!-- Hero -->
     <section id="hero">
-      <p class="hero-kicker">Residential • Commercial • Timber • Structures</p>
-      <h1>Land Clearing &amp; Demolition—Done Right.</h1>
-      <p class="hero-sub">
+      <p class="hero-kicker" id="hero-kicker">Residential • Commercial • Timber • Structures</p>
+      <h1 id="hero-headline">Land Clearing &amp; Demolition—Done Right.</h1>
+      <p class="hero-sub" id="hero-sub">
         Traditional land clearing (no mulching). Heavy equipment, safe crews, and clean finishes for
         house pads, road building, demolition, and more—big or small.
       </p>
