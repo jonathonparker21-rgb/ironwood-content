@@ -135,6 +135,15 @@
       transform: translateY(-1px);
     }
     .btn-primary:active { transform: translateY(0); }
+    .btn-secondary {
+      background: linear-gradient(145deg, #111827, #0b1220);
+      color: var(--fg);
+      border-color: rgba(148,163,184,0.35);
+    }
+    .btn-secondary:hover {
+      border-color: rgba(148,163,184,0.75);
+      box-shadow: 0 0 14px rgba(148,163,184,0.25);
+    }
     .hero-badge {
       font-size: 0.8rem;
       color: var(--muted);
@@ -164,9 +173,12 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: var(--hero-bg) center/cover no-repeat;
-      opacity: 0.85;
-      filter: grayscale(0.02) brightness(1.05);
+      background-image: var(--hero-image, url("assets/work-hero.jpg"));
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      opacity: 0.28;
+      filter: grayscale(0.1) brightness(0.75);
       z-index: -1;
     }
     @media (min-width: 640px) {
@@ -201,6 +213,211 @@
       padding: 1rem;
       margin-top: 0.5rem;
       font-size: 0.9rem;
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal.is-open { display: flex; }
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(2,6,23,0.78);
+      backdrop-filter: blur(6px);
+    }
+    .modal-dialog {
+      position: relative;
+      background: linear-gradient(160deg, rgba(15,23,42,0.96), rgba(10,15,30,0.95));
+      border: 1px solid rgba(148,163,184,0.25);
+      border-radius: 18px;
+      padding: 1.6rem 1.6rem 1.8rem;
+      max-width: min(520px, 90vw);
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+      z-index: 1;
+    }
+    .modal-logo {
+      width: min(70vw, 360px);
+      height: auto;
+      display: block;
+      margin: 0 auto 1rem;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(15,23,42,0.85);
+      color: var(--fg);
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-close:hover {
+      border-color: rgba(220,38,38,0.6);
+      box-shadow: 0 0 10px rgba(220,38,38,0.35);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 30;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-card {
+      width: min(520px, 100%);
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+      padding: 1.5rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .modal-logo {
+      width: min(320px, 80vw);
+      height: auto;
+      margin: 0 auto 1rem;
+      display: block;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.8);
+      color: var(--fg);
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-lines {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.95rem;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 30;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-card {
+      width: min(520px, 100%);
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+      padding: 1.5rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .modal-logo {
+      width: min(320px, 80vw);
+      height: auto;
+      margin: 0 auto 1rem;
+      display: block;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.8);
+      color: var(--fg);
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-lines {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.95rem;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 30;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-card {
+      width: min(520px, 100%);
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+      padding: 1.5rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .modal-logo {
+      width: min(320px, 80vw);
+      height: auto;
+      margin: 0 auto 1rem;
+      display: block;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.8);
+      color: var(--fg);
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-lines {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.95rem;
     }
 
     .modal-overlay {
@@ -398,6 +615,7 @@
       </p>
       <div class="hero-cta">
         <a class="btn-primary" href="tel:+13189142351">Call Now</a>
+        <button class="btn-primary btn-secondary" type="button" id="company-info-trigger">Company Info</button>
         <p class="hero-badge">Serving Northeast Louisiana • Licensed &amp; Insured</p>
       </div>
     </section>
@@ -472,15 +690,17 @@
     </div>
   </footer>
 
-  <div id="company-modal" class="modal-overlay show" role="dialog" aria-modal="true" aria-labelledby="company-modal-title">
-    <div class="modal-card">
-      <button class="modal-close" type="button" aria-label="Close company info" id="company-modal-close">×</button>
-      <img class="modal-logo" id="company-modal-logo" src="assets/logo-ld-original.png" alt="Ironwood Land Development">
-      <h3 id="company-modal-title">Ironwood Land Development</h3>
-      <div class="modal-lines">
-        <div id="company-modal-phone">(318) 914-2351</div>
-        <div id="company-modal-hours">Mon–Sat 7a–6p</div>
-        <div id="company-modal-address">805 E. Main St, Oak Grove, LA 71263</div>
+  <div id="company-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="company-modal-title">
+      <button class="modal-close" type="button" aria-label="Close" data-modal-close>×</button>
+      <img class="modal-logo" src="assets/logo-ld-original.png" alt="Ironwood Land Development logo">
+      <h2 id="company-modal-title">Ironwood Land Development</h2>
+      <p class="muted">Professional land clearing, grading, demolition, and dumpster rentals across Northeast Louisiana.</p>
+      <div class="card" style="margin-top:1rem;">
+        <p><strong>Phone:</strong> (318) 914-2351</p>
+        <p><strong>Hours:</strong> Mon–Sat 7a–6p</p>
+        <p><strong>Address:</strong> 805 E. Main St, Oak Grove, LA 71263</p>
       </div>
     </div>
   </div>
@@ -503,68 +723,24 @@
   </script>
 
   <script>
-    (async function initHeroFromConfig(){
+    async function applyHeroImageFromConfig(){
       if(!window.Ironwood || !Ironwood.cfg) return;
       try{
         const cfg = await Ironwood.cfg();
-        if(!cfg) return;
-        const hero = cfg.hero || {};
-        const kicker = document.getElementById('hero-kicker');
-        const headline = document.getElementById('hero-headline');
-        const sub = document.getElementById('hero-sub');
-        if(hero.eyebrow && kicker) kicker.textContent = hero.eyebrow;
-        if(hero.headline && headline) headline.textContent = hero.headline;
-        if(hero.sub && sub) sub.textContent = hero.sub;
-        const heroEl = document.getElementById('hero');
-        if(hero.image && heroEl){
-          heroEl.style.setProperty('--hero-bg', `url("${hero.image}")`);
-          const og = document.querySelector('meta[property="og:image"]');
-          if(og) og.setAttribute('content', hero.image.startsWith('http') ? hero.image : `https://ironwood-content.pages.dev/${hero.image.replace(/^\\//,'')}`);
+        const image = cfg?.hero?.image;
+        if(!image) return;
+        const relative = image.startsWith('http') ? image : (image.startsWith('/') ? image : '/' + image);
+        document.documentElement.style.setProperty('--hero-image', `url("${relative}")`);
+        const og = document.querySelector('meta[property="og:image"]');
+        if(og){
+          const absolute = new URL(relative, window.location.href).href;
+          og.setAttribute('content', absolute);
         }
       }catch(e){
-        console.warn('Hero config load failed', e);
+        console.error('Failed to apply hero image', e);
       }
-    })();
-  </script>
-
-  <script>
-    (async function initCompanyModal(){
-      const modal = document.getElementById('company-modal');
-      const closeBtn = document.getElementById('company-modal-close');
-      if(!modal || !closeBtn) return;
-      closeBtn.addEventListener('click', ()=> modal.classList.remove('show'));
-      modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.classList.remove('show'); });
-
-      try{
-        if(window.Ironwood && Ironwood.cfg){
-          const cfg = await Ironwood.cfg();
-          const business = cfg?.business || {};
-          const logos = cfg?.logos || {};
-          const name = business.name || 'Ironwood Land Development';
-          const phone = business.phone || '(318) 914-2351';
-          const hours = business.hours || 'Mon–Sat 7a–6p';
-          const address = business.address_text || '805 E. Main St, Oak Grove, LA 71263';
-          const logo = logos.site || 'assets/logo-ld-original.png';
-          const title = document.getElementById('company-modal-title');
-          const phoneEl = document.getElementById('company-modal-phone');
-          const hoursEl = document.getElementById('company-modal-hours');
-          const addressEl = document.getElementById('company-modal-address');
-          const logoEl = document.getElementById('company-modal-logo');
-          if(title) title.textContent = name;
-          if(phoneEl) phoneEl.textContent = phone;
-          if(hoursEl) hoursEl.textContent = hours;
-          if(addressEl) addressEl.textContent = address;
-          if(logoEl){
-            logoEl.src = logo;
-            logoEl.alt = name;
-          }
-        }
-      }catch(e){
-        console.warn('Company modal config load failed', e);
-      }
-
-      modal.classList.add('show');
-    })();
+    }
+    applyHeroImageFromConfig();
   </script>
 
   <script>
@@ -638,6 +814,26 @@
 
   <script src="/carousel-cache-bust-patch.js"></script>
   <script>
+    (function(){
+      const modal = document.getElementById('company-modal');
+      const trigger = document.getElementById('company-info-trigger');
+      if(!modal || !trigger) return;
+      const closers = modal.querySelectorAll('[data-modal-close]');
+      const openModal = () => {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      };
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+      trigger.addEventListener('click', openModal);
+      closers.forEach(btn => btn.addEventListener('click', closeModal));
+      window.addEventListener('keydown', (event) => {
+        if(event.key === 'Escape') closeModal();
+      });
+    })();
+
     // Secret admin shortcut: Ctrl/Cmd + Shift + A
     window.addEventListener('keydown', function(e){
       const isMod = e.ctrlKey || e.metaKey;
