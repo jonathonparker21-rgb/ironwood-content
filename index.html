@@ -158,12 +158,13 @@
       background: radial-gradient(circle at top, rgba(15,23,42,0.7), rgba(2,6,23,0.95));
       color: var(--fg);
       isolation: isolate;
+      --hero-bg: url("assets/work-hero.jpg");
     }
     #hero::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: url("assets/work-hero.jpg") center/cover no-repeat;
+      background: var(--hero-bg) center/cover no-repeat;
       opacity: 0.28;
       filter: grayscale(0.1) brightness(0.75);
       z-index: -1;
@@ -200,6 +201,58 @@
       padding: 1rem;
       margin-top: 0.5rem;
       font-size: 0.9rem;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 30;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-card {
+      width: min(520px, 100%);
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+      padding: 1.5rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .modal-logo {
+      width: min(320px, 80vw);
+      height: auto;
+      margin: 0 auto 1rem;
+      display: block;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.8);
+      color: var(--fg);
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-lines {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.95rem;
     }
 
     /* Simple carousel */
@@ -337,9 +390,9 @@
   <main>
     <!-- Hero -->
     <section id="hero">
-      <p class="hero-kicker">Residential • Commercial • Timber • Structures</p>
-      <h1>Land Clearing &amp; Demolition—Done Right.</h1>
-      <p class="hero-sub">
+      <p class="hero-kicker" id="hero-kicker">Residential • Commercial • Timber • Structures</p>
+      <h1 id="hero-headline">Land Clearing &amp; Demolition—Done Right.</h1>
+      <p class="hero-sub" id="hero-sub">
         Traditional land clearing (no mulching). Heavy equipment, safe crews, and clean finishes for
         house pads, road building, demolition, and more—big or small.
       </p>
@@ -419,6 +472,19 @@
     </div>
   </footer>
 
+  <div id="company-modal" class="modal-overlay show" role="dialog" aria-modal="true" aria-labelledby="company-modal-title">
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Close company info" id="company-modal-close">×</button>
+      <img class="modal-logo" id="company-modal-logo" src="assets/logo-ld-original.png" alt="Ironwood Land Development">
+      <h3 id="company-modal-title">Ironwood Land Development</h3>
+      <div class="modal-lines">
+        <div id="company-modal-phone">(318) 914-2351</div>
+        <div id="company-modal-hours">Mon–Sat 7a–6p</div>
+        <div id="company-modal-address">805 E. Main St, Oak Grove, LA 71263</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Equipment carousel tied into your admin -->
   <script>
     (function(){
@@ -433,6 +499,71 @@
         equipmentPhotos: async ()=> await j('equipment/photos/index.json') || (RAW && await j(RAW+'/equipment/photos/index.json')) || [],
         jobPhotos: async ()=> await j('jobs/photos/index.json') || (RAW && await j(RAW+'/jobs/photos/index.json')) || []
       };
+    })();
+  </script>
+
+  <script>
+    (async function initHeroFromConfig(){
+      if(!window.Ironwood || !Ironwood.cfg) return;
+      try{
+        const cfg = await Ironwood.cfg();
+        if(!cfg) return;
+        const hero = cfg.hero || {};
+        const kicker = document.getElementById('hero-kicker');
+        const headline = document.getElementById('hero-headline');
+        const sub = document.getElementById('hero-sub');
+        if(hero.eyebrow && kicker) kicker.textContent = hero.eyebrow;
+        if(hero.headline && headline) headline.textContent = hero.headline;
+        if(hero.sub && sub) sub.textContent = hero.sub;
+        const heroEl = document.getElementById('hero');
+        if(hero.image && heroEl){
+          heroEl.style.setProperty('--hero-bg', `url("${hero.image}")`);
+          const og = document.querySelector('meta[property="og:image"]');
+          if(og) og.setAttribute('content', hero.image.startsWith('http') ? hero.image : `https://ironwood-content.pages.dev/${hero.image.replace(/^\\//,'')}`);
+        }
+      }catch(e){
+        console.warn('Hero config load failed', e);
+      }
+    })();
+  </script>
+
+  <script>
+    (async function initCompanyModal(){
+      const modal = document.getElementById('company-modal');
+      const closeBtn = document.getElementById('company-modal-close');
+      if(!modal || !closeBtn) return;
+      closeBtn.addEventListener('click', ()=> modal.classList.remove('show'));
+      modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.classList.remove('show'); });
+
+      try{
+        if(window.Ironwood && Ironwood.cfg){
+          const cfg = await Ironwood.cfg();
+          const business = cfg?.business || {};
+          const logos = cfg?.logos || {};
+          const name = business.name || 'Ironwood Land Development';
+          const phone = business.phone || '(318) 914-2351';
+          const hours = business.hours || 'Mon–Sat 7a–6p';
+          const address = business.address_text || '805 E. Main St, Oak Grove, LA 71263';
+          const logo = logos.site || 'assets/logo-ld-original.png';
+          const title = document.getElementById('company-modal-title');
+          const phoneEl = document.getElementById('company-modal-phone');
+          const hoursEl = document.getElementById('company-modal-hours');
+          const addressEl = document.getElementById('company-modal-address');
+          const logoEl = document.getElementById('company-modal-logo');
+          if(title) title.textContent = name;
+          if(phoneEl) phoneEl.textContent = phone;
+          if(hoursEl) hoursEl.textContent = hours;
+          if(addressEl) addressEl.textContent = address;
+          if(logoEl){
+            logoEl.src = logo;
+            logoEl.alt = name;
+          }
+        }
+      }catch(e){
+        console.warn('Company modal config load failed', e);
+      }
+
+      modal.classList.add('show');
     })();
   </script>
 
