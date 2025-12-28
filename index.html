@@ -135,6 +135,15 @@
       transform: translateY(-1px);
     }
     .btn-primary:active { transform: translateY(0); }
+    .btn-secondary {
+      background: linear-gradient(145deg, #111827, #0b1220);
+      color: var(--fg);
+      border-color: rgba(148,163,184,0.35);
+    }
+    .btn-secondary:hover {
+      border-color: rgba(148,163,184,0.75);
+      box-shadow: 0 0 14px rgba(148,163,184,0.25);
+    }
     .hero-badge {
       font-size: 0.8rem;
       color: var(--muted);
@@ -163,7 +172,10 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: url("assets/work-hero.jpg") center/cover no-repeat;
+      background-image: var(--hero-image, url("assets/work-hero.jpg"));
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
       opacity: 0.28;
       filter: grayscale(0.1) brightness(0.75);
       z-index: -1;
@@ -200,6 +212,55 @@
       padding: 1rem;
       margin-top: 0.5rem;
       font-size: 0.9rem;
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal.is-open { display: flex; }
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(2,6,23,0.78);
+      backdrop-filter: blur(6px);
+    }
+    .modal-dialog {
+      position: relative;
+      background: linear-gradient(160deg, rgba(15,23,42,0.96), rgba(10,15,30,0.95));
+      border: 1px solid rgba(148,163,184,0.25);
+      border-radius: 18px;
+      padding: 1.6rem 1.6rem 1.8rem;
+      max-width: min(520px, 90vw);
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+      z-index: 1;
+    }
+    .modal-logo {
+      width: min(70vw, 360px);
+      height: auto;
+      display: block;
+      margin: 0 auto 1rem;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(15,23,42,0.85);
+      color: var(--fg);
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-close:hover {
+      border-color: rgba(220,38,38,0.6);
+      box-shadow: 0 0 10px rgba(220,38,38,0.35);
     }
 
     /* Simple carousel */
@@ -345,6 +406,7 @@
       </p>
       <div class="hero-cta">
         <a class="btn-primary" href="tel:+13189142351">Call Now</a>
+        <button class="btn-primary btn-secondary" type="button" id="company-info-trigger">Company Info</button>
         <p class="hero-badge">Serving Northeast Louisiana • Licensed &amp; Insured</p>
       </div>
     </section>
@@ -419,6 +481,21 @@
     </div>
   </footer>
 
+  <div id="company-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="company-modal-title">
+      <button class="modal-close" type="button" aria-label="Close" data-modal-close>×</button>
+      <img class="modal-logo" src="assets/logo-ld-original.png" alt="Ironwood Land Development logo">
+      <h2 id="company-modal-title">Ironwood Land Development</h2>
+      <p class="muted">Professional land clearing, grading, demolition, and dumpster rentals across Northeast Louisiana.</p>
+      <div class="card" style="margin-top:1rem;">
+        <p><strong>Phone:</strong> (318) 914-2351</p>
+        <p><strong>Hours:</strong> Mon–Sat 7a–6p</p>
+        <p><strong>Address:</strong> 805 E. Main St, Oak Grove, LA 71263</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Equipment carousel tied into your admin -->
   <script>
     (function(){
@@ -434,6 +511,27 @@
         jobPhotos: async ()=> await j('jobs/photos/index.json') || (RAW && await j(RAW+'/jobs/photos/index.json')) || []
       };
     })();
+  </script>
+
+  <script>
+    async function applyHeroImageFromConfig(){
+      if(!window.Ironwood || !Ironwood.cfg) return;
+      try{
+        const cfg = await Ironwood.cfg();
+        const image = cfg?.hero?.image;
+        if(!image) return;
+        const relative = image.startsWith('http') ? image : (image.startsWith('/') ? image : '/' + image);
+        document.documentElement.style.setProperty('--hero-image', `url("${relative}")`);
+        const og = document.querySelector('meta[property="og:image"]');
+        if(og){
+          const absolute = new URL(relative, window.location.href).href;
+          og.setAttribute('content', absolute);
+        }
+      }catch(e){
+        console.error('Failed to apply hero image', e);
+      }
+    }
+    applyHeroImageFromConfig();
   </script>
 
   <script>
@@ -508,6 +606,26 @@
   <script src="/carousel-cache-bust-patch.js"></script>
   <script src="/webapp-prompt.js"></script>
   <script>
+    (function(){
+      const modal = document.getElementById('company-modal');
+      const trigger = document.getElementById('company-info-trigger');
+      if(!modal || !trigger) return;
+      const closers = modal.querySelectorAll('[data-modal-close]');
+      const openModal = () => {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      };
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+      trigger.addEventListener('click', openModal);
+      closers.forEach(btn => btn.addEventListener('click', closeModal));
+      window.addEventListener('keydown', (event) => {
+        if(event.key === 'Escape') closeModal();
+      });
+    })();
+
     // Secret admin shortcut: Ctrl/Cmd + Shift + A
     window.addEventListener('keydown', function(e){
       const isMod = e.ctrlKey || e.metaKey;
